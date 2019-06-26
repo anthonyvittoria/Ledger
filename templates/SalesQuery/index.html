@@ -1,0 +1,55 @@
+{% extends 'SalesQuery/base.html' %} {% load static %}{% load humanize %}
+<!DOCTYPE html>
+<html lang="en">
+    {% block head %}
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>Sales Query Demo</title>
+        <link rel="stylesheet" href="{% static 'SalesQuery/main.css' %}">
+        
+        <!-- Core Bootstrap CSS -->
+        <link rel="stylesheet" href="{% static 'SalesQuery/bootstrap.css' %}">
+
+    {% endblock %}
+    {% block body%}
+        <div class="container">
+        <div style="text-align: center; margin-top: 6em; margin-bottom: 2em;">
+            <h1>SalesQuery</h1>
+            <p>Super catchy slogan. Probably all buzzwords.</p>
+        </div>
+        
+        {% if latest_sales_list %}
+        <table class="table table-hover" style="text-align: left;">
+            <thead class="thead-light">
+                <th scope="col">#</th>
+                <th scope="col">Customer</th>
+                <th scope="col">Location</th>
+                <th scope="col">Sector</th>
+                <th scope="col">Capability</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Date</th>
+            </thead>
+            <tbody>
+                {% for sale in latest_sales_list %}
+                <tr>
+                    <th scope="row">{{ sale.id }}</th>
+                    <td>{{ sale.customer }}</td>
+                    <td>{{ sale.location }}</td>
+                    <td>{{ sale.customer.sector }}</td>
+                    <td>{{ sale.capability }}</td>
+                    <td>${{ sale.amount|intcomma }}</td>
+                    <td>{{ sale.date|date:"m-d-Y" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+            <p>No sales are available.</p>
+        {% endif %}
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="{% static 'SalesQuery/bootstrap.bundle.js' %}"></script>
+    {% endblock %}
+</html>
