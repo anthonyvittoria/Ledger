@@ -9,8 +9,15 @@ class Capability(models.Model):
     def __str__(self):
         return self.name
 
+class Region(models.Model):
+    name = models.CharField(primary_key=True, max_length=45)
+
+    def __str__(self):
+        return self.name
+
 class Location(models.Model):
     name = models.CharField(primary_key=True, max_length=45)
+    region = models.ForeignKey(Region, on_delete=models.PROTECT)
 
     def __str__(self):
         return self.name
@@ -64,9 +71,3 @@ class Sale(models.Model):
 
     def __str__(self):
         return str(self.customer) + ", " + str(self.location) + ", " + str(self.date)
-
-class Region(models.Model):
-    name = models.CharField(primary_key=True, max_length=45)
-
-    def __str__(self):
-        return self.name
