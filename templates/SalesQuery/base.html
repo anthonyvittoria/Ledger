@@ -1,5 +1,5 @@
 {% block head %} {% endblock %} {% block navbar %}
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
   <a class="navbar-brand" href="{% url 'index' %}">SalesQuery</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample05" aria-controls="navbarsExample05" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -7,23 +7,16 @@
 
   <div class="collapse navbar-collapse" id="navbarsExample05">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="#">Home<span class="sr-only">(current)</span></a>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'index' %}">Index<span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Link</a>
+        <a class="nav-link" href="{% url 'budget'%}">Budgets<span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Link 2</a>
+        <a class="nav-link" href="{% url 'admin:index' %}">Admin<span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="dropdown05" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Export</a>
-        <div class="dropdown-menu" aria-labelledby="dropdown05">
-          <a class="dropdown-item" href="#">CSV</a>
-          <a class="dropdown-item" href="#">Excel (2007+)</a>
-          <a class="dropdown-item" href="#">Archive (zip)</a>
-          <a class="dropdown-item" href="#">SQL</a>
-        </div>
       </li>
     </ul>
   </div>

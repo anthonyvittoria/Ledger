@@ -58,7 +58,7 @@ class Budget(models.Model):
     q4 = models.IntegerField(default=None)    
 
     def __str__(self):
-        return str(self.customer) + ", " + str(self.location) + ", "
+        return str(self.location) + ", " + str(self.customer)
 
 class Sale(models.Model):
     id = models.AutoField(primary_key=True)
@@ -67,7 +67,6 @@ class Sale(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.PROTECT)
     capability = models.ForeignKey(Capability, on_delete=models.PROTECT)
     date = models.DateField(auto_now=False, auto_now_add=False)
-    # budget = models.ForeignKey(Budget, on_delete=models.PROTECT)
 
     def __str__(self):
         return str(self.customer) + ", " + str(self.location) + ", " + str(self.date)
