@@ -26,3 +26,20 @@ def index(request):
         'latest_sales_list': latest_sales_list,
     }
     return HttpResponse(template.render(context, request))
+
+def budget(request, location):
+    current_budget = Budget.objects.filter(location=location)
+    q1 = current_budget.jan + current_budget.feb + current_budget.mar
+    q2 = current_budget.apr + current_budget.may + current_budget.jun
+    q3 = current_budget.jul + current_budget.aug + current_budget.sep
+    q4 = current_budget.oct + current_budget.nov + current_budget.dec
+
+    template = loader.get_template('SalesQuery/budget.html')
+    context = {
+        'budget': current_budget,
+        'q1': q1,
+        'q2': q2,
+        'q3': q3,
+        'q4': q4,
+    }
+    return HttpResponse(template.render(context, request))

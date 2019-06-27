@@ -9,35 +9,39 @@
         
         <!-- Core Bootstrap CSS -->
         <link rel="stylesheet" href="{% static 'SalesQuery/bootstrap.css' %}">
-        <link rel="shortcut icon" href="{% static 'SalesQuery/img/favicon.ico' %}" type="image/vnd.microsoft.icon" />
 
     {% endblock %}
     {% block body%}
         <div class="container">
-        {% comment %} <div style="text-align: center; margin-top: 6em; margin-bottom: 2em;">
-            <h1>SalesQuery</h1>
-            <p>Super catchy slogan. Probably all buzzwords.</p>
-        </div> {% endcomment %}
-        <h3 class="mt-5 mx-auto text-center">All sales records</h3>
+        <h3 class="mt-5 mx-auto text-center">{{ budget.location }} {{ budget.month }}</h3>
         {% if latest_sales_list %}
         <table class="table table-hover mt-5 text-left">
             <thead class="thead-light">
-                <th scope="col">#</th>
-                <th scope="col">Location</th>
-                <th scope="col">Region</th>
                 <th scope="col">Customer</th>
-                <th scope="col">Sector</th>
-                <th scope="col">Capability</th>
-                <th scope="col">Amount</th>
-                <th scope="col">Month</th>
+                <th scope="col">Jan</th>
+                <th scope="col">Feb</th>
+                <th scope="col">Mar</th>
+                <th scope="col">Q1</th>
+                <th scope="col">Apr</th>
+                <th scope="col">May</th>
+                <th scope="col">Jun</th>
+                <th scope="col">Q2</th>
+                <th scope="col">Jul</th>
+                <th scope="col">Aug</th>
+                <th scope="col">Sep</th>
+                <th scope="col">Q3</th>
+                <th scope="col">Oct</th>
+                <th scope="col">Nov</th>
+                <th scope="col">Dec</th>
+                <th scope="col">Q4</th>
             </thead>
             <tbody>
                 {% for sale in latest_sales_list %}
                 <tr>
                     <th scope="row">{{ sale.id }}</th>
                     <td>{{ sale.location }}</td>
-                    <td>{{ sale.location.region }}</td>                    
                     <td>{{ sale.customer }}</td>
+                    <td>{{ sale.location.region }}</td>                    
                     <td>{{ sale.customer.sector }}</td>
                     <td>{{ sale.capability }}</td>
                     <td>${{ sale.amount|intcomma }}</td>

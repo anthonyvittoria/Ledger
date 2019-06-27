@@ -52,10 +52,7 @@ class Budget(models.Model):
     oct = models.IntegerField(default=None)
     nov = models.IntegerField(default=None)
     dec = models.IntegerField(default=None)
-    q1 = models.IntegerField(default=None)
-    q2 = models.IntegerField(default=None)
-    q3 = models.IntegerField(default=None)
-    q4 = models.IntegerField(default=None)    
+    year = models.IntegerField(default=None)
 
     def __str__(self):
         return str(self.location) + ", " + str(self.customer)

@@ -17,7 +17,7 @@
             <h3 class="mt-5 mx-auto text-center">View budget by location</h3>
             <div class="list-group mt-5 mx-auto" style="width: 20em;">
                 {% for location in locations %}
-                    <button type="button" class="list-group-item list-group-item-action">{{ location.name }}, {{ location.region }}</button>
+                    <a href="#"><button type="button" class="list-group-item list-group-item-action">{{ location.name }}, {{ location.region }}</button>
                 {% endfor %}
             </div>
         {% endif %}
