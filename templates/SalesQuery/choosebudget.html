@@ -1,23 +1,12 @@
 {% extends 'SalesQuery/base.html' %} {% load static %}{% load humanize %}
-<!DOCTYPE html>
-<html lang="en">
-    {% block head %}
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <title>SalesQuery Demo</title>
-        <link rel="stylesheet" href="{% static 'SalesQuery/main.css' %}">
-        
-        <!-- Core Bootstrap CSS -->
-        <link rel="stylesheet" href="{% static 'SalesQuery/bootstrap.css' %}">
 
-    {% endblock %}
     {% block body%}
         <div class="container">
         {% if locations %}
             <h3 class="mt-5 mx-auto text-center">View budget by location</h3>
             <div class="list-group mt-5 mx-auto" style="width: 20em;">
                 {% for location in locations %}
-                    <a href="#"><button type="button" class="list-group-item list-group-item-action">{{ location.name }}, {{ location.region }}</button>
+                    <a href="#" style="text-decoration: none;"><button type="button" class="list-group-item list-group-item-action">{{ location.name }}, {{ location.region }}</button></a>
                 {% endfor %}
             </div>
         {% endif %}

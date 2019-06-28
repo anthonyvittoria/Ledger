@@ -1,23 +1,8 @@
 {% extends 'SalesQuery/base.html' %} {% load static %}{% load humanize %}
-<!DOCTYPE html>
-<html lang="en">
-    {% block head %}
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <title>SalesQuery Demo</title>
-        <link rel="stylesheet" href="{% static 'SalesQuery/main.css' %}">
-        
-        <!-- Core Bootstrap CSS -->
-        <link rel="stylesheet" href="{% static 'SalesQuery/bootstrap.css' %}">
-        <link rel="shortcut icon" href="{% static 'SalesQuery/img/favicon.ico' %}" type="image/vnd.microsoft.icon" />
 
-    {% endblock %}
     {% block body%}
         <div class="container">
-        {% comment %} <div style="text-align: center; margin-top: 6em; margin-bottom: 2em;">
-            <h1>SalesQuery</h1>
-            <p>Super catchy slogan. Probably all buzzwords.</p>
-        </div> {% endcomment %}
+
         <h3 class="mt-5 mx-auto text-center">All sales records</h3>
         {% if latest_sales_list %}
         <table class="table table-hover mt-5 text-left">
