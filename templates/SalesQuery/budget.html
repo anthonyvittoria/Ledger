@@ -2,11 +2,12 @@
 
     {% block body%}
         <div class="container">
-        <h3 class="mt-5 mx-auto text-center">{{ budget.location }} {{ budget.month }}</h3>
-        {% if latest_sales_list %}
-        <table class="table table-hover mt-5 text-left">
+        <h3 class="mt-5 mx-auto text-center">{{ location }} {{ year }} Budget</h3>
+        {% if budget_objects %}
+        <table class="table table-hover table-bordered mt-5 text-left">
             <thead class="thead-light">
                 <th scope="col">Customer</th>
+                <th scope="col">Sector</th>
                 <th scope="col">Jan</th>
                 <th scope="col">Feb</th>
                 <th scope="col">Mar</th>
@@ -25,22 +26,53 @@
                 <th scope="col">Q4</th>
             </thead>
             <tbody>
-                {% for sale in latest_sales_list %}
+                {% for budget in budget_objects %}
                 <tr>
-                    <th scope="row">{{ sale.id }}</th>
-                    <td>{{ sale.location }}</td>
-                    <td>{{ sale.customer }}</td>
-                    <td>{{ sale.location.region }}</td>                    
-                    <td>{{ sale.customer.sector }}</td>
-                    <td>{{ sale.capability }}</td>
-                    <td>${{ sale.amount|intcomma }}</td>
-                    <td>{{ sale.date|date:"M Y" }}</td>
+                    <td>{{ budget.customer }}</td>
+                    <td>{{ budget.customer.sector }}</td>
+                    <td>{{ budget.jan }}</td>
+                    <td>{{ budget.feb }}</td>
+                    <td>{{ budget.mar }}</td>
+                    <td class="font-weight-bold">N/A</td>
+                    <td>{{ budget.apr }}</td>
+                    <td>{{ budget.may }}</td>
+                    <td>{{ budget.jun }}</td>
+                    <td class="font-weight-bold">N/A</td>
+                    <td>{{ budget.jul }}</td>
+                    <td>{{ budget.aug }}</td>
+                    <td>{{ budget.sep }}</td>
+                    <td class="font-weight-bold">N/A</td>
+                    <td>{{ budget.oct }}</td>
+                    <td>{{ budget.nov }}</td>
+                    <td>{{ budget.dec }}</td>
+                    <td class="font-weight-bold">N/A</td>
                 </tr>
                 {% endfor %}
+                <tr>
+                    <td>Total:</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
             </tbody>
         </table>
         {% else %}
-            <p class="mt-5 mx-auto text-center">No sales records are available.</p>
+            <p class="mt-5 mx-auto text-center">Error displaying budget records for {{ location }} {{ year }}.</p>
+            <p class="mt-5 mx-auto text-center">:(</p>
         {% endif %}
         </div>
 

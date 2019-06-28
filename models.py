@@ -61,7 +61,7 @@ class Budget(models.Model):
     year = models.IntegerField(default=None)
 
     def __str__(self):
-        return str(self.location) + ", " + str(self.customer)
+        return str(self.location) + ", " + str(self.customer) + " " + str(self.year)
 
 class Sale(models.Model):
     id = models.AutoField(primary_key=True)
