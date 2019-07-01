@@ -6,9 +6,7 @@ class LocationAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}
 
 class BudgetAdmin(admin.ModelAdmin):
-    list_display = ('location', 'customer', 'jan', 'feb', 'mar', 'apr',
-                    'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec',
-                    'year')
+    list_display = ('location', 'customer', 'year')
     exclude = ['q1', 'q2', 'q3', 'q4']
 
 admin.site.register(Budget, BudgetAdmin)
