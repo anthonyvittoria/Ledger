@@ -19,12 +19,35 @@ def choose_budget(request):
     return render(request, 'SalesQuery/choosebudget.html', context)
 
 def index(request):
-    latest_sales_list = Sale.objects.order_by('id')[:25]
+
+    customers, locations = [], []
+
+    for sale in Sale.objects.all():
+        if sale.location not in locations:
+            locations.append(sale.location)
+        if sale.customer not in customers:
+            customers.append(sale.customer)
     
     context = {
-        'latest_sales_list': latest_sales_list,
+        'locations': locations,
+        'customers': customers,
     }
     return render(request, 'SalesQuery/index.html', context)
+
+def choose_sale(request):
+    customers, locations = [], []
+
+    for sale in Sale.objects.all():
+        if sale.location not in locations:
+            locations.append(sale.location)
+        if sale.customer not in customers:
+            customers.append(sale.customer)
+    
+    context = {
+        'locations': locations,
+        'customers': customers,
+    }
+    return render(request, 'SalesQuery/choosesale.html', context)
 
 def budget(request, location_name_slug):
     budget_objects = Budget.objects.filter(location__slug=location_name_slug)

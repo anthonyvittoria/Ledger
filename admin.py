@@ -9,12 +9,15 @@ class BudgetAdmin(admin.ModelAdmin):
     list_display = ('location', 'customer', 'year')
     exclude = ['q1', 'q2', 'q3', 'q4']
 
+class SaleAdmin(admin.ModelAdmin):
+    list_display = ('location', 'customer', 'date')
+
 admin.site.register(Budget, BudgetAdmin)
 admin.site.register(Capability)
 admin.site.register(Customer)
 admin.site.register(Location, LocationAdmin)
 admin.site.register(Region)
-admin.site.register(Sale)
+admin.site.register(Sale, SaleAdmin)
 admin.site.register(Sector)
 
 admin.site.site_header = 'SalesQuery Administration'
