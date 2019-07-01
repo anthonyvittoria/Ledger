@@ -5,7 +5,13 @@ from .models import Budget, Capability, Customer, Location, Region, Sale, Sector
 class LocationAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}
 
-admin.site.register(Budget)
+class BudgetAdmin(admin.ModelAdmin):
+    list_display = ('location', 'customer', 'jan', 'feb', 'mar', 'apr',
+                    'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec',
+                    'year')
+    exclude = ['q1', 'q2', 'q3', 'q4']
+
+admin.site.register(Budget, BudgetAdmin)
 admin.site.register(Capability)
 admin.site.register(Customer)
 admin.site.register(Location, LocationAdmin)
