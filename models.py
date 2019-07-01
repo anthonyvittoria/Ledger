@@ -38,6 +38,11 @@ class Customer(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=45)
     sector = models.ForeignKey(Sector, on_delete=models.PROTECT)
+    slug = models.SlugField(unique=True, default="")
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Customer, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.name

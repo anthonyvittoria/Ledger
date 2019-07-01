@@ -5,6 +5,9 @@ from .models import Budget, Capability, Customer, Location, Region, Sale, Sector
 class LocationAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}
 
+class CustomerAdmin(admin.ModelAdmin):
+    prepopulated_fields = {'slug': ('name',)}
+
 class BudgetAdmin(admin.ModelAdmin):
     list_display = ('location', 'customer', 'year')
     exclude = ['q1', 'q2', 'q3', 'q4']
