@@ -59,6 +59,17 @@ class Budget(models.Model):
     nov = models.IntegerField(default=None)
     dec = models.IntegerField(default=None)
     year = models.IntegerField(default=None)
+    q1 = models.IntegerField(default=None)
+    q2 = models.IntegerField(default=None)
+    q3 = models.IntegerField(default=None)
+    q4 = models.IntegerField(default=None)
+
+    def save(self, *args, **kwargs):
+        self.q1 = (self.jan + self.feb + self.mar)
+        self.q2 = (self.apr + self.may + self.jun)
+        self.q3 = (self.jul + self.aug + self.sep)
+        self.q4 = (self.oct + self.nov + self.dec)
+        super(Budget, self).save(*args, **kwargs)
 
     def __str__(self):
         return str(self.location) + ", " + str(self.customer) + " " + str(self.year)
