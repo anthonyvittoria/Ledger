@@ -3,6 +3,9 @@ from django.template import loader
 
 from .models import Budget, Sale, Location
 
+def index(request):
+    return render(request, 'SalesQuery/index.html')
+
 def choose_budget(request):
 
     budget_locations = []
@@ -17,37 +20,6 @@ def choose_budget(request):
         'locations': locations,
     }
     return render(request, 'SalesQuery/choosebudget.html', context)
-
-def index(request):
-
-    customers, locations = [], []
-
-    for sale in Sale.objects.all():
-        if sale.location not in locations:
-            locations.append(sale.location)
-        if sale.customer not in customers:
-            customers.append(sale.customer)
-    
-    context = {
-        'locations': locations,
-        'customers': customers,
-    }
-    return render(request, 'SalesQuery/index.html', context)
-
-def choose_sale(request):
-    customers, locations = [], []
-
-    for sale in Sale.objects.all():
-        if sale.location not in locations:
-            locations.append(sale.location)
-        if sale.customer not in customers:
-            customers.append(sale.customer)
-    
-    context = {
-        'locations': locations,
-        'customers': customers,
-    }
-    return render(request, 'SalesQuery/choosesale.html', context)
 
 def budget(request, location_name_slug):
     budget_objects = Budget.objects.filter(location__slug=location_name_slug)
@@ -89,8 +61,8 @@ def budget(request, location_name_slug):
         q3_total += budget.q3
         q4_total += budget.q4
         budget_total += (budget.q1 + budget.q2 + budget.q3 + budget.q4)
-
-    context = {
+    
+        context = {
         'budget_objects': budget_objects,
         'location': location,
         'year': year,
@@ -113,3 +85,37 @@ def budget(request, location_name_slug):
         'budget_total': budget_total,
     }
     return render(request, 'SalesQuery/budget.html', context)
+
+
+def choose_sale(request):
+    customers, locations = [], []
+
+    for sale in Sale.objects.all():
+        if sale.location not in locations:
+            locations.append(sale.location)
+        if sale.customer not in customers:
+            customers.append(sale.customer)
+    
+    context = {
+        'locations': locations,
+        'customers': customers,
+    }
+    return render(request, 'SalesQuery/choosesale.html', context)
+
+def sale_by_location(request, location_name_slug):
+    sales = Sale.objects.filter(location__slug=location_name_slug)
+    location = sales[0].location.name
+    context = {
+        'sales': sales,
+        'location': location,
+    }
+    return render(request, 'SalesQuery/sale_by_location.html', context)
+
+def sale_by_customer(request, customer_name_slug):
+    sales = Sale.objects.filter(customer__slug=customer_name_slug)
+    customer = sales[0].customer.name
+    context = {
+        'sales': sales,
+        'customer': customer,
+    }
+    return render(request, 'SalesQuery/sale_by_customer.html', context)

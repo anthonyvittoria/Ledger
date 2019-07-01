@@ -5,7 +5,7 @@
         {% if locations %}
             <div class="list-group mt-5 mx-auto" style="width: 20em;">
                 {% for location in locations %}
-                    <a href="#" style="text-decoration: none;"><button type="button" class="list-group-item list-group-item-action my-1">{{ location }}</button></a>
+                    <a href="{% url 'sale_by_location' location.slug %}" style="text-decoration: none;"><button type="button" class="list-group-item list-group-item-action my-1">{{ location }}</button></a>
                 {% endfor %}
             </div>
         {% else %}
@@ -15,7 +15,7 @@
         {% if customers %}
             <div class="list-group mt-5 mx-auto" style="width: 20em;">
                 {% for customer in customers %}
-                    <a href="#" style="text-decoration: none;"><button type="button" class="list-group-item list-group-item-action my-1">{{ customer }}</button></a>
+                    <a href="{% url 'sale_by_customer' customer.slug %}" style="text-decoration: none;"><button type="button" class="list-group-item list-group-item-action my-1">{{ customer }}</button></a>
                 {% endfor %}
             </div>
         {% else %}
