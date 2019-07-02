@@ -8,7 +8,7 @@
         <thead class="thead-light">
             <tr>
                 <th scope="col">Location</th>
-                <th scope="col">Sector</th>
+                <!-- <th scope="col">Sector</th> -->
                 <th scope="col">Capability</th>
                 <th scope="col">Amount</th>
                 <th scope="col">Month</th>
@@ -18,7 +18,7 @@
     {% for sale in sales %}
             <tr>
                 <td>{{ sale.location.name }}</td>
-                <td>{{ sale.customer.sector }}</td>
+                <!-- <td>{{ sale.customer.sector }}</td> -->
                 <td>{{ sale.capability }}</td>
                 <td>$ {{ sale.amount|intcomma }}</td>
                 <td>{{ sale.date|date:"M Y" }}</td>
