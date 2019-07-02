@@ -13,7 +13,13 @@ class BudgetAdmin(admin.ModelAdmin):
     exclude = ['q1', 'q2', 'q3', 'q4']
 
 class SaleAdmin(admin.ModelAdmin):
-    list_display = ('location', 'customer', 'date')
+    list_display = ('location', 'customer', 'format_date')
+
+    def format_date(self, obj):
+        return obj.date.strftime('%b, %Y')
+
+    format_date.admin_order_field = 'date'
+    format_date.short_description = 'Date'
 
 admin.site.register(Budget, BudgetAdmin)
 admin.site.register(Capability)
