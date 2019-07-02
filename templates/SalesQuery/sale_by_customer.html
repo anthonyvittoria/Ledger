@@ -18,7 +18,7 @@
             <tr>
                 <td>{{ sale.location.name }}</td>
                 <td>{{ sale.capability }}</td>
-                <td>$ {{ sale.amount|intcomma }}</td>
+                <td>${{ sale.amount|intcomma }}</td>
                 <td>{{ sale.date|date:"M Y" }}</td>
             </tr>
     {% endfor %}

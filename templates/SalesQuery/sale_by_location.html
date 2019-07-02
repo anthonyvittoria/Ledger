@@ -20,7 +20,7 @@
                 <td>{{ sale.customer }}</td>
                 <td>{{ sale.customer.sector }}</td>
                 <td>{{ sale.capability }}</td>
-                <td>$ {{ sale.amount|intcomma }}</td>
+                <td>${{ sale.amount|intcomma }}</td>
                 <td>{{ sale.date|date:"M Y" }}</td>
             </tr>
     {% endfor %}
