@@ -108,10 +108,32 @@ def choose_sale(request):
             locations.append(sale.location)
         if sale.customer not in customers:
             customers.append(sale.customer)
+
+    if len(locations) % 3 == 0:
+        rows_l = int(len(locations) / 3)
+    else:
+        rows_l = int(len(locations) / 3) + 1
     
+    rows_locations = []
+
+    for i in range(rows_l):
+        rows_locations.append(0)
+    
+    if len(customers) % 3 == 0:
+        rows_c = int(len(customers) / 3)
+    else:
+        rows_c = int(len(customers) / 3) + 1
+
+    rows_customers = []
+
+    for i in range(rows_c):
+        rows_customers.append(0)
+
     context = {
         'locations': locations,
         'customers': customers,
+        'rows_locations': rows_locations,
+        'rows_customers': rows_customers,
     }
     return render(request, 'SalesQuery/choose_sale.html', context)
 

@@ -1,22 +1,40 @@
 {% extends 'SalesQuery/base_sale.html' %} {% load static %}{% load humanize %}
 
     {% block body%}
+
         <h3 class="mt-5 mx-auto text-center">View sales by location</h3>
         {% if locations %}
-            <div class="list-group mt-5 mx-auto" style="width: 20em;">
+            <div class="container mt-5">
+                <div class="row">
                 {% for location in locations %}
-                    <a href="{% url 'sale_by_location' location.slug %}" style="text-decoration: none;"><button type="button" class="list-group-item list-group-item-action my-1">{{ location }}</button></a>
-                {% endfor %}
+                <div class="col-lg-3 col-sm-6 col-xs-12">
+                        <a href="{% url 'sale_by_location' location.slug %}" style="text-decoration: none;"><button type="button" class="list-group-item list-group-item-action my-1">{{ location }}</button></a>
+                </div>
+                {% if forloop.counter|divisibleby:4 %}
+                </div>
+                <div class="row">
+                {% endif %}
+                    {% endfor %}
+                </div>
             </div>
         {% else %}
             <p class="mt-5 mx-auto text-center">No sales records are available.</p>
         {% endif %}
+
         <h3 class="mt-5 mx-auto text-center"> View sales by customer</h3>
         {% if customers %}
-            <div class="list-group mt-5 mx-auto" style="width: 20em;">
+        <div class="container mt-5">
+                <div class="row">
                 {% for customer in customers %}
-                    <a href="{% url 'sale_by_customer' customer.slug %}" style="text-decoration: none;"><button type="button" class="list-group-item list-group-item-action my-1">{{ customer }}</button></a>
-                {% endfor %}
+                <div class="col-lg-3 col-sm-6 col-xs-12">
+                        <a href="{% url 'sale_by_customer' customer.slug %}" style="text-decoration: none;"><button type="button" class="list-group-item list-group-item-action my-1">{{ customer }}</button></a>
+                </div>
+                {% if forloop.counter|divisibleby:4 %}
+                </div>
+                <div class="row">
+                {% endif %}
+                    {% endfor %}
+                </div>
             </div>
         {% else %}
             <p class="mt-5 mx-auto text-center">No sales records are available.</p>
