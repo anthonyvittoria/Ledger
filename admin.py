@@ -23,7 +23,7 @@ class SaleAdmin(admin.ModelAdmin):
 
 admin.site.register(Budget, BudgetAdmin)
 admin.site.register(Capability)
-admin.site.register(Customer)
+admin.site.register(Customer, CustomerAdmin)
 admin.site.register(Location, LocationAdmin)
 admin.site.register(Region)
 admin.site.register(Sale, SaleAdmin)
