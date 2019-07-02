@@ -6,12 +6,12 @@ from .models import Budget, Sale, Location
 def index(request):
     return render(request, 'SalesQuery/index.html')
 
-def choose_budget(request):
+def choose_budget_location(request):
 
     budget_locations = []
 
     for budget in Budget.objects.all():
-        if budget not in budget_locations:
+        if budget.location not in budget_locations:
             budget_locations.append(budget.location)
 
     locations = Location.objects.filter(name__in=budget_locations)
@@ -19,12 +19,25 @@ def choose_budget(request):
     context = {
         'locations': locations,
     }
-    return render(request, 'SalesQuery/choosebudget.html', context)
+    return render(request, 'SalesQuery/choose_budget_location.html', context)
 
-def budget(request, location_name_slug):
-    budget_objects = Budget.objects.filter(location__slug=location_name_slug)
+def choose_budget_year(request, location_name_slug):
+    
+    years = []
+
+    for budget in Budget.objects.filter(location__slug=location_name_slug):
+        if budget.year not in years:
+            years.append(budget.year)
+
+    context = {
+        'years': years,
+        'location_name_slug': location_name_slug,
+    }
+    return render(request, 'SalesQuery/choose_budget_year.html', context)
+
+def budget(request, location_name_slug, year):
+    budget_objects = Budget.objects.filter(location__slug=location_name_slug, year=year)
     location = budget_objects[0].location
-    year = budget_objects[0].year
     jan_total = 0
     feb_total = 0
     mar_total = 0
@@ -100,7 +113,7 @@ def choose_sale(request):
         'locations': locations,
         'customers': customers,
     }
-    return render(request, 'SalesQuery/choosesale.html', context)
+    return render(request, 'SalesQuery/choose_sale.html', context)
 
 def sale_by_location(request, location_name_slug):
     sales = Sale.objects.filter(location__slug=location_name_slug)
