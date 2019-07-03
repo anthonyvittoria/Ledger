@@ -4,7 +4,7 @@
         <div class="container">
         {% if years %}
             <h3 class="mt-5 mx-auto text-center">Select year</h3>
-            <div class="list-group mt-5 mx-auto" style="width: 20em;">
+            <div class="list-group my-5 mx-auto" style="width: 20em;">
                 {% for year in years %}
                     <a href="{% url 'budget' location_name_slug year %}" style="text-decoration: none;"><button type="button" class="list-group-item list-group-item-action my-1">{{ year }}</button></a>
                 {% endfor %}
