@@ -3,7 +3,7 @@
     {% block body%}
         <div class="container">
         {% if locations %}
-            <h3 class="mt-5 mx-auto text-center">View budget by location</h3>
+            <h3 class="mt-5 mx-auto text-center">Select location</h3>
             <div class="list-group my-5 mx-auto" style="width: 20em;">
                 {% for location in locations %}
                     <a href="{% url 'choose_budget_year' location.slug %}" style="text-decoration: none;"><button type="button" class="list-group-item list-group-item-action my-1">{{ location.name }}, {{ location.region }}</button></a>
