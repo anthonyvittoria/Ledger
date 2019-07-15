@@ -35,7 +35,6 @@ class Sector(models.Model):
         return self.name
 
 class Customer(models.Model):
-    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=45)
     sector = models.ForeignKey(Sector, on_delete=models.PROTECT)
     slug = models.SlugField(unique=True, default="")
@@ -48,7 +47,6 @@ class Customer(models.Model):
         return self.name
 
 class Budget(models.Model):
-    id = models.AutoField(primary_key=True)
     location = models.ForeignKey(Location, on_delete=models.PROTECT)
     customer = models.ForeignKey(Customer, on_delete=models.PROTECT)
     jan = models.IntegerField(default=None)
@@ -80,7 +78,6 @@ class Budget(models.Model):
         return str(self.location) + ", " + str(self.customer) + " " + str(self.year)
 
 class Sale(models.Model):
-    id = models.AutoField(primary_key=True)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     location = models.ForeignKey(Location, on_delete=models.PROTECT)
     customer = models.ForeignKey(Customer, on_delete=models.PROTECT)
