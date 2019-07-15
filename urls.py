@@ -9,5 +9,5 @@ urlpatterns = [
         path('sale/customer/<slug:customer_name_slug>', views.sale_by_customer, name='sale_by_customer'),
         path('budget/plant-customer/', views.cl_budget_plant_customer, name='cl_budget_plant_customer'),
         path('budget/plant-customer/<slug:location_name_slug>', views.cy_budget_plant_customer, name='cy_budget_plant_customer'),
-        path('budget/<slug:location_name_slug>/<int:year>', views.budget_plant_customer, name='budget_plant_customer'),
+        path('budget/plant-customer/<slug:location_name_slug>/<int:year>', views.budget_plant_customer, name='budget_plant_customer'),
 ]

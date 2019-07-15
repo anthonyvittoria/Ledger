@@ -10,14 +10,13 @@ def cl_budget_plant_customer(request): # Choose location for budget by plant by 
 
     budget_locations = []
 
+    # create unique list of plant locations that have budgets recorded for them
     for budget in Budget.objects.all():
         if budget.location not in budget_locations:
             budget_locations.append(budget.location)
 
-    locations = Location.objects.filter(name__in=budget_locations)
-
     context = {
-        'locations': locations,
+        'locations': budget_locations,
     }
     return render(request, 'SalesQuery/cl_budget_plant_customer.html', context)
 
