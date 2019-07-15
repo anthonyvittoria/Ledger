@@ -1,1 +1,3 @@
 static/SalesQuery/bootstrap.bundle.js
+*.pyc
+*.pyo
