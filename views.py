@@ -6,7 +6,7 @@ from .models import Budget, Sale, Location
 def index(request):
     return render(request, 'SalesQuery/index.html')
 
-def choose_budget_location(request):
+def cl_budget_plant_customer(request): # Choose location for budget by plant by customer
 
     budget_locations = []
 
@@ -19,9 +19,9 @@ def choose_budget_location(request):
     context = {
         'locations': locations,
     }
-    return render(request, 'SalesQuery/choose_budget_location.html', context)
+    return render(request, 'SalesQuery/cl_budget_plant_customer.html', context)
 
-def choose_budget_year(request, location_name_slug):
+def cy_budget_plant_customer(request, location_name_slug): # Choose year for budget by plant by customer
     
     years = []
 
@@ -33,9 +33,9 @@ def choose_budget_year(request, location_name_slug):
         'years': years,
         'location_name_slug': location_name_slug,
     }
-    return render(request, 'SalesQuery/choose_budget_year.html', context)
+    return render(request, 'SalesQuery/cy_budget_plant_customer.html', context)
 
-def budget(request, location_name_slug, year):
+def budget_plant_customer(request, location_name_slug, year):
     budget_objects = Budget.objects.filter(location__slug=location_name_slug, year=year)
     location = budget_objects[0].location
     jan_total = 0
@@ -97,7 +97,7 @@ def budget(request, location_name_slug, year):
         'q4_total': q4_total,
         'budget_total': budget_total,
     }
-    return render(request, 'SalesQuery/budget.html', context)
+    return render(request, 'SalesQuery/budget_plant_customer.html', context)
 
 
 def choose_sale(request):
