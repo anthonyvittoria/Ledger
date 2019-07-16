@@ -1,9 +1,0 @@
-{% extends 'SalesQuery/base.html' %} {% load static %}
-{% block body %}
-<div class="container mx-auto text-center mt-5">
-    <h3 class="mb-5">Select budget type</h3>
-    {% for type in budget_types %}
-    <button type="button" class="btn btn-outline-primary">{{ type }}</button>
-    {% endfor %}
-</div>
-{% endblock %}
