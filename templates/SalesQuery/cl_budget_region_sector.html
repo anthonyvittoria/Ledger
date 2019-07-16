@@ -1,0 +1,13 @@
+{% extends 'SalesQuery/base.html' %} {% load static %}
+
+{% block body %}
+<div class="container mt-5 mx-auto text-center">
+    <h3>Select Region</h3>
+    <div class="list-group mx-auto mt-5" style="width: 20em;">
+        {% for region in regions %}
+                    <a href="{% url 'cy_budget_region_sector' region.slug %}" style="text-decoration: none;"><button type="button" class="list-group-item list-group-item-action my-1">{{ region }}</button></a>
+        {% endfor %}
+
+    </div>
+</div>
+{% endblock %}

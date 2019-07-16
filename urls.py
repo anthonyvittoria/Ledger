@@ -23,4 +23,9 @@ urlpatterns = [
         path('budget/region-customer/', views.cl_budget_region_customer, name='cl_budget_region_customer'),
         path('budget/region-customer/<slug:region_name_slug>', views.cy_budget_region_customer, name='cy_budget_region_customer'),
         path('budget/region-customer/<slug:region_name_slug>/<int:year>', views.budget_region_customer, name='budget_region_customer'),
+
+        ### Budget by Region by Sector ###
+        path('budget/region-sector/', views.cl_budget_region_sector, name='cl_budget_region_sector'),
+        path('budget/region-sector/<slug:region_name_slug>', views.cy_budget_region_sector, name='cy_budget_region_sector'),
+        path('budget/region-sector/<slug:region_name_slug>/<int:year>', views.budget_region_sector, name='budget_region_sector'),
 ]

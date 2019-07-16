@@ -405,6 +405,7 @@ def cy_budget_region_customer(request, region_name_slug): # Choose year
     return render(request, 'SalesQuery/cy_budget_region_customer.html', context)
 
 def budget_region_customer(request, region_name_slug, year):
+
     
     # list of budgets corresponding to this region and year
     budget_objects = Budget.objects.filter(location__region__slug=region_name_slug, year=year)
@@ -508,3 +509,139 @@ def budget_region_customer(request, region_name_slug, year):
     'budget_total': budget_total,
     }
     return render(request, 'SalesQuery/budget_region_customer.html', context)
+
+################################################
+########## BUDGET BY REGION BY SECTOR ##########
+################################################
+
+def cl_budget_region_sector(request): # Choose location
+
+    regions = []
+    for budget in Budget.objects.all():
+        if budget.location.region not in regions:
+            regions.append(budget.location.region)
+    
+    context = {
+        'regions': regions,
+    }
+    return render(request, 'SalesQuery/cl_budget_region_sector.html', context)
+
+def cy_budget_region_sector(request, region_name_slug): # Choose year
+
+    years = []
+
+    for budget in Budget.objects.filter(location__region__slug=region_name_slug):
+        if budget.year not in years:
+            years.append(budget.year)
+    
+    context = {
+        'years': years,
+        'region_name_slug': region_name_slug,
+    }
+    return render(request, 'SalesQuery/cy_budget_region_sector.html', context)
+
+def budget_region_sector(request, region_name_slug, year): # Budget table view
+
+    # list of budgets corresponding to this plant and year
+    budget_objects = Budget.objects.filter(location__region__slug=region_name_slug, year=year)
+    
+    sector_data = {} # create dictionary of data for each sector
+    for budget in budget_objects:
+        if budget.customer.sector not in sector_data.keys():
+            sector_data[budget.customer.sector] = {
+                'jan': budget.jan,
+                'feb': budget.feb,
+                'mar': budget.mar,
+                'apr': budget.apr,
+                'may': budget.may,
+                'jun': budget.jun,
+                'jul': budget.jul,
+                'aug': budget.aug,
+                'sep': budget.sep,
+                'oct': budget.oct,
+                'nov': budget.nov,
+                'dec': budget.dec,
+                'q1': budget.q1,
+                'q2': budget.q2,
+                'q3': budget.q3,
+                'q4': budget.q4,
+            }
+        else:
+            sector_data[budget.customer.sector]['jan'] += budget.jan
+            sector_data[budget.customer.sector]['feb'] += budget.feb
+            sector_data[budget.customer.sector]['mar'] += budget.mar
+            sector_data[budget.customer.sector]['apr'] += budget.apr
+            sector_data[budget.customer.sector]['may'] += budget.may
+            sector_data[budget.customer.sector]['jun'] += budget.jun
+            sector_data[budget.customer.sector]['jul'] += budget.jul
+            sector_data[budget.customer.sector]['aug'] += budget.aug
+            sector_data[budget.customer.sector]['sep'] += budget.sep
+            sector_data[budget.customer.sector]['oct'] += budget.oct
+            sector_data[budget.customer.sector]['nov'] += budget.nov
+            sector_data[budget.customer.sector]['dec'] += budget.dec
+            sector_data[budget.customer.sector]['q1'] += budget.q1
+            sector_data[budget.customer.sector]['q2'] += budget.q2
+            sector_data[budget.customer.sector]['q3'] += budget.q3
+            sector_data[budget.customer.sector]['q4'] += budget.q4
+    
+    location = budget_objects[0].location
+    jan_total = 0
+    feb_total = 0
+    mar_total = 0
+    apr_total = 0
+    may_total = 0
+    jun_total = 0
+    jul_total = 0
+    aug_total = 0
+    sep_total = 0
+    oct_total = 0
+    nov_total = 0
+    dec_total = 0
+    q1_total = 0
+    q2_total = 0
+    q3_total = 0
+    q4_total = 0
+    budget_total = 0
+
+    for sector in sector_data:
+        jan_total += sector_data[sector]['jan']
+        feb_total += sector_data[sector]['feb']
+        mar_total += sector_data[sector]['mar']
+        apr_total += sector_data[sector]['apr']
+        may_total += sector_data[sector]['may']
+        jun_total += sector_data[sector]['jun']
+        jul_total += sector_data[sector]['jul']
+        aug_total += sector_data[sector]['aug']
+        sep_total += sector_data[sector]['sep']
+        oct_total += sector_data[sector]['oct']
+        nov_total += sector_data[sector]['nov']
+        dec_total += sector_data[sector]['dec']
+        q1_total += sector_data[sector]['q1']
+        q2_total += sector_data[sector]['q2']
+        q3_total += sector_data[sector]['q3']
+        q4_total += sector_data[sector]['q4']
+        budget_total += (sector_data[sector]['q1'] + sector_data[sector]['q2'] + sector_data[sector]['q3'] + sector_data[sector]['q4'])
+    
+    context = {
+    'sector_data': sector_data,
+    'region': budget_objects[0].location.region,
+    'year': year,
+    'jan_total': jan_total,
+    'feb_total': feb_total,
+    'mar_total': mar_total,
+    'apr_total': apr_total,
+    'may_total': may_total,
+    'jun_total': jun_total,
+    'jul_total': jul_total,
+    'aug_total': aug_total,
+    'sep_total': sep_total,
+    'oct_total': oct_total,
+    'nov_total': nov_total,
+    'dec_total': dec_total,
+    'q1_total': q1_total,
+    'q2_total': q2_total,
+    'q3_total': q3_total,
+    'q4_total': q4_total,
+    'budget_total': budget_total,
+    }
+    return render(request, 'SalesQuery/budget_region_sector.html', context)
