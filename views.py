@@ -374,3 +374,137 @@ def budget_region_plant(request, region_name_slug, year): # Budget table view
         'budget_total': budget_total,
     }
     return render(request, 'SalesQuery/budget_region_plant.html', context)
+
+##################################################
+########## BUDGET BY REGION BY CUSTOMER ##########
+##################################################
+
+def cl_budget_region_customer(request): # Choose location
+    regions = []
+    for budget in Budget.objects.all():
+        if budget.location.region not in regions:
+            regions.append(budget.location.region)
+    
+    context = {
+        'regions': regions,
+    }
+    return render(request, 'SalesQuery/cl_budget_region_customer.html', context)
+
+def cy_budget_region_customer(request, region_name_slug): # Choose year
+
+    years = []
+
+    for budget in Budget.objects.filter(location__region__slug=region_name_slug):
+        if budget.year not in years:
+            years.append(budget.year)
+    
+    context = {
+        'years': years,
+        'region_name_slug': region_name_slug,
+    }
+    return render(request, 'SalesQuery/cy_budget_region_customer.html', context)
+
+def budget_region_customer(request, region_name_slug, year):
+    
+    # list of budgets corresponding to this region and year
+    budget_objects = Budget.objects.filter(location__region__slug=region_name_slug, year=year)
+
+    customer_data = {} # create dictionary of data for each customer
+    for budget in budget_objects:
+        if budget.customer not in customer_data.keys():
+            customer_data[budget.customer] = {
+                'jan': budget.jan,
+                'feb': budget.feb,
+                'mar': budget.mar,
+                'apr': budget.apr,
+                'may': budget.may,
+                'jun': budget.jun,
+                'jul': budget.jul,
+                'aug': budget.aug,
+                'sep': budget.sep,
+                'oct': budget.oct,
+                'nov': budget.nov,
+                'dec': budget.dec,
+                'q1': budget.q1,
+                'q2': budget.q2,
+                'q3': budget.q3,
+                'q4': budget.q4,
+            }
+        else:
+            customer_data[budget.customer]['jan'] += budget.jan
+            customer_data[budget.customer]['feb'] += budget.feb
+            customer_data[budget.customer]['mar'] += budget.mar
+            customer_data[budget.customer]['apr'] += budget.apr
+            customer_data[budget.customer]['may'] += budget.may
+            customer_data[budget.customer]['jun'] += budget.jun
+            customer_data[budget.customer]['jul'] += budget.jul
+            customer_data[budget.customer]['aug'] += budget.aug
+            customer_data[budget.customer]['sep'] += budget.sep
+            customer_data[budget.customer]['oct'] += budget.oct
+            customer_data[budget.customer]['nov'] += budget.nov
+            customer_data[budget.customer]['dec'] += budget.dec
+            customer_data[budget.customer]['q1'] += budget.q1
+            customer_data[budget.customer]['q2'] += budget.q2
+            customer_data[budget.customer]['q3'] += budget.q3
+            customer_data[budget.customer]['q4'] += budget.q4
+
+    jan_total = 0
+    feb_total = 0
+    mar_total = 0
+    apr_total = 0
+    may_total = 0
+    jun_total = 0
+    jul_total = 0
+    aug_total = 0
+    sep_total = 0
+    oct_total = 0
+    nov_total = 0
+    dec_total = 0
+    q1_total = 0
+    q2_total = 0
+    q3_total = 0
+    q4_total = 0
+    budget_total = 0
+
+    for customer in customer_data:
+        jan_total += customer_data[customer]['jan']
+        feb_total += customer_data[customer]['feb']
+        mar_total += customer_data[customer]['mar']
+        apr_total += customer_data[customer]['apr']
+        may_total += customer_data[customer]['may']
+        jun_total += customer_data[customer]['jun']
+        jul_total += customer_data[customer]['jul']
+        aug_total += customer_data[customer]['aug']
+        sep_total += customer_data[customer]['sep']
+        oct_total += customer_data[customer]['oct']
+        nov_total += customer_data[customer]['nov']
+        dec_total += customer_data[customer]['dec']
+        q1_total += customer_data[customer]['q1']
+        q2_total += customer_data[customer]['q2']
+        q3_total += customer_data[customer]['q3']
+        q4_total += customer_data[customer]['q4']
+        budget_total += (customer_data[customer]['q1'] + customer_data[customer]['q2'] + customer_data[customer]['q3'] + customer_data[customer]['q4'])
+
+    context = {
+    'customer_data': customer_data,
+    'region': budget_objects[0].location.region,
+    'year': year,
+    'jan_total': jan_total,
+    'feb_total': feb_total,
+    'mar_total': mar_total,
+    'apr_total': apr_total,
+    'may_total': may_total,
+    'jun_total': jun_total,
+    'jul_total': jul_total,
+    'aug_total': aug_total,
+    'sep_total': sep_total,
+    'oct_total': oct_total,
+    'nov_total': nov_total,
+    'dec_total': dec_total,
+    'q1_total': q1_total,
+    'q2_total': q2_total,
+    'q3_total': q3_total,
+    'q4_total': q4_total,
+    'budget_total': budget_total,
+    }
+    return render(request, 'SalesQuery/budget_region_customer.html', context)
