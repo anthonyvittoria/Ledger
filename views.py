@@ -128,13 +128,47 @@ def budget_plant_customer(request, location_name_slug, year):
 
 def budget_plant_sector(request, location_name_slug, year):
 
+    # list of budgets corresponding to this plant and year
     budget_objects = Budget.objects.filter(location__slug=location_name_slug, year=year)
     
-    budget_sectors = []
-    # create unique list of sectors
+    sector_data = {} # create dictionary of data for each sector
     for budget in budget_objects:
-        if budget.customer.sector not in budget_sectors:
-            budget_sectors.append(budget.customer.sector)
+        if budget.customer.sector not in sector_data.keys():
+            sector_data[budget.customer.sector] = {
+                'jan': budget.jan,
+                'feb': budget.feb,
+                'mar': budget.mar,
+                'apr': budget.apr,
+                'may': budget.may,
+                'jun': budget.jun,
+                'jul': budget.jul,
+                'aug': budget.aug,
+                'sep': budget.sep,
+                'oct': budget.oct,
+                'nov': budget.nov,
+                'dec': budget.dec,
+                'q1': budget.q1,
+                'q2': budget.q2,
+                'q3': budget.q3,
+                'q4': budget.q4,
+            }
+        else:
+            sector_data[budget.customer.sector]['jan'] += budget.jan
+            sector_data[budget.customer.sector]['feb'] += budget.feb
+            sector_data[budget.customer.sector]['mar'] += budget.mar
+            sector_data[budget.customer.sector]['apr'] += budget.apr
+            sector_data[budget.customer.sector]['may'] += budget.may
+            sector_data[budget.customer.sector]['jun'] += budget.jun
+            sector_data[budget.customer.sector]['jul'] += budget.jul
+            sector_data[budget.customer.sector]['aug'] += budget.aug
+            sector_data[budget.customer.sector]['sep'] += budget.sep
+            sector_data[budget.customer.sector]['oct'] += budget.oct
+            sector_data[budget.customer.sector]['nov'] += budget.nov
+            sector_data[budget.customer.sector]['dec'] += budget.dec
+            sector_data[budget.customer.sector]['q1'] += budget.q1
+            sector_data[budget.customer.sector]['q2'] += budget.q2
+            sector_data[budget.customer.sector]['q3'] += budget.q3
+            sector_data[budget.customer.sector]['q4'] += budget.q4
 
     location = budget_objects[0].location
     jan_total = 0
@@ -153,30 +187,29 @@ def budget_plant_sector(request, location_name_slug, year):
     q2_total = 0
     q3_total = 0
     q4_total = 0
-    budget_total, cust_total = 0, 0
+    budget_total = 0
 
-    for budget in budget_objects:
-        jan_total += budget.jan
-        feb_total += budget.feb
-        mar_total += budget.mar
-        apr_total += budget.apr
-        may_total += budget.may
-        jun_total += budget.jun
-        jul_total += budget.jul
-        aug_total += budget.aug
-        sep_total += budget.sep
-        oct_total += budget.oct
-        nov_total += budget.nov
-        dec_total += budget.dec
-        q1_total += budget.q1
-        q2_total += budget.q2
-        q3_total += budget.q3
-        q4_total += budget.q4
-        budget_total += (budget.q1 + budget.q2 + budget.q3 + budget.q4)
+    for sector in sector_data:
+        jan_total += sector_data[sector]['jan']
+        feb_total += sector_data[sector]['feb']
+        mar_total += sector_data[sector]['mar']
+        apr_total += sector_data[sector]['apr']
+        may_total += sector_data[sector]['may']
+        jun_total += sector_data[sector]['jun']
+        jul_total += sector_data[sector]['jul']
+        aug_total += sector_data[sector]['aug']
+        sep_total += sector_data[sector]['sep']
+        oct_total += sector_data[sector]['oct']
+        nov_total += sector_data[sector]['nov']
+        dec_total += sector_data[sector]['dec']
+        q1_total += sector_data[sector]['q1']
+        q2_total += sector_data[sector]['q2']
+        q3_total += sector_data[sector]['q3']
+        q4_total += sector_data[sector]['q4']
+        budget_total += (sector_data[sector]['q1'] + sector_data[sector]['q2'] + sector_data[sector]['q3'] + sector_data[sector]['q4'])
     
     context = {
-    'budget_objects': budget_objects,
-    'budget_sectors': budget_sectors,
+    'sector_data': sector_data,
     'location': location,
     'year': year,
     'jan_total': jan_total,

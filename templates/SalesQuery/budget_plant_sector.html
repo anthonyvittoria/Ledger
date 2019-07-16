@@ -3,7 +3,7 @@
     {% block body%}
         <h3 class="mt-5 text-center">{{ location }} {{ year }} Budget</h3>
         
-        {% if budget_objects %}
+        {% if sector_data %}
         <table class="table table-hover table-bordered sortable my-5 text-left">
             <thead class="thead-light">
                 <tr>
@@ -28,26 +28,26 @@
                 </tr>
             </thead>
             <tbody>
-                {% for budget in budget_objects %}
+                {% for key, value in sector_data.items %}
                 <tr>
-                    <td title="{{ budget.customer.sector }}">{{ budget.customer.sector|truncatechars:10 }}</td>
-                    <td>{{ budget.jan }}</td>
-                    <td>{{ budget.feb }}</td>
-                    <td>{{ budget.mar }}</td>
-                    <td class="font-weight-bold">{{ budget.q1 }}</td>
-                    <td>{{ budget.apr }}</td>
-                    <td>{{ budget.may }}</td>
-                    <td>{{ budget.jun }}</td>
-                    <td class="font-weight-bold">{{ budget.q2 }}</td>
-                    <td>{{ budget.jul }}</td>
-                    <td>{{ budget.aug }}</td>
-                    <td>{{ budget.sep }}</td>
-                    <td class="font-weight-bold">{{ budget.q3 }}</td>
-                    <td>{{ budget.oct }}</td>
-                    <td>{{ budget.nov }}</td>
-                    <td>{{ budget.dec }}</td>
-                    <td class="font-weight-bold">{{ budget.q4 }}</td>
-                    <td class="font-weight-bold">{{ budget.q1|add:budget.q2|add:budget.q3|add:budget.q4 }}</td>
+                    <td title="{{ key }}">{{ key|truncatechars:10 }}</td>
+                    <td>{{ value.jan }}</td>
+                    <td>{{ value.feb }}</td>
+                    <td>{{ value.mar }}</td>
+                    <td class="font-weight-bold">{{ value.q1 }}</td>
+                    <td>{{ value.apr }}</td>
+                    <td>{{ value.may }}</td>
+                    <td>{{ value.jun }}</td>
+                    <td class="font-weight-bold">{{ value.q2 }}</td>
+                    <td>{{ value.jul }}</td>
+                    <td>{{ value.aug }}</td>
+                    <td>{{ value.sep }}</td>
+                    <td class="font-weight-bold">{{ value.q3 }}</td>
+                    <td>{{ value.oct }}</td>
+                    <td>{{ value.nov }}</td>
+                    <td>{{ value.dec }}</td>
+                    <td class="font-weight-bold">{{ value.q4 }}</td>
+                    <td class="font-weight-bold">{{ value.q1|add:value.q2|add:value.q3|add:value.q4 }}</td>
                 </tr>
                 {% endfor %}
                 <tr data-disablesort="true">
