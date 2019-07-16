@@ -2,6 +2,9 @@ from django.contrib import admin
 
 from .models import Budget, Capability, Customer, Location, Region, Sale, Sector
 
+class RegionAdmin(admin.ModelAdmin):
+    prepopulated_fields = {'slug': ('name',)}
+
 class LocationAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}
 
@@ -25,7 +28,7 @@ admin.site.register(Budget, BudgetAdmin)
 admin.site.register(Capability)
 admin.site.register(Customer, CustomerAdmin)
 admin.site.register(Location, LocationAdmin)
-admin.site.register(Region)
+admin.site.register(Region, RegionAdmin)
 admin.site.register(Sale, SaleAdmin)
 admin.site.register(Sector)
 
