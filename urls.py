@@ -40,4 +40,8 @@ urlpatterns = [
         ### Global budget by Sector ###
         path('budget/global-sector/', views.cy_budget_global_sector, name='cy_budget_global_sector'),
         path('budget/global-sector/<int:year>', views.budget_global_sector, name='budget_global_sector'),
+
+        ### Global budget by Sector ###
+        path('budget/global-region/', views.cy_budget_global_region, name='cy_budget_global_region'),
+        path('budget/global-region/<int:year>', views.budget_global_region, name='budget_global_region'),
 ]

@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from django.template import loader
 
 from .models import Budget, Sale, Location
 
@@ -1003,3 +1002,123 @@ def budget_global_sector(request, year): # Budget table view
     'budget_total': budget_total,
     }
     return render(request, 'SalesQuery/budget_global_sector.html', context)
+
+############################################
+########## GLOBAL SALES BY REGION ##########
+############################################
+
+def cy_budget_global_region(request): # Choose year
+
+    years = []
+    for budget in Budget.objects.all():
+        if budget.year not in years:
+            years.append(budget.year)
+
+    context = {
+        'years': years,
+    }
+    return render(request, 'SalesQuery/cy_budget_global_region.html', context)
+
+def budget_global_region(request, year): # Budget table view
+    
+    budget_objects = Budget.objects.all()
+
+    region_data = {} # create dictionary of data for each region
+    for budget in budget_objects:
+        if budget.location.region not in region_data.keys():
+            region_data[budget.location.region] = {
+                'jan': budget.jan,
+                'feb': budget.feb,
+                'mar': budget.mar,
+                'apr': budget.apr,
+                'may': budget.may,
+                'jun': budget.jun,
+                'jul': budget.jul,
+                'aug': budget.aug,
+                'sep': budget.sep,
+                'oct': budget.oct,
+                'nov': budget.nov,
+                'dec': budget.dec,
+                'q1': budget.q1,
+                'q2': budget.q2,
+                'q3': budget.q3,
+                'q4': budget.q4,
+            }
+        else:
+            region_data[budget.location.region]['jan'] += budget.jan
+            region_data[budget.location.region]['feb'] += budget.feb
+            region_data[budget.location.region]['mar'] += budget.mar
+            region_data[budget.location.region]['apr'] += budget.apr
+            region_data[budget.location.region]['may'] += budget.may
+            region_data[budget.location.region]['jun'] += budget.jun
+            region_data[budget.location.region]['jul'] += budget.jul
+            region_data[budget.location.region]['aug'] += budget.aug
+            region_data[budget.location.region]['sep'] += budget.sep
+            region_data[budget.location.region]['oct'] += budget.oct
+            region_data[budget.location.region]['nov'] += budget.nov
+            region_data[budget.location.region]['dec'] += budget.dec
+            region_data[budget.location.region]['q1'] += budget.q1
+            region_data[budget.location.region]['q2'] += budget.q2
+            region_data[budget.location.region]['q3'] += budget.q3
+            region_data[budget.location.region]['q4'] += budget.q4
+    
+    location = budget_objects[0].location
+    jan_total = 0
+    feb_total = 0
+    mar_total = 0
+    apr_total = 0
+    may_total = 0
+    jun_total = 0
+    jul_total = 0
+    aug_total = 0
+    sep_total = 0
+    oct_total = 0
+    nov_total = 0
+    dec_total = 0
+    q1_total = 0
+    q2_total = 0
+    q3_total = 0
+    q4_total = 0
+    budget_total = 0
+
+    for region in region_data:
+        jan_total += region_data[region]['jan']
+        feb_total += region_data[region]['feb']
+        mar_total += region_data[region]['mar']
+        apr_total += region_data[region]['apr']
+        may_total += region_data[region]['may']
+        jun_total += region_data[region]['jun']
+        jul_total += region_data[region]['jul']
+        aug_total += region_data[region]['aug']
+        sep_total += region_data[region]['sep']
+        oct_total += region_data[region]['oct']
+        nov_total += region_data[region]['nov']
+        dec_total += region_data[region]['dec']
+        q1_total += region_data[region]['q1']
+        q2_total += region_data[region]['q2']
+        q3_total += region_data[region]['q3']
+        q4_total += region_data[region]['q4']
+        budget_total += (region_data[region]['q1'] + region_data[region]['q2'] + region_data[region]['q3'] + region_data[region]['q4'])
+    
+    context = {
+    'region_data': region_data,
+    'year': year,
+    'jan_total': jan_total,
+    'feb_total': feb_total,
+    'mar_total': mar_total,
+    'apr_total': apr_total,
+    'may_total': may_total,
+    'jun_total': jun_total,
+    'jul_total': jul_total,
+    'aug_total': aug_total,
+    'sep_total': sep_total,
+    'oct_total': oct_total,
+    'nov_total': nov_total,
+    'dec_total': dec_total,
+    'q1_total': q1_total,
+    'q2_total': q2_total,
+    'q3_total': q3_total,
+    'q4_total': q4_total,
+    'budget_total': budget_total,
+    }
+    return render(request, 'SalesQuery/budget_global_region.html', context)
