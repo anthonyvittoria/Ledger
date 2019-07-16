@@ -231,36 +231,3 @@ def budget_plant_sector(request, location_name_slug, year):
     'budget_total': budget_total,
     }
     return render(request, 'SalesQuery/budget_plant_sector.html', context)
-
-def choose_sale(request):
-    customers, locations = [], []
-
-    for sale in Sale.objects.all():
-        if sale.location not in locations:
-            locations.append(sale.location)
-        if sale.customer not in customers:
-            customers.append(sale.customer)
-
-    context = {
-        'locations': locations,
-        'customers': customers,
-    }
-    return render(request, 'SalesQuery/choose_sale.html', context)
-
-def sale_by_location(request, location_name_slug):
-    sales = Sale.objects.filter(location__slug=location_name_slug)
-    location = sales[0].location.name
-    context = {
-        'sales': sales,
-        'location': location,
-    }
-    return render(request, 'SalesQuery/sale_by_location.html', context)
-
-def sale_by_customer(request, customer_name_slug):
-    sales = Sale.objects.filter(customer__slug=customer_name_slug)
-    customer = sales[0].customer.name
-    context = {
-        'sales': sales,
-        'customer': customer,
-    }
-    return render(request, 'SalesQuery/sale_by_customer.html', context)
