@@ -36,4 +36,8 @@ urlpatterns = [
         ### Global budget by Customer ###
         path('budget/global-customer/', views.cy_budget_global_customer, name='cy_budget_global_customer'),
         path('budget/global-customer/<int:year>', views.budget_global_customer, name='budget_global_customer'),
+
+        ### Global budget by Sector ###
+        path('budget/global-sector/', views.cy_budget_global_sector, name='cy_budget_global_sector'),
+        path('budget/global-sector/<int:year>', views.budget_global_sector, name='budget_global_sector'),
 ]
