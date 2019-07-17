@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('SalesQuery', '0025_auto_20190701_0944'),
+        ('Ledger', '0025_auto_20190701_0944'),
     ]
 
     operations = [

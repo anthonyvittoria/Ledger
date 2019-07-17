@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
 
-class SalesqueryConfig(AppConfig):
-    name = 'SalesQuery'
+class LedgerConfig(AppConfig):
+    name = 'Ledger'

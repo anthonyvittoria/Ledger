@@ -7,7 +7,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('SalesQuery', '0004_sector'),
+        ('Ledger', '0004_sector'),
     ]
 
     operations = [
@@ -16,8 +16,8 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(primary_key=True, serialize=False)),
                 ('amount', models.DecimalField(decimal_places=2, max_digits=9)),
-                ('customer', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='SalesQuery.Customer')),
-                ('location', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='SalesQuery.Location')),
+                ('customer', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='Ledger.Customer')),
+                ('location', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='Ledger.Location')),
             ],
         ),
     ]

@@ -3,7 +3,7 @@ from django.shortcuts import render
 from .models import Budget, Sale, Location
 
 def index(request):
-    return render(request, 'SalesQuery/index.html')
+    return render(request, 'Ledger/index.html')
 
 #################################################
 ########## BUDGET BY PLANT BY CUSTOMER ##########
@@ -21,7 +21,7 @@ def cl_budget_plant_customer(request): # Choose location
     context = {
         'locations': budget_locations,
     }
-    return render(request, 'SalesQuery/cl_budget_plant_customer.html', context)
+    return render(request, 'Ledger/cl_budget_plant_customer.html', context)
 
 def cy_budget_plant_customer(request, location_name_slug): # Choose year for budget by plant by customer
     
@@ -35,7 +35,7 @@ def cy_budget_plant_customer(request, location_name_slug): # Choose year for bud
         'years': years,
         'location_name_slug': location_name_slug,
     }
-    return render(request, 'SalesQuery/cy_budget_plant_customer.html', context)
+    return render(request, 'Ledger/cy_budget_plant_customer.html', context)
 
 def budget_plant_customer(request, location_name_slug, year): # Budget table view
     budget_objects = Budget.objects.filter(location__slug=location_name_slug, year=year)
@@ -99,7 +99,7 @@ def budget_plant_customer(request, location_name_slug, year): # Budget table vie
         'q4_total': q4_total,
         'budget_total': budget_total,
     }
-    return render(request, 'SalesQuery/budget_plant_customer.html', context)
+    return render(request, 'Ledger/budget_plant_customer.html', context)
 
 ###############################################
 ########## BUDGET BY PLANT BY SECTOR ##########
@@ -117,7 +117,7 @@ def cl_budget_plant_sector(request): # Choose location
     context = {
         'locations': budget_locations
     }
-    return render(request, 'SalesQuery/cl_budget_plant_sector.html', context)
+    return render(request, 'Ledger/cl_budget_plant_sector.html', context)
 
 def cy_budget_plant_sector(request, location_name_slug): # Choose year
     
@@ -131,7 +131,7 @@ def cy_budget_plant_sector(request, location_name_slug): # Choose year
         'years': years,
         'location_name_slug': location_name_slug,
     }
-    return render(request, 'SalesQuery/cy_budget_plant_sector.html', context)
+    return render(request, 'Ledger/cy_budget_plant_sector.html', context)
 
 def budget_plant_sector(request, location_name_slug, year): # Budget table view
 
@@ -237,7 +237,7 @@ def budget_plant_sector(request, location_name_slug, year): # Budget table view
     'q4_total': q4_total,
     'budget_total': budget_total,
     }
-    return render(request, 'SalesQuery/budget_plant_sector.html', context)
+    return render(request, 'Ledger/budget_plant_sector.html', context)
 
 ###############################################
 ########## BUDGET BY REGION BY PLANT ##########
@@ -253,7 +253,7 @@ def cl_budget_region_plant(request): # Choose location
     context = {
         'regions': regions,
     }
-    return render(request, 'SalesQuery/cl_budget_region_plant.html', context)
+    return render(request, 'Ledger/cl_budget_region_plant.html', context)
 
 def cy_budget_region_plant(request, region_name_slug): # Choose year
     
@@ -267,7 +267,7 @@ def cy_budget_region_plant(request, region_name_slug): # Choose year
         'years': years,
         'region_name_slug': region_name_slug,
     }
-    return render(request, 'SalesQuery/cy_budget_region_plant.html', context)
+    return render(request, 'Ledger/cy_budget_region_plant.html', context)
 
 def budget_region_plant(request, region_name_slug, year): # Budget table view
 
@@ -372,7 +372,7 @@ def budget_region_plant(request, region_name_slug, year): # Budget table view
         'q4_total': q4_total,
         'budget_total': budget_total,
     }
-    return render(request, 'SalesQuery/budget_region_plant.html', context)
+    return render(request, 'Ledger/budget_region_plant.html', context)
 
 ##################################################
 ########## BUDGET BY REGION BY CUSTOMER ##########
@@ -387,7 +387,7 @@ def cl_budget_region_customer(request): # Choose location
     context = {
         'regions': regions,
     }
-    return render(request, 'SalesQuery/cl_budget_region_customer.html', context)
+    return render(request, 'Ledger/cl_budget_region_customer.html', context)
 
 def cy_budget_region_customer(request, region_name_slug): # Choose year
 
@@ -401,7 +401,7 @@ def cy_budget_region_customer(request, region_name_slug): # Choose year
         'years': years,
         'region_name_slug': region_name_slug,
     }
-    return render(request, 'SalesQuery/cy_budget_region_customer.html', context)
+    return render(request, 'Ledger/cy_budget_region_customer.html', context)
 
 def budget_region_customer(request, region_name_slug, year):
 
@@ -507,7 +507,7 @@ def budget_region_customer(request, region_name_slug, year):
     'q4_total': q4_total,
     'budget_total': budget_total,
     }
-    return render(request, 'SalesQuery/budget_region_customer.html', context)
+    return render(request, 'Ledger/budget_region_customer.html', context)
 
 ################################################
 ########## BUDGET BY REGION BY SECTOR ##########
@@ -523,7 +523,7 @@ def cl_budget_region_sector(request): # Choose location
     context = {
         'regions': regions,
     }
-    return render(request, 'SalesQuery/cl_budget_region_sector.html', context)
+    return render(request, 'Ledger/cl_budget_region_sector.html', context)
 
 def cy_budget_region_sector(request, region_name_slug): # Choose year
 
@@ -537,7 +537,7 @@ def cy_budget_region_sector(request, region_name_slug): # Choose year
         'years': years,
         'region_name_slug': region_name_slug,
     }
-    return render(request, 'SalesQuery/cy_budget_region_sector.html', context)
+    return render(request, 'Ledger/cy_budget_region_sector.html', context)
 
 def budget_region_sector(request, region_name_slug, year): # Budget table view
 
@@ -643,7 +643,7 @@ def budget_region_sector(request, region_name_slug, year): # Budget table view
     'q4_total': q4_total,
     'budget_total': budget_total,
     }
-    return render(request, 'SalesQuery/budget_region_sector.html', context)
+    return render(request, 'Ledger/budget_region_sector.html', context)
 
 ###########################################
 ########## GLOBAL SALES BY PLANT ##########
@@ -659,7 +659,7 @@ def cy_budget_global_plant(request): # Choose year
     context = {
         'years': years,
     }
-    return render(request, 'SalesQuery/cy_budget_global_plant.html', context)
+    return render(request, 'Ledger/cy_budget_global_plant.html', context)
 
 def budget_global_plant(request, year): # Budget table view
     
@@ -762,7 +762,7 @@ def budget_global_plant(request, year): # Budget table view
         'q4_total': q4_total,
         'budget_total': budget_total,
     }
-    return render(request, 'SalesQuery/budget_global_plant.html', context)
+    return render(request, 'Ledger/budget_global_plant.html', context)
 
 ##############################################
 ########## GLOBAL SALES BY CUSTOMER ##########
@@ -778,7 +778,7 @@ def cy_budget_global_customer(request): # Choose year
     context = {
         'years': years,
     }
-    return render(request, 'SalesQuery/cy_budget_global_customer.html', context)
+    return render(request, 'Ledger/cy_budget_global_customer.html', context)
 
 def budget_global_customer(request, year): # Budget table view
 
@@ -881,7 +881,7 @@ def budget_global_customer(request, year): # Budget table view
     'q4_total': q4_total,
     'budget_total': budget_total,
     }
-    return render(request, 'SalesQuery/budget_global_customer.html', context)
+    return render(request, 'Ledger/budget_global_customer.html', context)
 
 ############################################
 ########## GLOBAL SALES BY SECTOR ##########
@@ -897,7 +897,7 @@ def cy_budget_global_sector(request): # Choose year
     context = {
         'years': years,
     }
-    return render(request, 'SalesQuery/cy_budget_global_sector.html', context)
+    return render(request, 'Ledger/cy_budget_global_sector.html', context)
 
 def budget_global_sector(request, year): # Budget table view
     
@@ -1001,7 +1001,7 @@ def budget_global_sector(request, year): # Budget table view
     'q4_total': q4_total,
     'budget_total': budget_total,
     }
-    return render(request, 'SalesQuery/budget_global_sector.html', context)
+    return render(request, 'Ledger/budget_global_sector.html', context)
 
 ############################################
 ########## GLOBAL SALES BY REGION ##########
@@ -1017,7 +1017,7 @@ def cy_budget_global_region(request): # Choose year
     context = {
         'years': years,
     }
-    return render(request, 'SalesQuery/cy_budget_global_region.html', context)
+    return render(request, 'Ledger/cy_budget_global_region.html', context)
 
 def budget_global_region(request, year): # Budget table view
     
@@ -1121,4 +1121,4 @@ def budget_global_region(request, year): # Budget table view
     'q4_total': q4_total,
     'budget_total': budget_total,
     }
-    return render(request, 'SalesQuery/budget_global_region.html', context)
+    return render(request, 'Ledger/budget_global_region.html', context)

@@ -7,7 +7,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('SalesQuery', '0005_budget'),
+        ('Ledger', '0005_budget'),
     ]
 
     operations = [
@@ -16,11 +16,11 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(primary_key=True, serialize=False)),
                 ('amount', models.DecimalField(decimal_places=2, max_digits=9)),
-                ('budget', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='SalesQuery.Budget')),
-                ('capability', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='SalesQuery.Capability')),
-                ('customer', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='SalesQuery.Customer')),
-                ('location', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='SalesQuery.Location')),
-                ('sector', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='SalesQuery.Sector')),
+                ('budget', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='Ledger.Budget')),
+                ('capability', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='Ledger.Capability')),
+                ('customer', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='Ledger.Customer')),
+                ('location', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='Ledger.Location')),
+                ('sector', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='Ledger.Sector')),
             ],
         ),
     ]

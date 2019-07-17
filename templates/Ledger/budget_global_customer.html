@@ -1,14 +1,14 @@
-{% extends 'SalesQuery/base.html' %} {% load static %}{% load humanize %}
+{% extends 'Ledger/base.html' %} {% load static %}{% load humanize %}
 
     {% block body%}
         <h3 class="mt-5 text-center">Global {{ year }} Budget</h3>
-        <h5 class="text-center">By Plant</h5>
+        <h5 class="text-center">By Customer</h5>
         
-        {% if plant_data %}
+        {% if customer_data %}
         <table class="table table-hover table-bordered sortable my-5 text-left">
             <thead class="thead-light">
                 <tr>
-                    <th scope="col">Plant</th>
+                    <th scope="col">Customer</th>
                     <th scope="col">Jan</th>
                     <th scope="col">Feb</th>
                     <th scope="col">Mar</th>
@@ -29,7 +29,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% for key, value in plant_data.items %}
+                {% for key, value in customer_data.items %}
                 <tr>
                     <td title="{{ key }}">{{ key|truncatechars:10 }}</td>
                     <td>{{ value.jan }}</td>
@@ -77,8 +77,8 @@
 
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-        <script src="{% static 'SalesQuery/bootstrap.bundle.js' %}"></script>
+        <script src="{% static 'Ledger/bootstrap.bundle.js' %}"></script>
 
         <!-- Add bootstrap-sortable -->
-        <script src="{% static 'SalesQuery/bootstrap-sortable.js' %}"></script>
+        <script src="{% static 'Ledger/bootstrap-sortable.js' %}"></script>
     {% endblock %}

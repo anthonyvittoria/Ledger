@@ -32,6 +32,6 @@ admin.site.register(Region, RegionAdmin)
 admin.site.register(Sale, SaleAdmin)
 admin.site.register(Sector)
 
-admin.site.site_header = 'SalesQuery Administration'
+admin.site.site_header = 'Ledger Administration'
 admin.site.index_title = 'All models'
-admin.site.site_title = 'SalesQuery Admin Portal'
+admin.site.site_title = 'Ledger Admin Portal'
