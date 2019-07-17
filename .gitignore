@@ -1,4 +1,5 @@
 static/Ledger/bootstrap.bundle.js
 static/Ledger/img
+!static/Ledger/img/LedgerHeader.png
 *.pyc
 *.pyo
