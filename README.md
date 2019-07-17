@@ -1,4 +1,4 @@
-# Ledger
+<p align="center"><img src="static/Ledger/img/LedgerHeader.png" height="150px"/></p>
 Ledger is a web application designed for enterprise budget management. To use it in your Django project, see [Installing](#installing). As its features may not be suited to all use cases, you are encouraged to modify it for the needs of your own project. You are welcome to redistribute the modified software so long as the license is preserved.
 
 ## Installing
