@@ -8,3 +8,9 @@ body {
     margin: 0 auto;
     float: none;
 }
+.logo {
+    font-family: 'Montserrat', 'Roboto', sans-serif;
+    font-size: 4em;
+    font-weight: bold;
+    letter-spacing: -2px;
+}

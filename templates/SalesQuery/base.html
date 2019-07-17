@@ -7,10 +7,11 @@
 
 <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <title>SalesQuery Demo</title>
-        <link href="https://fonts.googleapis.com/css?family=Nunito:400,700&display=swap" rel="stylesheet">
+        <title>Ledger</title>
         <link href="https://fonts.googleapis.com/css?family=Roboto:300&display=swap" rel="stylesheet">
-        <link rel="shortcut icon" href="{% static 'SalesQuery/img/favicon.ico' %}" type="image/vnd.microsoft.icon" />
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet"> 
+        <!-- <link rel="shortcut icon" href="{% static 'SalesQuery/img/favicon.ico' %}" type="image/vnd.microsoft.icon" /> -->
+        <link rel="icon" type="image/png" href="{% static 'SalesQuery/img/favicon-32x32.png' %}" sizes="32x32" />
         
         <!-- Core Bootstrap CSS -->
         <link rel="stylesheet" href="{% static 'SalesQuery/bootstrap.css' %}">
@@ -21,7 +22,10 @@
 {% block navbar %}
 
 <nav class="navbar fixed-top border-bottom navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="{% url 'index' %}">SalesQuery</a>
+  <a class="navbar-brand font-weight-bold" href="{% url 'index' %}" style="font-family: 'Montserrat', sans-serif; letter-spacing: -0.5px;">
+    <img src="{% static 'SalesQuery/img/navbarlogo.png' %}" width="32px" height="32px" class="mr-1"/>
+    Ledger
+  </a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample05" aria-controls="navbarsExample05" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>

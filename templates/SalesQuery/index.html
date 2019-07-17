@@ -2,10 +2,11 @@
 
 {% block body %}
     <div class="container mx-auto text-center">
-        <h1 class="mx-auto mt-5">SalesQuery</h1>
-        <h6 class="mx-auto mt-1 mb-4">Enterprise solution for budget management.</h6>
+        <!-- <img src="{% static 'SalesQuery/img/ledger.png' %}"/> -->
+        <h1 class="mx-auto mt-5 logo">Ledger</h1>
+        <h5 class="mx-auto mt-1 mb-4 text-secondary">Budget management made simple.</h5>
         <div class="btn-group mx-2">
-            <button id="indexSale" class="mx-auto mb-1 btn btn-primary btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Actuals</button>
+            <button id="indexSale" class="mx-auto mb-1 btn btn-info btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Actuals</button>
             <div class="dropdown-menu" aria-labelledby="indexSale">
                 <a href="#" class="dropdown-item">Sales by Plant by Customer</a>
                 <a href="#" class="dropdown-item">Sales by Plant by Sector</a>
@@ -20,7 +21,7 @@
             </div>
         </div>
         <div class="btn-group mx-2">
-            <button id="indexBudget" class="mx-auto mb-1 btn btn-primary btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Budgets</button>
+            <button id="indexBudget" class="mx-auto mb-1 btn btn-info btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Budgets</button>
             <div class="dropdown-menu" aria-labelledby="indexBudget">
                 <a href="{% url 'cl_budget_plant_customer' %}" class="dropdown-item">Sales by Plant by Customer</a>
                 <a href="{% url 'cl_budget_plant_sector' %}" class="dropdown-item">Sales by Plant by Sector</a>
