@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from .models import Budget, Sale, Location
+from .models import Budget, Sale
 
 def index(request):
     return render(request, 'Ledger/index.html')
@@ -58,7 +58,7 @@ def budget_plant_customer(request, location_name_slug, year): # Budget table vie
     q2_total = 0
     q3_total = 0
     q4_total = 0
-    budget_total, cust_total = 0, 0
+    budget_total = 0
 
     for budget in budget_objects:
         jan_total += budget.jan
@@ -1063,8 +1063,7 @@ def budget_global_region(request, year): # Budget table view
             region_data[budget.location.region]['q2'] += budget.q2
             region_data[budget.location.region]['q3'] += budget.q3
             region_data[budget.location.region]['q4'] += budget.q4
-    
-    location = budget_objects[0].location
+
     jan_total = 0
     feb_total = 0
     mar_total = 0

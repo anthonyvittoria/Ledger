@@ -10,13 +10,16 @@ class LocationAdmin(admin.ModelAdmin):
 
 class CustomerAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}
+    list_filter = ('sector',)
 
 class BudgetAdmin(admin.ModelAdmin):
     list_display = ('location', 'customer', 'year')
+    list_filter = ('location', 'customer', 'year', 'customer__sector')
     exclude = ['q1', 'q2', 'q3', 'q4']
 
 class SaleAdmin(admin.ModelAdmin):
     list_display = ('location', 'customer', 'format_date')
+    list_filter = ('location', 'customer', 'capability',)
 
     def format_date(self, obj):
         return obj.date.strftime('%b, %Y')
