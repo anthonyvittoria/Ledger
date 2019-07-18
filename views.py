@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.forms import modelformset_factory
 
 from .models import Budget, Sale
 
@@ -1122,3 +1123,9 @@ def budget_global_region(request, year): # Budget table view
     'budget_total': budget_total,
     }
     return render(request, 'Ledger/budget_global_region.html', context)
+
+def form_budget(request):
+    
+    BudgetFormSet = modelformset_factory(Budget, fields='__all__', extra=4)
+    form = BudgetFormSet(queryset=Budget.objects.none())
+    return render(request, 'Ledger/form_budget.html', {'form': form})

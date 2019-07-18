@@ -1,0 +1,13 @@
+{% extends 'Ledger/base.html' %} {% load static %}
+
+{% block body %}
+<div class="container my-5">
+    <form method="post">
+        {% csrf_token %}
+        {{ form }}
+        <button type="submit">Submit</button>
+    </form>
+
+</div>
+
+{% endblock %}
