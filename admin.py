@@ -14,12 +14,12 @@ class CustomerAdmin(admin.ModelAdmin):
 
 class BudgetAdmin(admin.ModelAdmin):
     list_display = ('location', 'customer', 'year')
-    list_filter = ('location', 'customer', 'year', 'customer__sector')
+    list_filter = ('year', 'customer__sector', 'location', 'customer')
     exclude = ['q1', 'q2', 'q3', 'q4']
 
 class SaleAdmin(admin.ModelAdmin):
     list_display = ('location', 'customer', 'format_date')
-    list_filter = ('location', 'customer', 'capability',)
+    list_filter = ('capability', 'location', 'customer',)
 
     def format_date(self, obj):
         return obj.date.strftime('%b, %Y')
