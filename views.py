@@ -38,7 +38,9 @@ def cy_budget_plant_customer(request, location_name_slug): # Choose year for bud
     return render(request, 'Ledger/cy_budget_plant_customer.html', context)
 
 def budget_plant_customer(request, location_name_slug, year): # Budget table view
-    budget_objects = Budget.objects.filter(location__slug=location_name_slug, year=year)
+
+    budget_objects = Budget.objects.filter(location__slug=location_name_slug, year=year).order_by('customer__name')
+
     location = budget_objects[0].location
     jan_total = 0
     feb_total = 0
@@ -136,7 +138,7 @@ def cy_budget_plant_sector(request, location_name_slug): # Choose year
 def budget_plant_sector(request, location_name_slug, year): # Budget table view
 
     # list of budgets corresponding to this plant and year
-    budget_objects = Budget.objects.filter(location__slug=location_name_slug, year=year)
+    budget_objects = Budget.objects.filter(location__slug=location_name_slug, year=year).order_by('customer__sector')
     
     sector_data = {} # create dictionary of data for each sector
     for budget in budget_objects:
@@ -272,7 +274,7 @@ def cy_budget_region_plant(request, region_name_slug): # Choose year
 def budget_region_plant(request, region_name_slug, year): # Budget table view
 
     # list of budgets corresponding to this region and year
-    budget_objects = Budget.objects.filter(location__region__slug=region_name_slug, year=year)
+    budget_objects = Budget.objects.filter(location__region__slug=region_name_slug, year=year).order_by('location__name')
 
     plant_data = {} # create dictionary of data for each plant
     for budget in budget_objects:
@@ -407,7 +409,7 @@ def budget_region_customer(request, region_name_slug, year):
 
     
     # list of budgets corresponding to this region and year
-    budget_objects = Budget.objects.filter(location__region__slug=region_name_slug, year=year)
+    budget_objects = Budget.objects.filter(location__region__slug=region_name_slug, year=year).order_by('customer__name')
 
     customer_data = {} # create dictionary of data for each customer
     for budget in budget_objects:
@@ -542,7 +544,7 @@ def cy_budget_region_sector(request, region_name_slug): # Choose year
 def budget_region_sector(request, region_name_slug, year): # Budget table view
 
     # list of budgets corresponding to this plant and year
-    budget_objects = Budget.objects.filter(location__region__slug=region_name_slug, year=year)
+    budget_objects = Budget.objects.filter(location__region__slug=region_name_slug, year=year).order_by('customer__sector')
     
     sector_data = {} # create dictionary of data for each sector
     for budget in budget_objects:
@@ -663,7 +665,7 @@ def cy_budget_global_plant(request): # Choose year
 
 def budget_global_plant(request, year): # Budget table view
     
-    budget_objects = Budget.objects.all()
+    budget_objects = Budget.objects.all().order_by('location__name')
 
     plant_data = {} # create dictionary of data for each plant
     for budget in budget_objects:
@@ -782,7 +784,7 @@ def cy_budget_global_customer(request): # Choose year
 
 def budget_global_customer(request, year): # Budget table view
 
-    budget_objects = Budget.objects.all()
+    budget_objects = Budget.objects.all().order_by('customer__name')
 
     customer_data = {} # create dictionary of data for each customer
     for budget in budget_objects:
@@ -901,7 +903,7 @@ def cy_budget_global_sector(request): # Choose year
 
 def budget_global_sector(request, year): # Budget table view
     
-    budget_objects = Budget.objects.all()
+    budget_objects = Budget.objects.all().order_by('customer__sector')
 
     sector_data = {} # create dictionary of data for each sector
     for budget in budget_objects:
@@ -1021,7 +1023,7 @@ def cy_budget_global_region(request): # Choose year
 
 def budget_global_region(request, year): # Budget table view
     
-    budget_objects = Budget.objects.all()
+    budget_objects = Budget.objects.all().order_by('location__region')
 
     region_data = {} # create dictionary of data for each region
     for budget in budget_objects:
@@ -1099,7 +1101,6 @@ def budget_global_region(request, year): # Budget table view
         q3_total += region_data[region]['q3']
         q4_total += region_data[region]['q4']
         budget_total += (region_data[region]['q1'] + region_data[region]['q2'] + region_data[region]['q3'] + region_data[region]['q4'])
-    
     context = {
     'region_data': region_data,
     'year': year,
