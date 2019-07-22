@@ -1,0 +1,160 @@
+{% extends 'Ledger/base.html' %} {% load static %} {% load humanize %}
+
+    {% block body%}
+        <h3 class="mt-5 text-center">{% if global %}Global{% elif location %}{{ location }}{% elif region %}{{ region }}{% endif %} {{ year }} Budget</h3>
+        <h5 class="text-center">by {{ first_col|capfirst }}</h5>
+
+        {% if budget_data %}
+        <table class="table table-hover table-bordered sortable my-5 text-left">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">{{ first_col|capfirst }}</th>
+                    {% if second_col %}
+                    <th scope="col">{{ second_col|capfirst }}</th>
+                    {% endif %}
+                    <th scope="col">Jan</th>
+                    <th scope="col">Feb</th>
+                    <th scope="col">Mar</th>
+                    <th scope="col">Q1</th>
+                    <th scope="col">Apr</th>
+                    <th scope="col">May</th>
+                    <th scope="col">Jun</th>
+                    <th scope="col">Q2</th>
+                    <th scope="col">Jul</th>
+                    <th scope="col">Aug</th>
+                    <th scope="col">Sep</th>
+                    <th scope="col">Q3</th>
+                    <th scope="col">Oct</th>
+                    <th scope="col">Nov</th>
+                    <th scope="col">Dec</th>
+                    <th scope="col">Q4</th>
+                    <th scope="col">Total</th>    
+                </tr>
+            </thead>
+            <tbody>
+                {% for key, value in budget_data.items %}
+                <tr>
+                    <td title="{{ key }}">{{ key|truncatechars:10 }}</td>
+                    <td>{{ value.jan }}</td>
+                    <td>{{ value.feb }}</td>
+                    <td>{{ value.mar }}</td>
+                    <td class="font-weight-bold">{{ value.q1 }}</td>
+                    <td>{{ value.apr }}</td>
+                    <td>{{ value.may }}</td>
+                    <td>{{ value.jun }}</td>
+                    <td class="font-weight-bold">{{ value.q2 }}</td>
+                    <td>{{ value.jul }}</td>
+                    <td>{{ value.aug }}</td>
+                    <td>{{ value.sep }}</td>
+                    <td class="font-weight-bold">{{ value.q3 }}</td>
+                    <td>{{ value.oct }}</td>
+                    <td>{{ value.nov }}</td>
+                    <td>{{ value.dec }}</td>
+                    <td class="font-weight-bold">{{ value.q4 }}</td>
+                    <td class="font-weight-bold">{{ value.q1|add:value.q2|add:value.q3|add:value.q4 }}</td>
+                </tr>
+                {% endfor %}
+                <tr data-disablesort="true">
+                    <td class="font-weight-bold">Total:</td>
+                    <td class="font-weight-bold">{{ jan_total }}</td>
+                    <td class="font-weight-bold">{{ feb_total }}</td>
+                    <td class="font-weight-bold">{{ mar_total }}</td>
+                    <td class="font-weight-bold">{{ q1_total }}</td>
+                    <td class="font-weight-bold">{{ apr_total }}</td>
+                    <td class="font-weight-bold">{{ may_total }}</td>
+                    <td class="font-weight-bold">{{ jun_total }}</td>
+                    <td class="font-weight-bold">{{ q2_total }}</td>
+                    <td class="font-weight-bold">{{ jul_total }}</td>
+                    <td class="font-weight-bold">{{ aug_total }}</td>
+                    <td class="font-weight-bold">{{ sep_total }}</td>
+                    <td class="font-weight-bold">{{ q3_total }}</td>
+                    <td class="font-weight-bold">{{ oct_total }}</td>
+                    <td class="font-weight-bold">{{ nov_total }}</td>
+                    <td class="font-weight-bold">{{ dec_total }}</td>
+                    <td class="font-weight-bold">{{ q4_total }}</td>
+                    <td class="font-weight-bold">{{ budget_total }}</td>
+                </tr>
+            </tbody>
+        </table>
+        {% else %}
+        <table class="table table-hover table-bordered sortable my-5 text-left">
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">{{ first_col|capfirst }}</th>
+                        {% if second_col %}
+                        <th scope="col">{{ second_col|capfirst }}</th>
+                        {% endif %}
+                        <th scope="col">Jan</th>
+                        <th scope="col">Feb</th>
+                        <th scope="col">Mar</th>
+                        <th scope="col">Q1</th>
+                        <th scope="col">Apr</th>
+                        <th scope="col">May</th>
+                        <th scope="col">Jun</th>
+                        <th scope="col">Q2</th>
+                        <th scope="col">Jul</th>
+                        <th scope="col">Aug</th>
+                        <th scope="col">Sep</th>
+                        <th scope="col">Q3</th>
+                        <th scope="col">Oct</th>
+                        <th scope="col">Nov</th>
+                        <th scope="col">Dec</th>
+                        <th scope="col">Q4</th>
+                        <th scope="col">Total</th>    
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for budget in budget_objects %}
+                    <tr>
+                        <td title="{{ budget.customer }}">{{ budget.customer|truncatechars:10 }}</td>
+                        <td title="{{ budget.customer.sector }}">{{ budget.customer.sector|truncatechars:10 }}</td>
+                        <td>{{ budget.jan }}</td>
+                        <td>{{ budget.feb }}</td>
+                        <td>{{ budget.mar }}</td>
+                        <td class="font-weight-bold">{{ budget.q1 }}</td>
+                        <td>{{ budget.apr }}</td>
+                        <td>{{ budget.may }}</td>
+                        <td>{{ budget.jun }}</td>
+                        <td class="font-weight-bold">{{ budget.q2 }}</td>
+                        <td>{{ budget.jul }}</td>
+                        <td>{{ budget.aug }}</td>
+                        <td>{{ budget.sep }}</td>
+                        <td class="font-weight-bold">{{ budget.q3 }}</td>
+                        <td>{{ budget.oct }}</td>
+                        <td>{{ budget.nov }}</td>
+                        <td>{{ budget.dec }}</td>
+                        <td class="font-weight-bold">{{ budget.q4 }}</td>
+                        <td class="font-weight-bold">{{ budget.q1|add:budget.q2|add:budget.q3|add:budget.q4 }}</td>
+                    </tr>
+                    {% endfor %}
+                    <tr data-disablesort="true">
+                        <td colspan="2" class="font-weight-bold">Total:</td>
+                        <td class="font-weight-bold">{{ jan_total }}</td>
+                        <td class="font-weight-bold">{{ feb_total }}</td>
+                        <td class="font-weight-bold">{{ mar_total }}</td>
+                        <td class="font-weight-bold">{{ q1_total }}</td>
+                        <td class="font-weight-bold">{{ apr_total }}</td>
+                        <td class="font-weight-bold">{{ may_total }}</td>
+                        <td class="font-weight-bold">{{ jun_total }}</td>
+                        <td class="font-weight-bold">{{ q2_total }}</td>
+                        <td class="font-weight-bold">{{ jul_total }}</td>
+                        <td class="font-weight-bold">{{ aug_total }}</td>
+                        <td class="font-weight-bold">{{ sep_total }}</td>
+                        <td class="font-weight-bold">{{ q3_total }}</td>
+                        <td class="font-weight-bold">{{ oct_total }}</td>
+                        <td class="font-weight-bold">{{ nov_total }}</td>
+                        <td class="font-weight-bold">{{ dec_total }}</td>
+                        <td class="font-weight-bold">{{ q4_total }}</td>
+                        <td class="font-weight-bold">{{ budget_total }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        {% endif %}
+
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+        <!-- Add bootstrap-sortable -->
+        <script src="{% static 'Ledger/bootstrap-sortable/Scripts/bootstrap-sortable.js' %}"></script>
+    {% endblock %}
