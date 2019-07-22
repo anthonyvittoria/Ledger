@@ -19,7 +19,8 @@ class BudgetAdmin(admin.ModelAdmin):
 
 class SaleAdmin(admin.ModelAdmin):
     list_display = ('location', 'customer', 'format_date')
-    list_filter = ('capability', 'location', 'customer',)
+    list_filter = ('location', 'customer',)
+    exclude = ['q1', 'q2', 'q3', 'q4']
 
     def format_date(self, obj):
         return obj.date.strftime('%b, %Y')

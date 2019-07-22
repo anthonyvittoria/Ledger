@@ -46,4 +46,45 @@ urlpatterns = [
         ### Global budget by Sector ###
         path('budget/global-region/', views.cy_budget_global_region, name='cy_budget_global_region'),
         path('budget/global-region/<int:year>', views.budget_global_region, name='budget_global_region'),
+
+        ### Sales by Plant by Customer ###
+        path('sale/plant-customer/', views.cl_sale_plant_customer, name='cl_sale_plant_customer'),
+        path('sale/plant-customer/<slug:location_name_slug>', views.cy_sale_plant_customer, name='cy_sale_plant_customer'),
+        path('sale/plant-customer/<slug:location_name_slug>/<int:year>', views.sale_plant_customer, name='sale_plant_customer'),
+
+        ### Sales by Plant by Sector ###
+        path('sale/plant-sector/', views.cl_sale_plant_sector, name='cl_sale_plant_sector'),
+        path('sale/plant-sector/<slug:location_name_slug>', views.cy_sale_plant_sector, name='cy_sale_plant_sector'),
+        path('sale/plant-sector/<slug:location_name_slug>/<int:year>', views.sale_plant_sector, name='sale_plant_sector'),
+
+        ### Sales by Region by Plant ###
+        path('sale/region-plant/', views.cl_sale_region_plant, name='cl_sale_region_plant'),
+        path('sale/region-plant/<slug:region_name_slug>', views.cy_sale_region_plant, name='cy_sale_region_plant'),
+        path('sale/region-plant/<slug:region_name_slug>/<int:year>', views.sale_region_plant, name='sale_region_plant'),
+
+        ### Sales by Region by Customer ###
+        path('sale/region-customer/', views.cl_sale_region_customer, name='cl_sale_region_customer'),
+        path('sale/region-customer/<slug:region_name_slug>', views.cy_sale_region_customer, name='cy_sale_region_customer'),
+        path('sale/region-customer/<slug:region_name_slug>/<int:year>', views.sale_region_customer, name='sale_region_customer'),
+
+        ### Sales by Region by Sector ###
+        path('sale/region-sector/', views.cl_sale_region_sector, name='cl_sale_region_sector'),
+        path('sale/region-sector/<slug:region_name_slug>', views.cy_sale_region_sector, name='cy_sale_region_sector'),
+        path('sale/region-sector/<slug:region_name_slug>/<int:year>', views.sale_region_sector, name='sale_region_sector'),
+
+        ### Global sales by Plant ###
+        path('sale/global-plant/', views.cy_sale_global_plant, name='cy_sale_global_plant'),
+        path('sale/global-plant/<int:year>', views.sale_global_plant, name='sale_global_plant'),
+        
+        ### Global sales by Customer ###
+        path('sale/global-customer/', views.cy_sale_global_customer, name='cy_sale_global_customer'),
+        path('sale/global-customer/<int:year>', views.sale_global_customer, name='sale_global_customer'),
+
+        ### Global sales by Sector ###
+        path('sale/global-sector/', views.cy_sale_global_sector, name='cy_sale_global_sector'),
+        path('sale/global-sector/<int:year>', views.sale_global_sector, name='sale_global_sector'),
+
+        ### Global sales by Region ###
+        path('sale/global-region/', views.cy_sale_global_region, name='cy_sale_global_region'),
+        path('sale/global-region/<int:year>', views.sale_global_region, name='sale_global_region'),
 ]
