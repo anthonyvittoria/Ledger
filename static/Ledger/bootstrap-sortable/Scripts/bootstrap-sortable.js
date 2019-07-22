@@ -33,7 +33,7 @@
         emptyEnd;
 
     $.bootstrapSortable = function (options) {
-        if (options == undefined) {
+        if (options === undefined) {
             initialize({});
         }
         else if (options.constructor === Boolean) {
@@ -49,14 +49,15 @@
 
     function initialize(options) {
         // Check if moment.js is available
-        var momentJsAvailable = (typeof moment !== 'undefined');
+        var momentJsAvailable = (typeof moment !== "undefined");
 
         // Set class based on sign parameter
         signClass = !options.sign ? "arrow" : options.sign;
 
         // Set sorting algorithm
-        if (options.customSort == 'default')
+        if (options.customSort == 'default') {
             options.customSort = defaultSortEngine;
+        }
         sortEngine = options.customSort || sortEngine || defaultSortEngine;
 
         emptyEnd = options.emptyEnd;
@@ -68,10 +69,10 @@
             $this.find('span.sign').remove();
 
             // Add placeholder cells for colspans
-            $this.find('> thead [colspan]').each(function () {
+            $this.find("> thead [colspan]").each(function () {
                 var colspan = parseFloat($(this).attr('colspan'));
                 for (var i = 1; i < colspan; i++) {
-                    $(this).after('<th class="colspan-compensate">');
+                    $(this).after("<th class='colspan-compensate'>");
                 }
             });
 

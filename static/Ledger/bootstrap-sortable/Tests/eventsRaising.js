@@ -1,14 +1,14 @@
-﻿jasmine.getFixtures().fixturesPath = 'base/Tests/';
+﻿jasmine.getFixtures().fixturesPath = "base/Tests/";
 
-describe('Events raising', function () {
+describe("Events raising", function () {
     beforeEach(function () {
-        jasmine.getFixtures().load('eventsRaising.html');
+        jasmine.getFixtures().load("eventsRaising.html");
     });
 
     it("before-sort is raised on initialization", function () {
-        var table = $('table.sortable');
+        var table = $("table.sortable");
         var wasRaised = false;
-        table.on('before-sort', function() {
+        table.on("before-sort", function() {
             wasRaised = true;
         });
         $.bootstrapSortable();
@@ -16,9 +16,9 @@ describe('Events raising', function () {
     });
 
     it("sorted is raised on initialization", function () {
-        var table = $('table.sortable');
+        var table = $("table.sortable");
         var wasRaised = false;
-        table.on('sorted', function () {
+        table.on("sorted", function () {
             wasRaised = true;
         });
         $.bootstrapSortable();
@@ -26,24 +26,24 @@ describe('Events raising', function () {
     });
 
     it("before-sort is raised on manual sorting", function () {
-        var table = $('table.sortable');
+        var table = $("table.sortable");
         var wasRaised = false;
         $.bootstrapSortable();
-        table.on('before-sort', function () {
+        table.on("before-sort", function () {
             wasRaised = true;
         });
-        $.bootstrapSortable({ sortingHeader: $('#h2') });
+        $.bootstrapSortable({ sortingHeader: $("#h2") });
         expect(wasRaised).toBe(true);
     });
 
     it("sorted is raised on manual sorting", function () {
-        var table = $('table.sortable');
+        var table = $("table.sortable");
         var wasRaised = false;
         $.bootstrapSortable();
-        table.on('sorted', function () {
+        table.on("sorted", function () {
             wasRaised = true;
         });
-        $.bootstrapSortable({ sortingHeader: $('#h2') });
+        $.bootstrapSortable({ sortingHeader: $("#h2") });
         expect(wasRaised).toBe(true);
     });
 })

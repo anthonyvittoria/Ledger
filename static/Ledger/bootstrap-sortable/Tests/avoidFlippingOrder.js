@@ -27,7 +27,7 @@ describe('Avoid flipping order', function () {
     it("Click h2 and h1, 'a' is first", function () {
         $.bootstrapSortable({ sortingHeader: $('#h2') });
         $.bootstrapSortable({ sortingHeader: $('#h1') });
-        var index = $('#az').index('tbody tr');
+        var index = $("#az").index("tbody tr");
         expect(index).toBe(0);
     });
 })
