@@ -22,6 +22,7 @@ class SaleAdmin(admin.ModelAdmin):
     list_filter = ('location', 'customer',)
     exclude = ['q1', 'q2', 'q3', 'q4']
 
+    @classmethod
     def format_date(self, obj):
         return obj.date.strftime('%b, %Y')
 

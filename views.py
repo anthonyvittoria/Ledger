@@ -967,7 +967,6 @@ def budget_global_sector(request, year): # Budget table view
             sector_data[budget.customer.sector]['q3'] += budget.q3
             sector_data[budget.customer.sector]['q4'] += budget.q4
     
-    location = budget_objects[0].location
     jan_total = 0
     feb_total = 0
     mar_total = 0
@@ -2105,7 +2104,6 @@ def sale_global_sector(request, year):
             sector_data[sale.customer.sector]['q3'] += sale.q3
             sector_data[sale.customer.sector]['q4'] += sale.q4
     
-    location = sale_objects[0].location
     jan_total = 0
     feb_total = 0
     mar_total = 0
@@ -2290,7 +2288,6 @@ def sale_global_region(request, year):
     return render(request, 'Ledger/sale.html', context)
 
 def form_budget(request):
-    
     BudgetFormSet = modelformset_factory(Budget, fields='__all__', extra=4)
     form = BudgetFormSet(queryset=Budget.objects.none())
     return render(request, 'Ledger/form_budget.html', {'form': form})
