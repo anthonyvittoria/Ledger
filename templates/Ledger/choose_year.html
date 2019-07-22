@@ -6,7 +6,11 @@
             <h3 class="mt-5 mx-auto text-center">Select year</h3>
             <div class="list-group my-5 mx-auto" style="width: 20em;">
                 {% for year in years %}
-                    <a href="{% url 'budget_region_sector' region_name_slug year %}" style="text-decoration: none;"><button type="button" class="list-group-item list-group-item-action my-1">{{ year }}</button></a>
+                    {% if location_name_slug %}
+                    <a href="{% url redirect location_name_slug year %}" style="text-decoration: none;"><button type="button" class="list-group-item list-group-item-action my-1">{{ year }}</button></a>
+                    {% else %}
+                    <a href="{% url redirect year %}" style="text-decoration: none;"><button type="button" class="list-group-item list-group-item-action my-1">{{ year }}</button></a>
+                    {% endif %}
                 {% endfor %}
             </div>
         {% endif %}

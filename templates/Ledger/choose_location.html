@@ -5,7 +5,7 @@
     <h3>Select plant location</h3>
     <div class="list-group mx-auto mt-5" style="width: 20em;">
         {% for location in locations %}
-                    <a href="{% url 'cy_budget_plant_customer' location.slug %}" style="text-decoration: none;"><button type="button" class="list-group-item list-group-item-action my-1">{{ location }}</button></a>
+            <a href="{% url redirect location.slug %}" style="text-decoration: none;"><button type="button" class="list-group-item list-group-item-action my-1">{{ location }}</button></a>
         {% endfor %}
 
     </div>
