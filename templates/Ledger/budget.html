@@ -6,7 +6,7 @@
 
         {% if budget_data %}
         <table class="table table-hover table-bordered sortable my-5 text-left">
-            <thead class="thead-light">
+            <thead class="thead-light" style="-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;" unselectable="on" onselectstart="return false;" onmousedown="return false;">
                 <tr>
                     <th scope="col">{{ first_col|capfirst }}</th>
                     {% if second_col %}
