@@ -1,7 +1,7 @@
 from django.shortcuts import render
-from django.forms import modelformset_factory
 
-from .models import Budget, Sale
+from . import forms
+from .models import Budget, Sale, Location
 
 def index(request):
     return render(request, 'Ledger/index.html')
@@ -2285,7 +2285,16 @@ def sale_global_region(request, year):
     }
     return render(request, 'Ledger/sale.html', context)
 
-def form_budget(request):
-    BudgetFormSet = modelformset_factory(Budget, fields='__all__', extra=4)
-    form = BudgetFormSet(queryset=Budget.objects.none())
-    return render(request, 'Ledger/form_budget.html', {'form': form})
+def form_budget(request, location_name_slug):
+    location = Location.objects.get(slug=location_name_slug)
+    formset = forms.BudgetFormSet()
+    if request.method == 'POST':
+        formset = forms.BudgetFormSet(request.POST,
+                                      queryset=Budget.objects.filter(location__slug=location_name_slug))
+
+        if formset.is_valid():
+            instances = formset.save(commit=False)
+
+            for instance in instances:
+                instance.save() 
+    return render(request, 'Ledger/form_budget.html', {'formset': formset})
