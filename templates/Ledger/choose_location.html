@@ -3,10 +3,14 @@
 {% block body %}
 <div class="container mt-5 mx-auto text-center">
     <h3>Select plant location</h3>
+    {% if locations %}
     <div class="list-group mx-auto mt-5" style="width: 20em;">
         {% for location in locations %}
             <a href="{% url redirect location.slug %}" style="text-decoration: none;"><button type="button" class="list-group-item list-group-item-action my-1">{{ location }}</button></a>
         {% endfor %}
+    {% else %}
+    <h6 class="mt-5">No data could be loaded!</h6>
+    {% endif %}
 
     </div>
 </div>

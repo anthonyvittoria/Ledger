@@ -1,9 +1,9 @@
 {% extends 'Ledger/base.html' %} {% load static %}{% load humanize %}
 
     {% block body%}
-        <div class="container">
-        {% if years %}
-            <h3 class="mt-5 mx-auto text-center">Select year</h3>
+        <div class="container mt-5 mx-auto text-center">
+            <h3>Select year</h3>
+            {% if years %}
             <div class="list-group my-5 mx-auto" style="width: 20em;">
                 {% for year in years %}
                     {% if location_name_slug %}
@@ -13,7 +13,9 @@
                     {% endif %}
                 {% endfor %}
             </div>
-        {% endif %}
+            {% else %}
+            <h6 class="mt-5 mx-auto">No data could be loaded!</h6>
+            {% endif %}
         </div>
 
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
