@@ -1,0 +1,16 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    padding-top: 3em;
+}
+.table {
+    width: 60%;
+    margin: 0 auto;
+    float: none;
+}
+.logo {
+    font-family: 'Montserrat', 'Roboto', sans-serif;
+    font-size: 4em;
+    font-weight: bold;
+    letter-spacing: -2px;
+}
