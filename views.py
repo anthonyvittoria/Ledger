@@ -1,6 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
+from django.forms import inlineformset_factory
 
-from . import forms
 from .models import Budget, Sale, Location
 
 def index(request):
@@ -681,7 +684,7 @@ def cy_budget_global_plant(request): # Choose year
 
 def budget_global_plant(request, year): # Budget table view
     
-    budget_objects = Budget.objects.all().order_by('location__name')
+    budget_objects = Budget.objects.filter(year=year).order_by('location__name')
 
     plant_data = {} # create dictionary of data for each plant
     for budget in budget_objects:
@@ -803,7 +806,7 @@ def cy_budget_global_customer(request): # Choose year
 
 def budget_global_customer(request, year): # Budget table view
 
-    budget_objects = Budget.objects.all().order_by('customer__name')
+    budget_objects = Budget.objects.filter(year=year).order_by('customer__name')
 
     customer_data = {} # create dictionary of data for each customer
     for budget in budget_objects:
@@ -925,7 +928,7 @@ def cy_budget_global_sector(request): # Choose year
 
 def budget_global_sector(request, year): # Budget table view
     
-    budget_objects = Budget.objects.all().order_by('customer__sector')
+    budget_objects = Budget.objects.filter(year=year).order_by('customer__sector')
 
     sector_data = {} # create dictionary of data for each sector
     for budget in budget_objects:
@@ -1047,7 +1050,7 @@ def cy_budget_global_region(request): # Choose year
 
 def budget_global_region(request, year): # Budget table view
     
-    budget_objects = Budget.objects.all().order_by('location__region')
+    budget_objects = Budget.objects.filter(year=year).order_by('location__region')
 
     region_data = {} # create dictionary of data for each region
     for budget in budget_objects:
@@ -1817,7 +1820,7 @@ def cy_sale_global_plant(request):
 
 def sale_global_plant(request, year):
 
-    sale_objects = Sale.objects.all().order_by('location__name')
+    sale_objects = Sale.objects.filter(year=year).order_by('location__name')
 
     plant_data = {} # create dictionary of data for each plant
     for sale in sale_objects:
@@ -1939,7 +1942,7 @@ def cy_sale_global_customer(request):
 
 def sale_global_customer(request, year):
 
-    sale_objects = Sale.objects.all().order_by('customer__name')
+    sale_objects = Sale.objects.filter(year=year).order_by('customer__name')
 
     customer_data = {} # create dictionary of data for each customer
     for sale in sale_objects:
@@ -2061,7 +2064,7 @@ def cy_sale_global_sector(request):
 
 def sale_global_sector(request, year):
 
-    sale_objects = Sale.objects.all().order_by('customer__sector')
+    sale_objects = Sale.objects.filter(year=year).order_by('customer__sector')
 
     sector_data = {} # create dictionary of data for each sector
     for sale in sale_objects:
@@ -2183,7 +2186,7 @@ def cy_sale_global_region(request):
 
 def sale_global_region(request, year):
 
-    sale_objects = Sale.objects.all().order_by('location__region')
+    sale_objects = Sale.objects.filter(year=year).order_by('location__region')
 
     region_data = {} # create dictionary of data for each region
     for sale in sale_objects:
@@ -2287,14 +2290,18 @@ def sale_global_region(request, year):
 
 def form_budget(request, location_name_slug):
     location = Location.objects.get(slug=location_name_slug)
-    formset = forms.BudgetFormSet()
+    BudgetInlineFormSet = inlineformset_factory(Location, Budget, fields=(
+        'customer', 'jan', 'feb',
+        'mar', 'apr', 'may', 'jun',
+        'jul', 'aug', 'sep', 'oct',
+        'nov', 'dec', 'year',
+    ), extra=1, min_num=1)
     if request.method == 'POST':
-        formset = forms.BudgetFormSet(request.POST,
-                                      queryset=Budget.objects.filter(location__slug=location_name_slug))
-
+        formset = BudgetInlineFormSet(request.POST, instance=location)
         if formset.is_valid():
-            instances = formset.save(commit=False)
-
-            for instance in instances:
-                instance.save() 
-    return render(request, 'Ledger/form_budget.html', {'formset': formset})
+            formset.save()
+            messages.success(request, "Budget updated successfully.")
+            return HttpResponseRedirect('')
+    else:
+        formset = BudgetInlineFormSet(instance=location)
+    return render(request, 'Ledger/form_budget.html', {'formset': formset, 'location': location})

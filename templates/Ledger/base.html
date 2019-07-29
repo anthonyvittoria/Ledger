@@ -12,17 +12,24 @@
         <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet"> 
         <link rel="icon" type="image/png" href="{% static 'Ledger/img/favicon.ico' %}" sizes="32x32" />
         
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="{% static 'Ledger/css/bootstrap.min.css' %}">
 
-        <link rel="stylesheet" href="{% static 'Ledger/main.css' %}">
-        <link rel="stylesheet" href="{% static 'Ledger/bootstrap-sortable/Contents/bootstrap-sortable.css' %}">
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="{% static 'Ledger/css/main.css' %}">
+
+        <!-- MDB -->
+        <link rel="stylesheet" href="{% static 'Ledger/css/mdb.min.css' %}">
+
+        {% block links %}{% endblock %}
+
 {% endblock %}
 
 {% block navbar %}
 
-<nav class="navbar fixed-top border-bottom navbar-expand-lg navbar-light bg-light">
+<nav class="navbar fixed-top border-bottom navbar-expand-lg navbar-dark mdb-color">
   <a class="navbar-brand font-weight-bold" href="{% url 'index' %}" style="font-family: 'Montserrat', sans-serif; letter-spacing: -0.5px;">
-    <img src="{% static 'Ledger/img/navbarlogo.png' %}" width="32px" height="32px" class="mr-1"/>
+    <!-- <img src="{% static 'Ledger/img/navbarlogo.png' %}" width="32px" height="32px" class="mr-1"/> -->
     Ledger
   </a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample05" aria-controls="navbarsExample05" aria-expanded="false" aria-label="Toggle navigation">
@@ -34,8 +41,9 @@
       <li class="nav-item">
         <a class="nav-link" href="{% url 'admin:index' %}">Admin</a>
       </li>
-      <li class="nav-item dropdown">
-      </li>
+      <li class="nav-item">
+          <a class="nav-link" href="{% url 'form_budget' 'elk-grove' %}">Form</a>
+        </li>
     </ul>
   </div>
 </nav>

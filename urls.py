@@ -4,7 +4,7 @@ from . import views
 
 urlpatterns = [
         path('', views.index, name='index'),
-        path('form/<slug:location_name_slug>', views.form_budget, name='form_budget'),
+        path('form/<slug:location_name_slug>/', views.form_budget, name='form_budget'),
 
         ### Budget by Plant by Customer ###
         path('budget/plant-customer/', views.cl_budget_plant_customer, name='cl_budget_plant_customer'),

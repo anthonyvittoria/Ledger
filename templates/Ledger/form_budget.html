@@ -1,13 +1,82 @@
 {% extends 'Ledger/base.html' %} {% load static %}
 
 {% block body %}
-<div class="container my-5">
+<div class="container-fluid my-5 mx-auto">
+    {% if messages %}
+    <div class="alert alert-success">
+        {% for message in messages %}
+        {{ message }}
+        {% endfor %}
+    </div>
+    {% endif %}
+    <h3 class="text-center">Editing {{ location }} {{ year }} Budget</h3>
     <form method="post">
         {% csrf_token %}
-        {{ formset.as_p }}
-        <button type="submit">Submit</button>
+        {{ formset.management_form }}
+        <table id="table" class="mx-auto table table-bordered my-5">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">Customer</th>
+                    <th scope="col">Jan</th>
+                    <th scope="col">Feb</th>
+                    <th scope="col">Mar</th>
+                    <th scope="col">Apr</th>
+                    <th scope="col">May</th>
+                    <th scope="col">Jun</th>
+                    <th scope="col">Jul</th>
+                    <th scope="col">Aug</th>
+                    <th scope="col">Sep</th>
+                    <th scope="col">Oct</th>
+                    <th scope="col">Nov</th>
+                    <th scope="col">Dec</th>
+                    <th scope="col">Year</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for form in formset %}
+                {{ form.id }}
+                <tr class="formset_row">
+                    <td class="mdb-select md-form">{{ form.customer }}</td>
+                    <td>{{ form.jan }}</td>
+                    <td>{{ form.feb }}</td>
+                    <td>{{ form.mar }}</td>
+                    <td>{{ form.apr }}</td>
+                    <td>{{ form.may }}</td>
+                    <td>{{ form.jun }}</td>
+                    <td>{{ form.jul }}</td>
+                    <td>{{ form.aug }}</td>
+                    <td>{{ form.sep }}</td>
+                    <td>{{ form.oct }}</td>
+                    <td>{{ form.nov }}</td>
+                    <td>{{ form.dec }}</td>
+                    <td>{{ form.year }}</td>
+                    <td>{{ form.DELETE }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <input type="submit" class="btn btn-info" value="Save"/>
     </form>
+    {% if form.errors %}
+    {{ form.errors }}
+    {% endif %}
 
 </div>
+<!-- jQuery -->
+<script type="text/javascript" src="{% static 'Ledger/js/jquery-3.4.1.min.js' %}"></script>
+<!-- MDB -->
+<script type="text/javascript" src="{% static 'Ledger/js/mdb.min.js' %}"></script>
+<!-- Popper -->
+<script type="text/javascript" src="{% static 'Ledger/js/popper.min.js' %}"></script>
+
+<script src="{% static 'Ledger/jquery.formset.js' %}"></script>
+<script type="text/javascript">
+    $('.formset_row').formset({
+        addText: 'Add budget row',
+        deleteText: 'Remove',
+        prefix: 'location_id'
+    });
+</script>
 
 {% endblock %}
