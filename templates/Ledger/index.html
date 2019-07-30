@@ -1,5 +1,13 @@
 {% extends 'Ledger/base.html' %} {% load static %}
 
+{% block customstyle %}
+<style type="text/css">
+    .dropdown-item {
+        font-weight: 300;
+    }
+</style>
+{% endblock %}
+
 {% block body %}
     <div class="container mx-auto text-center">
         <h1 class="mx-auto mt-5 logo">Ledger</h1>

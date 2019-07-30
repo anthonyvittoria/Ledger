@@ -1,16 +1,16 @@
 {% extends 'Ledger/base.html' %} {% load static %} {% load humanize %}
 
-    {% block links %}
+    {% block customstyle %}
     <!-- MDB Datatables -->
     <link rel="stylesheet" href="{% static 'Ledger/css/addons/datatables.min.css' %}">
     {% endblock %}
 
     {% block body%}
+    <div class="container-fluid">
         <h3 class="mt-5 text-center">{% if global %}Global{% elif location %}{{ location }}{% elif region %}{{ region }}{% endif %} {{ year }} Budget</h3>
         <h5 class="text-center">by {{ first_col|capfirst }}</h5>
-        <div class="container">
             {% if budget_data %}
-            <table id="table" class="table table-hover table-bordered my-5 text-left">
+            <table id="table" class="table table-hover table-bordered table-sm my-5 mx-auto text-left" cellspacing=0 width="100%">
                 <thead class="thead-light" style="-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;" unselectable="on" onselectstart="return false;" onmousedown="return false;">
                     <tr>
                         <th scope="col">{{ first_col|capfirst }}</th>
@@ -39,7 +39,7 @@
                 <tbody>
                     {% for key, value in budget_data.items %}
                     <tr>
-                        <td title="{{ key }}">{{ key|truncatechars:10 }}</td>
+                        <td title="{{ key }}">{{ key|truncatechars:15 }}</td>
                         <td>{{ value.jan }}</td>
                         <td>{{ value.feb }}</td>
                         <td>{{ value.mar }}</td>
@@ -84,7 +84,7 @@
                 </tfoot>
             </table>
             {% else %}
-            <table id="table" class="table table-hover table-bordered my-5 text-left">
+            <table id="table" class="table table-hover table-bordered table-sm my-5 mx-auto text-left" cellspacing=0 width="100%">
                     <thead class="thead-light">
                         <tr>
                             <th scope="col">{{ first_col|capfirst }}</th>
@@ -113,7 +113,7 @@
                     <tbody>
                         {% for budget in budget_objects %}
                         <tr>
-                            <td title="{{ budget.customer }}">{{ budget.customer|truncatechars:10 }}</td>
+                            <td title="{{ budget.customer }}">{{ budget.customer|truncatechars:15 }}</td>
                             <td title="{{ budget.customer.sector }}">{{ budget.customer.sector|truncatechars:10 }}</td>
                             <td>{{ budget.jan }}</td>
                             <td>{{ budget.feb }}</td>
@@ -173,6 +173,13 @@
             $(document).ready(function () {
                 $('#table').DataTable();
                 $('.dataTables_length').addClass('bs-select');
+                // $('#table').DataTable({
+                //     "scrollY": "50vh",
+                //     "scrollCollapse": true,
+                // });
+                // $('.dataTables_length').addClass('bs-select');
+                // });
             });
+            
         </script>
     {% endblock %}

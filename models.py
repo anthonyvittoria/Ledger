@@ -41,7 +41,7 @@ class Sector(models.Model):
 
 class Customer(models.Model):
     name = models.CharField(max_length=45)
-    sector = models.ForeignKey(Sector, on_delete=models.PROTECT)
+    sector = models.ForeignKey(Sector, on_delete=models.PROTECT, default=None, null=True)
     slug = models.SlugField(unique=True, default="")
 
     def save(self, *args, **kwargs):

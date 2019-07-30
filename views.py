@@ -16,7 +16,7 @@ def cl_budget_plant_customer(request): # Choose location
 
     # create unique list of plant locations that have budgets recorded for them
     budget_locations = []
-    for budget in Budget.objects.all():
+    for budget in Budget.objects.all().order_by('location__name'):
         if budget.location not in budget_locations:
             budget_locations.append(budget.location)
 
@@ -30,7 +30,7 @@ def cy_budget_plant_customer(request, location_name_slug): # Choose year for bud
     
     years = []
 
-    for budget in Budget.objects.filter(location__slug=location_name_slug):
+    for budget in Budget.objects.filter(location__slug=location_name_slug).order_by('year'):
         if budget.year not in years:
             years.append(budget.year)
 
@@ -118,7 +118,7 @@ def cl_budget_plant_sector(request): # Choose location
     budget_locations = []
 
     # create unique list of plant locations that have budgets recorded for them
-    for budget in Budget.objects.all():
+    for budget in Budget.objects.all().order_by('location__name'):
         if budget.location not in budget_locations:
             budget_locations.append(budget.location)
 
@@ -132,7 +132,7 @@ def cy_budget_plant_sector(request, location_name_slug): # Choose year
     
     years = []
 
-    for budget in Budget.objects.filter(location__slug=location_name_slug):
+    for budget in Budget.objects.filter(location__slug=location_name_slug).order_by('year'):
         if budget.year not in years:
             years.append(budget.year)
 
@@ -257,7 +257,7 @@ def budget_plant_sector(request, location_name_slug, year): # Budget table view
 def cl_budget_region_plant(request): # Choose location
     
     regions = []
-    for budget in Budget.objects.all():
+    for budget in Budget.objects.all().order_by('location__name'):
         if budget.location.region not in regions:
             regions.append(budget.location.region)
     
@@ -271,7 +271,7 @@ def cy_budget_region_plant(request, region_name_slug): # Choose year
     
     years = []
 
-    for budget in Budget.objects.filter(location__region__slug=region_name_slug):
+    for budget in Budget.objects.filter(location__region__slug=region_name_slug).order_by('year'):
         if budget.year not in years:
             years.append(budget.year)
     
@@ -394,7 +394,7 @@ def budget_region_plant(request, region_name_slug, year): # Budget table view
 
 def cl_budget_region_customer(request): # Choose location
     regions = []
-    for budget in Budget.objects.all():
+    for budget in Budget.objects.all().order_by('location__name'):
         if budget.location.region not in regions:
             regions.append(budget.location.region)
     
@@ -408,7 +408,7 @@ def cy_budget_region_customer(request, region_name_slug): # Choose year
 
     years = []
 
-    for budget in Budget.objects.filter(location__region__slug=region_name_slug):
+    for budget in Budget.objects.filter(location__region__slug=region_name_slug).order_by('year'):
         if budget.year not in years:
             years.append(budget.year)
     
@@ -533,7 +533,7 @@ def budget_region_customer(request, region_name_slug, year):
 def cl_budget_region_sector(request): # Choose location
 
     regions = []
-    for budget in Budget.objects.all():
+    for budget in Budget.objects.all().order_by('location__name'):
         if budget.location.region not in regions:
             regions.append(budget.location.region)
     
@@ -547,7 +547,7 @@ def cy_budget_region_sector(request, region_name_slug): # Choose year
 
     years = []
 
-    for budget in Budget.objects.filter(location__region__slug=region_name_slug):
+    for budget in Budget.objects.filter(location__region__slug=region_name_slug).order_by('year'):
         if budget.year not in years:
             years.append(budget.year)
     
@@ -671,7 +671,7 @@ def budget_region_sector(request, region_name_slug, year): # Budget table view
 def cy_budget_global_plant(request): # Choose year
     
     years = []
-    for budget in Budget.objects.all():
+    for budget in Budget.objects.all().order_by('year'):
         if budget.year not in years:
             years.append(budget.year)
 
@@ -793,7 +793,7 @@ def budget_global_plant(request, year): # Budget table view
 def cy_budget_global_customer(request): # Choose year
 
     years = []
-    for budget in Budget.objects.all():
+    for budget in Budget.objects.all().order_by('year'):
         if budget.year not in years:
             years.append(budget.year)
 
@@ -915,7 +915,7 @@ def budget_global_customer(request, year): # Budget table view
 def cy_budget_global_sector(request): # Choose year
 
     years = []
-    for budget in Budget.objects.all():
+    for budget in Budget.objects.all().order_by('year'):
         if budget.year not in years:
             years.append(budget.year)
 
@@ -1037,7 +1037,7 @@ def budget_global_sector(request, year): # Budget table view
 def cy_budget_global_region(request): # Choose year
 
     years = []
-    for budget in Budget.objects.all():
+    for budget in Budget.objects.all().order_by('year'):
         if budget.year not in years:
             years.append(budget.year)
 
@@ -1158,7 +1158,7 @@ def budget_global_region(request, year): # Budget table view
 def cl_sale_plant_customer(request):
 
     sale_locations = []
-    for sale in Sale.objects.all():
+    for sale in Sale.objects.all().order_by('location__name'):
         if sale.location not in sale_locations:
             sale_locations.append(sale.location)
 
@@ -1172,7 +1172,7 @@ def cy_sale_plant_customer(request, location_name_slug):
 
     years = []
 
-    for sale in Sale.objects.filter(location__slug=location_name_slug):
+    for sale in Sale.objects.filter(location__slug=location_name_slug).order_by('year'):
         if sale.year not in years:
             years.append(sale.year)
 
@@ -1258,7 +1258,7 @@ def sale_plant_customer(request, location_name_slug, year):
 def cl_sale_plant_sector(request):
 
     sale_locations = []
-    for sale in Sale.objects.all():
+    for sale in Sale.objects.all().order_by('location__name'):
         if sale.location not in sale_locations:
             sale_locations.append(sale.location)
 
@@ -1272,7 +1272,7 @@ def cy_sale_plant_sector(request, location_name_slug):
 
     years = []
 
-    for sale in Sale.objects.filter(location__slug=location_name_slug):
+    for sale in Sale.objects.filter(location__slug=location_name_slug).order_by('year'):
         if sale.year not in years:
             years.append(sale.year)
 
@@ -1396,7 +1396,7 @@ def sale_plant_sector(request, location_name_slug, year):
 def cl_sale_region_plant(request):
 
     regions = []
-    for sale in Sale.objects.all():
+    for sale in Sale.objects.all().order_by('location__name'):
         if sale.location.region not in regions:
             regions.append(sale.location.region)
     
@@ -1410,7 +1410,7 @@ def cy_sale_region_plant(request, region_name_slug):
 
     years = []
 
-    for sale in Sale.objects.filter(location__region__slug=region_name_slug):
+    for sale in Sale.objects.filter(location__region__slug=region_name_slug).order_by('year'):
         if sale.year not in years:
             years.append(sale.year)
     
@@ -1533,7 +1533,7 @@ def sale_region_plant(request, region_name_slug, year):
 def cl_sale_region_customer(request):
 
     regions = []
-    for sale in Sale.objects.all():
+    for sale in Sale.objects.all().order_by('location__name'):
         if sale.location.region not in regions:
             regions.append(sale.location.region)
     
@@ -1547,7 +1547,7 @@ def cy_sale_region_customer(request, region_name_slug):
 
     years = []
 
-    for sale in Sale.objects.filter(location__region__slug=region_name_slug):
+    for sale in Sale.objects.filter(location__region__slug=region_name_slug).order_by('year'):
         if sale.year not in years:
             years.append(sale.year)
     
@@ -1670,7 +1670,7 @@ def sale_region_customer(request, region_name_slug, year):
 def cl_sale_region_sector(request):
 
     regions = []
-    for sale in Sale.objects.all():
+    for sale in Sale.objects.all().order_by('location__name'):
         if sale.location.region not in regions:
             regions.append(sale.location.region)
     
@@ -1684,7 +1684,7 @@ def cy_sale_region_sector(request, region_name_slug):
 
     years = []
 
-    for sale in Sale.objects.filter(location__region__slug=region_name_slug):
+    for sale in Sale.objects.filter(location__region__slug=region_name_slug).order_by('year'):
         if sale.year not in years:
             years.append(sale.year)
     
@@ -1807,7 +1807,7 @@ def sale_region_sector(request, region_name_slug, year):
 def cy_sale_global_plant(request):
 
     years = []
-    for sale in Sale.objects.all():
+    for sale in Sale.objects.all().order_by('year'):
         if sale.year not in years:
             years.append(sale.year)
 
@@ -1929,7 +1929,7 @@ def sale_global_plant(request, year):
 def cy_sale_global_customer(request):
 
     years = []
-    for sale in Sale.objects.all():
+    for sale in Sale.objects.all().order_by('year'):
         if sale.year not in years:
             years.append(sale.year)
 
@@ -2051,7 +2051,7 @@ def sale_global_customer(request, year):
 def cy_sale_global_sector(request):
 
     years = []
-    for sale in Sale.objects.all():
+    for sale in Sale.objects.all().order_by('year'):
         if sale.year not in years:
             years.append(sale.year)
 
@@ -2173,7 +2173,7 @@ def sale_global_sector(request, year):
 def cy_sale_global_region(request):
 
     years = []
-    for sale in Sale.objects.all():
+    for sale in Sale.objects.all().order_by('year'):
         if sale.year not in years:
             years.append(sale.year)
 
