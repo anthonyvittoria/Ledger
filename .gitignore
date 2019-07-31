@@ -4,6 +4,7 @@ static/Ledger/img/*
 !static/Ledger/img/navbarlogo.png
 static/Ledger/scss/*
 static/Ledger/js/*
+!static/Ledger/js/jquery.formset.js
 static/Ledger/css/*
 !static/Ledger/css/main.css
 *.pyc
