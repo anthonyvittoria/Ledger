@@ -11,42 +11,31 @@
 {% endblock %}
 
 {% block body %}
-    <div class="container mt-5 mx-auto text-center">
-        <h3>Select plant location</h3>
-        {% if locations %}
-        <table id="table" class="table table-hover table-borderless" cellspacing="0" width="50%">
-            <thead class="thead-light">
-                <tr>
-                    <th></th>
+<div class="container my-5 mx-auto text-center">
+    <h3>Select customer</h3>
+    {% if customers %}
+    <table id="table" class="table table-hover table-borderless" cellspacing="0" width="50%">
+        <thead class="thead-light">
+            <tr>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for customer in customers %}
+            
+                <tr data-href="{% url redirect customer.slug %}">
+                    <td>{{ customer }}</td>
                 </tr>
-            </thead>
-            <tbody>
-                {% for location in locations %}
-                
-                    <tr data-href="{% url redirect location.slug %}">
-                        <td>{{ location }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        {% else %}
-        <h6 class="mt-5">No data could be loaded!</h6>
-        {% endif %}
-        {% comment %}
-        <div class="list-group mx-auto mt-5" style="width: 20em;">
-            {% for location in locations %}
-                <a href="{% url redirect location.slug %}" style="text-decoration: none;"><button type="button" class="list-group-item list-group-item-action my-1">{{ location }}</button></a>
             {% endfor %}
-        {% else %}
-        <h6 class="mt-5">No data could be loaded!</h6>
-        {% endif %}
-
-        </div>
-        {% endcomment %}
-    </div>
+        </tbody>
+    </table>
+</div>
+{% endif %}}
 
 <!-- jQuery -->
 <script type="text/javascript" src="{% static 'Ledger/js/jquery-3.4.1.min.js' %}"></script>
+<!-- Popper -->
+<script type="text/javascript" src="{% static 'Ledger/js/popper.min.js' %}"></script>
 <!-- Bootstrap -->
 <script type="text/javascript" src="{% static 'Ledger/js/bootstrap.min.js' %}"></script>
 <!-- MDB Datatables -->

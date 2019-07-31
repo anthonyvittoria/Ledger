@@ -15,6 +15,7 @@
         <div class="btn-group mx-2">
             <button id="indexSale" class="mx-auto mb-1 btn btn-mdb-color btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Actuals</button>
             <div class="dropdown-menu" aria-labelledby="indexSale">
+                <a href="{% url 'cc_sale_customer_plant' %}" class="dropdown-item">Sales by Customer by Plant</a>
                 <a href="{% url 'cl_sale_plant_customer' %}" class="dropdown-item">Sales by Plant by Customer</a>
                 <a href="{% url 'cl_sale_plant_sector' %}" class="dropdown-item">Sales by Plant by Sector</a>
                 <a href="{% url 'cl_sale_region_plant' %}" class="dropdown-item">Sales by Region by Plant</a>
@@ -30,6 +31,7 @@
         <div class="btn-group mx-2">
             <button id="indexBudget" class="mx-auto mb-1 btn btn-mdb-color btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Budgets</button>
             <div class="dropdown-menu" aria-labelledby="indexBudget">
+                <a href="{% url 'cc_budget_customer_plant' %}" class="dropdown-item">Sales by Customer by Plant</a>
                 <a href="{% url 'cl_budget_plant_customer' %}" class="dropdown-item">Sales by Plant by Customer</a>
                 <a href="{% url 'cl_budget_plant_sector' %}" class="dropdown-item">Sales by Plant by Sector</a>
                 <a href="{% url 'cl_budget_region_plant' %}" class="dropdown-item">Sales by Region by Plant</a>

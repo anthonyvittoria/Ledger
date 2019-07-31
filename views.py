@@ -3,10 +3,147 @@ from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.forms import inlineformset_factory
 
-from .models import Budget, Sale, Location
+from .models import Budget, Customer, Sale, Location
 
 def index(request):
     return render(request, 'Ledger/index.html')
+
+#################################################
+########## BUDGET BY CUSTOMER BY PLANT ##########
+#################################################
+
+def cc_budget_customer_plant(request): #Choose customer
+    customers = []
+    for customer in Customer.objects.all().order_by('name'):
+        if customer not in customers:
+            customers.append(customer)
+
+    context = {
+        'customers': customers,
+        'redirect': 'cy_budget_customer_plant',
+    }
+    return render(request, 'Ledger/choose_customer.html', context)
+
+def cy_budget_customer_plant(request, customer_name_slug):
+
+    years = []
+
+    for budget in Budget.objects.filter(customer__slug=customer_name_slug).order_by('year'):
+        if budget.year not in years:
+            years.append(budget.year)
+
+    context = {
+        'years': years,
+        'location_name_slug': customer_name_slug,
+        'redirect': 'budget_customer_plant',
+    }
+    return render(request, 'Ledger/choose_year.html', context)
+
+def budget_customer_plant(request, customer_name_slug, year):
+    
+    budget_objects = Budget.objects.filter(customer__slug=customer_name_slug, year=year)
+
+    plant_data = {}
+    for budget in budget_objects:
+        if budget.location not in plant_data.keys():
+            plant_data[budget.location] = {
+                'jan': budget.jan,
+                'feb': budget.feb,
+                'mar': budget.mar,
+                'apr': budget.apr,
+                'may': budget.may,
+                'jun': budget.jun,
+                'jul': budget.jul,
+                'aug': budget.aug,
+                'sep': budget.sep,
+                'oct': budget.oct,
+                'nov': budget.nov,
+                'dec': budget.dec,
+                'q1': budget.q1,
+                'q2': budget.q2,
+                'q3': budget.q3,
+                'q4': budget.q4,
+            }
+        else:
+            plant_data[budget.location]['jan'] += budget.jan
+            plant_data[budget.location]['feb'] += budget.feb
+            plant_data[budget.location]['mar'] += budget.mar
+            plant_data[budget.location]['apr'] += budget.apr
+            plant_data[budget.location]['may'] += budget.may
+            plant_data[budget.location]['jun'] += budget.jun
+            plant_data[budget.location]['jul'] += budget.jul
+            plant_data[budget.location]['aug'] += budget.aug
+            plant_data[budget.location]['sep'] += budget.sep
+            plant_data[budget.location]['oct'] += budget.oct
+            plant_data[budget.location]['nov'] += budget.nov
+            plant_data[budget.location]['dec'] += budget.dec
+            plant_data[budget.location]['q1'] += budget.q1
+            plant_data[budget.location]['q2'] += budget.q2
+            plant_data[budget.location]['q3'] += budget.q3
+            plant_data[budget.location]['q4'] += budget.q4
+
+    jan_total = 0
+    feb_total = 0
+    mar_total = 0
+    apr_total = 0
+    may_total = 0
+    jun_total = 0
+    jul_total = 0
+    aug_total = 0
+    sep_total = 0
+    oct_total = 0
+    nov_total = 0
+    dec_total = 0
+    q1_total = 0
+    q2_total = 0
+    q3_total = 0
+    q4_total = 0
+    budget_total = 0
+
+    for plant in plant_data:
+        jan_total += plant_data[plant]['jan']
+        feb_total += plant_data[plant]['feb']
+        mar_total += plant_data[plant]['mar']
+        apr_total += plant_data[plant]['apr']
+        may_total += plant_data[plant]['may']
+        jun_total += plant_data[plant]['jun']
+        jul_total += plant_data[plant]['jul']
+        aug_total += plant_data[plant]['aug']
+        sep_total += plant_data[plant]['sep']
+        oct_total += plant_data[plant]['oct']
+        nov_total += plant_data[plant]['nov']
+        dec_total += plant_data[plant]['dec']
+        q1_total += plant_data[plant]['q1']
+        q2_total += plant_data[plant]['q2']
+        q3_total += plant_data[plant]['q3']
+        q4_total += plant_data[plant]['q4']
+        budget_total += (plant_data[plant]['q1'] + plant_data[plant]['q2'] + plant_data[plant]['q3'] + plant_data[plant]['q4'])
+
+    context = {
+    'budget_data': plant_data,
+    'first_col': 'plant',
+    'customer': Customer.objects.get(slug=customer_name_slug),
+    'year': year,
+    'jan_total': jan_total,
+    'feb_total': feb_total,
+    'mar_total': mar_total,
+    'apr_total': apr_total,
+    'may_total': may_total,
+    'jun_total': jun_total,
+    'jul_total': jul_total,
+    'aug_total': aug_total,
+    'sep_total': sep_total,
+    'oct_total': oct_total,
+    'nov_total': nov_total,
+    'dec_total': dec_total,
+    'q1_total': q1_total,
+    'q2_total': q2_total,
+    'q3_total': q3_total,
+    'q4_total': q4_total,
+    'budget_total': budget_total,
+    }
+    return render(request, 'Ledger/budget.html', context)
+
 
 #################################################
 ########## BUDGET BY PLANT BY CUSTOMER ##########
@@ -1150,6 +1287,142 @@ def budget_global_region(request, year): # Budget table view
     'budget_total': budget_total,
     }
     return render(request, 'Ledger/budget.html', context)
+
+#################################################
+########## ACTUALS BY CUSTOMER BY PLANT ##########
+#################################################
+
+def cc_sale_customer_plant(request): #Choose customer
+    customers = []
+    for customer in Customer.objects.all().order_by('name'):
+        if customer not in customers:
+            customers.append(customer)
+
+    context = {
+        'customers': customers,
+        'redirect': 'cy_sale_customer_plant',
+    }
+    return render(request, 'Ledger/choose_customer.html', context)
+
+def cy_sale_customer_plant(request, customer_name_slug):
+
+    years = []
+
+    for sale in Sale.objects.filter(customer__slug=customer_name_slug).order_by('year'):
+        if sale.year not in years:
+            years.append(sale.year)
+
+    context = {
+        'years': years,
+        'location_name_slug': customer_name_slug,
+        'redirect': 'sale_customer_plant',
+    }
+    return render(request, 'Ledger/choose_year.html', context)
+
+def sale_customer_plant(request, customer_name_slug, year):
+    
+    sale_objects = Sale.objects.filter(customer__slug=customer_name_slug, year=year)
+
+    plant_data = {}
+    for sale in sale_objects:
+        if sale.location not in plant_data.keys():
+            plant_data[budget.location] = {
+                'jan': sale.jan,
+                'feb': sale.feb,
+                'mar': sale.mar,
+                'apr': sale.apr,
+                'may': sale.may,
+                'jun': sale.jun,
+                'jul': sale.jul,
+                'aug': sale.aug,
+                'sep': sale.sep,
+                'oct': sale.oct,
+                'nov': sale.nov,
+                'dec': sale.dec,
+                'q1': sale.q1,
+                'q2': sale.q2,
+                'q3': sale.q3,
+                'q4': sale.q4,
+            }
+        else:
+            plant_data[sale.location]['jan'] += sale.jan
+            plant_data[sale.location]['feb'] += sale.feb
+            plant_data[sale.location]['mar'] += sale.mar
+            plant_data[sale.location]['apr'] += sale.apr
+            plant_data[sale.location]['may'] += sale.may
+            plant_data[sale.location]['jun'] += sale.jun
+            plant_data[sale.location]['jul'] += sale.jul
+            plant_data[sale.location]['aug'] += sale.aug
+            plant_data[sale.location]['sep'] += sale.sep
+            plant_data[sale.location]['oct'] += sale.oct
+            plant_data[sale.location]['nov'] += sale.nov
+            plant_data[sale.location]['dec'] += sale.dec
+            plant_data[sale.location]['q1'] += sale.q1
+            plant_data[sale.location]['q2'] += sale.q2
+            plant_data[sale.location]['q3'] += sale.q3
+            plant_data[sale.location]['q4'] += sale.q4
+
+    jan_total = 0
+    feb_total = 0
+    mar_total = 0
+    apr_total = 0
+    may_total = 0
+    jun_total = 0
+    jul_total = 0
+    aug_total = 0
+    sep_total = 0
+    oct_total = 0
+    nov_total = 0
+    dec_total = 0
+    q1_total = 0
+    q2_total = 0
+    q3_total = 0
+    q4_total = 0
+    sale_total = 0
+
+    for plant in plant_data:
+        jan_total += plant_data[plant]['jan']
+        feb_total += plant_data[plant]['feb']
+        mar_total += plant_data[plant]['mar']
+        apr_total += plant_data[plant]['apr']
+        may_total += plant_data[plant]['may']
+        jun_total += plant_data[plant]['jun']
+        jul_total += plant_data[plant]['jul']
+        aug_total += plant_data[plant]['aug']
+        sep_total += plant_data[plant]['sep']
+        oct_total += plant_data[plant]['oct']
+        nov_total += plant_data[plant]['nov']
+        dec_total += plant_data[plant]['dec']
+        q1_total += plant_data[plant]['q1']
+        q2_total += plant_data[plant]['q2']
+        q3_total += plant_data[plant]['q3']
+        q4_total += plant_data[plant]['q4']
+        sale_total += (plant_data[plant]['q1'] + plant_data[plant]['q2'] + plant_data[plant]['q3'] + plant_data[plant]['q4'])
+
+    context = {
+    'sale_data': plant_data,
+    'first_col': 'plant',
+    'customer': Customer.objects.get(slug=customer_name_slug),
+    'year': year,
+    'jan_total': jan_total,
+    'feb_total': feb_total,
+    'mar_total': mar_total,
+    'apr_total': apr_total,
+    'may_total': may_total,
+    'jun_total': jun_total,
+    'jul_total': jul_total,
+    'aug_total': aug_total,
+    'sep_total': sep_total,
+    'oct_total': oct_total,
+    'nov_total': nov_total,
+    'dec_total': dec_total,
+    'q1_total': q1_total,
+    'q2_total': q2_total,
+    'q3_total': q3_total,
+    'q4_total': q4_total,
+    'sale_total': sale_total,
+    }
+    return render(request, 'Ledger/sale.html', context)
 
 ##################################################
 ########## ACTUALS BY PLANT BY CUSTOMER ##########

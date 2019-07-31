@@ -6,6 +6,11 @@ urlpatterns = [
         path('', views.index, name='index'),
         path('form/<slug:location_name_slug>/', views.form_budget, name='form_budget'),
 
+        ### Budget by Customer by Plant ###
+        path('budget/customer-plant/', views.cc_budget_customer_plant, name='cc_budget_customer_plant'),
+        path('budget/customer-plant/<slug:customer_name_slug>/', views.cy_budget_customer_plant, name='cy_budget_customer_plant'),
+        path('budget/customer-plant/<slug:customer_name_slug>/<int:year>/', views.budget_customer_plant, name='budget_customer_plant'),
+
         ### Budget by Plant by Customer ###
         path('budget/plant-customer/', views.cl_budget_plant_customer, name='cl_budget_plant_customer'),
         path('budget/plant-customer/<slug:location_name_slug>', views.cy_budget_plant_customer, name='cy_budget_plant_customer'),
@@ -46,6 +51,11 @@ urlpatterns = [
         ### Global budget by Sector ###
         path('budget/global-region/', views.cy_budget_global_region, name='cy_budget_global_region'),
         path('budget/global-region/<int:year>', views.budget_global_region, name='budget_global_region'),
+
+        ### Sales by Customer by Plant ###
+        path('sale/customer-plant/', views.cc_sale_customer_plant, name='cc_sale_customer_plant'),
+        path('sale/customer-plant/<slug:customer_name_slug>/', views.cy_sale_customer_plant, name='cy_sale_customer_plant'),
+        path('sale/customer-plant/<slug:customer_name_slug>/<int:year>/', views.sale_customer_plant, name='sale_customer_plant'),
 
         ### Sales by Plant by Customer ###
         path('sale/plant-customer/', views.cl_sale_plant_customer, name='cl_sale_plant_customer'),
