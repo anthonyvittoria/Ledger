@@ -85,7 +85,6 @@ class Budget(models.Model):
 class Sale(models.Model):
     location = models.ForeignKey(Location, on_delete=models.PROTECT)
     customer = models.ForeignKey(Customer, on_delete=models.PROTECT)
-    # capability = models.ForeignKey(Capability, on_delete=models.PROTECT)
     jan = models.IntegerField(default=None)
     feb = models.IntegerField(default=None)
     mar = models.IntegerField(default=None)
