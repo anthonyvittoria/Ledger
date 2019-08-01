@@ -14,9 +14,9 @@ def index(request):
 
 def cc_budget_customer_plant(request): #Choose customer
     customers = []
-    for customer in Customer.objects.all().order_by('name'):
-        if customer not in customers:
-            customers.append(customer)
+    for budget in Budget.objects.all():
+        if budget.customer not in customers:
+            customers.append(budget.customer)
 
     context = {
         'customers': customers,
@@ -1294,9 +1294,9 @@ def budget_global_region(request, year): # Budget table view
 
 def cc_sale_customer_plant(request): #Choose customer
     customers = []
-    for customer in Customer.objects.all().order_by('name'):
-        if customer not in customers:
-            customers.append(customer)
+    for sale in Sale.objects.all().order_by('customer__name'):
+        if sale.customer not in customers:
+            customers.append(sale.customer)
 
     context = {
         'customers': customers,
@@ -1326,7 +1326,7 @@ def sale_customer_plant(request, customer_name_slug, year):
     plant_data = {}
     for sale in sale_objects:
         if sale.location not in plant_data.keys():
-            plant_data[budget.location] = {
+            plant_data[sale.location] = {
                 'jan': sale.jan,
                 'feb': sale.feb,
                 'mar': sale.mar,
