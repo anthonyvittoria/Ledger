@@ -12,7 +12,7 @@
     <div class="container mx-auto text-center">
         <h1 class="mx-auto mt-5 logo">Ledger</h1>
         <h5 class="mx-auto mt-1 mb-4">Budget management made simple.</h5>
-        <div class="btn-group mx-2">
+        <div class="btn-group dropright mx-2">
             <button id="indexSale" class="mx-auto mb-1 btn btn-mdb-color btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Actuals</button>
             <div class="dropdown-menu" aria-labelledby="indexSale">
                 <a href="{% url 'cc_sale_customer_plant' %}" class="dropdown-item">Sales by Customer by Plant</a>
@@ -28,7 +28,7 @@
                 <a href="{% url 'cy_sale_global_region' %}" class="dropdown-item">Global sales by Region</a>
             </div>
         </div>
-        <div class="btn-group mx-2">
+        <div class="btn-group dropright mx-2">
             <button id="indexBudget" class="mx-auto mb-1 btn btn-mdb-color btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Budgets</button>
             <div class="dropdown-menu" aria-labelledby="indexBudget">
                 <a href="{% url 'cc_budget_customer_plant' %}" class="dropdown-item">Sales by Customer by Plant</a>
