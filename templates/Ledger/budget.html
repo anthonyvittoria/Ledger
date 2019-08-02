@@ -3,6 +3,13 @@
     {% block customstyle %}
     <!-- MDB Datatables -->
     <link rel="stylesheet" href="{% static 'Ledger/css/addons/datatables.min.css' %}">
+    <link rel="stylesheet" href="{% static 'Ledger/css/addons/buttons.bootstrap4.min.css' %}">
+    <link rel="stylesheet" href="{% static 'Ledger/css/addons/buttons.dataTables.min.css' %}">
+    <style type="text/css">
+        .inline {
+            display: inline-block;
+        }
+    </style>
     {% endblock %}
 
     {% block body%}
@@ -10,6 +17,7 @@
         <h3 class="mt-5 text-center">{% if global %}Global{% elif location %}{{ location }}{% elif region %}{{ region }}{% elif customer %}{{ customer }}{% endif %} {{ year }} Budget</h3>
         <h5 class="text-center">by {{ first_col|capfirst }}</h5>
             {% if budget_data %}
+            <div class="row"></div>
             <table id="table" class="table table-hover table-bordered table-sm my-5 mx-auto text-left" cellspacing=0 width="100%">
                 <thead class="thead-light" style="-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;" unselectable="on" onselectstart="return false;" onmousedown="return false;">
                     <tr>
@@ -162,19 +170,35 @@
         </div>
         <!-- jQuery -->
         <script type="text/javascript" src="{% static 'Ledger/js/jquery-3.4.1.min.js' %}"></script>
-        <!-- Popper -->
-        <script type="text/javascript" src="{% static 'Ledger/js/popper.min.js' %}"></script>
         <!-- Bootstrap -->
         <script type="text/javascript" src="{% static 'Ledger/js/bootstrap.min.js' %}"></script>
         <!-- MDB Datatables -->
         <script type="text/javascript" src="{% static 'Ledger/js/addons/datatables.min.js' %}"></script>
+        <!-- Datatables buttons -->
+        <script type="text/javascript" src="{% static 'Ledger/js/addons/dataTables.buttons.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'Ledger/js/addons/buttons.bootstrap4.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'Ledger/js/addons/buttons.html5.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'Ledger/js/addons/buttons.print.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'Ledger/js/addons/buttons.flash.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'Ledger/js/addons/jszip.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'Ledger/js/addons/pdfmake.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'Ledger/js/addons/vfs_fonts.min.js' %}"></script>
 
         <script>
             $(document).ready(function () {
                 $('#table').DataTable({
                     "pageLength": 10,
+                    "dom": "fltBp",
+                    "buttons": [
+                        'copy',
+                        'excel',
+                        'pdf',
+                        'print'
+                    ]
                 });
-                $('.dataTables_length').addClass('bs-select');
+                $('.dataTables_length').addClass('bs-select inline float-left mb-3');
+                $('.dataTables_filter').addClass('bs-select inline float-right');
+                $('.btn').addClass('mx-1 btn-mdb-color');
             });
             
         </script>
