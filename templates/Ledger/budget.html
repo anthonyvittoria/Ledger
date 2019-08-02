@@ -1,5 +1,10 @@
 {% extends 'Ledger/base.html' %} {% load static %} {% load humanize %}
 
+    {% block title %}
+    <title id="title">
+        {% if global %}Global{% elif location %}{{ location }}{% elif region %}{{ region }}{% elif customer %}{{ customer }}{% endif %} {{ year }} Budget by {{ first_col|capfirst }}
+    </title>
+    {% endblock %}
     {% block customstyle %}
     <!-- MDB Datatables -->
     <link rel="stylesheet" href="{% static 'Ledger/css/addons/datatables.min.css' %}">
@@ -182,22 +187,26 @@
         <script type="text/javascript" src="{% static 'Ledger/js/addons/buttons.flash.min.js' %}"></script>
         <script type="text/javascript" src="{% static 'Ledger/js/addons/jszip.min.js' %}"></script>
         <script type="text/javascript" src="{% static 'Ledger/js/addons/pdfmake.min.js' %}"></script>
-        <script type="text/javascript" src="{% static 'Ledger/js/addons/vfs_fonts.min.js' %}"></script>
+        <script type="text/html" src="{% static 'Ledger/js/addons/vfs_fonts.js' %}"></script>
 
         <script>
             $(document).ready(function () {
                 $('#table').DataTable({
                     "pageLength": 10,
-                    "dom": "fltBp",
+                    "dom": "fltBpi",
                     "buttons": [
                         'copy',
-                        'excel',
+                        {
+                            extend: 'excel',
+                            messageTop: ''
+                        },
                         'pdf',
                         'print'
                     ]
                 });
                 $('.dataTables_length').addClass('bs-select inline float-left mb-3');
                 $('.dataTables_filter').addClass('bs-select inline float-right');
+                $('.btn').removeClass('btn-secondary');                
                 $('.btn').addClass('mx-1 btn-mdb-color');
             });
             
