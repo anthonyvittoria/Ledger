@@ -14,7 +14,7 @@
 <div class="container my-5 mx-auto text-center">
     <h3>Select customer</h3>
     {% if customers %}
-    <table id="table" class="table table-hover table-borderless" cellspacing="0" width="50%">
+    <table id="table" class="table table-hover table-bordered" cellspacing="0" width="50%">
         <thead class="thead-light">
             <tr>
                 <th></th>
@@ -49,6 +49,7 @@
             "bInfo": false,
         });
         $('.dataTables_length').addClass('bs-select');
+        $('th').hide();
     });
 </script>
 <script>
