@@ -2,22 +2,40 @@ from django.contrib import admin
 
 from .models import Budget, Capability, Customer, Location, Region, Sale, Sector
 
+class BudgetInlineLocation(admin.TabularInline):
+    model = Budget
+    fields = ['customer', 'year', 'jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec']
+    exclude = ['q1', 'q2', 'q3', 'q4']
+
+class BudgetInlineCustomer(admin.TabularInline):
+    model = Budget
+    fields = ['location', 'year', 'jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec']
+    exclude = ['q1', 'q2', 'q3', 'q4']
+
 class RegionAdmin(admin.ModelAdmin):
+    ordering = ('name',)
     prepopulated_fields = {'slug': ('name',)}
 
 class LocationAdmin(admin.ModelAdmin):
+    ordering = ('name',)
     prepopulated_fields = {'slug': ('name',)}
+    inlines = [BudgetInlineLocation,]
 
 class CustomerAdmin(admin.ModelAdmin):
+    ordering = ('name',)
     prepopulated_fields = {'slug': ('name',)}
     list_filter = ('sector',)
+    inlines = [BudgetInlineCustomer,]
 
 class BudgetAdmin(admin.ModelAdmin):
+    ordering = ('location',)
     list_display = ('location', 'customer', 'year')
     list_filter = ('year', 'customer__sector', 'location', 'customer')
     exclude = ['q1', 'q2', 'q3', 'q4']
 
+
 class SaleAdmin(admin.ModelAdmin):
+    ordering = ('location',)
     list_display = ('location', 'customer', 'format_date')
     list_filter = ('location', 'customer',)
     exclude = ['q1', 'q2', 'q3', 'q4']
