@@ -3,11 +3,13 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-        path('', views.index, name='index'),
+        # path('', views.index, name='index'),
+        path('', views.IndexView.as_view(), name='index'),
         path('form/<slug:location_name_slug>/', views.form_budget, name='form_budget'),
 
         ### Budget by Customer by Plant ###
-        path('budget/customer-plant/', views.cc_budget_customer_plant, name='cc_budget_customer_plant'),
+        # path('budget/customer-plant/', views.cc_budget_customer_plant, name='cc_budget_customer_plant'),
+        path('budget/customer-plant/', views.ChooseCustomerBudgetView.as_view(), name='cc_budget_customer_plant'),
         path('budget/customer-plant/<slug:customer_name_slug>/', views.cy_budget_customer_plant, name='cy_budget_customer_plant'),
         path('budget/customer-plant/<slug:customer_name_slug>/<int:year>/', views.budget_customer_plant, name='budget_customer_plant'),
 
@@ -53,7 +55,8 @@ urlpatterns = [
         path('budget/global-region/<int:year>', views.budget_global_region, name='budget_global_region'),
 
         ### Sales by Customer by Plant ###
-        path('sale/customer-plant/', views.cc_sale_customer_plant, name='cc_sale_customer_plant'),
+        # path('sale/customer-plant/', views.cc_sale_customer_plant, name='cc_sale_customer_plant'),
+        path('sale/customer-plant/', views.ChooseCustomerSaleView.as_view(), name='cc_sale_customer_plant'),
         path('sale/customer-plant/<slug:customer_name_slug>/', views.cy_sale_customer_plant, name='cy_sale_customer_plant'),
         path('sale/customer-plant/<slug:customer_name_slug>/<int:year>/', views.sale_customer_plant, name='sale_customer_plant'),
 

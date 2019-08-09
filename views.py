@@ -3,29 +3,29 @@ from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.forms import inlineformset_factory
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic.list import ListView
+from django.views.generic.base import TemplateView
 
 from .models import Budget, Customer, Sale, Location
 
-@login_required
-def index(request):
-    return render(request, 'Ledger/index.html')
+class IndexView(LoginRequiredMixin, TemplateView):
+    template_name = 'Ledger/index.html'
 
 #################################################
 ########## BUDGET BY CUSTOMER BY PLANT ##########
 #################################################
 
-@login_required
-def cc_budget_customer_plant(request): #Choose customer
-    customers = []
-    for budget in Budget.objects.all():
-        if budget.customer not in customers:
-            customers.append(budget.customer)
+class ChooseCustomerView(LoginRequiredMixin, ListView):
+    model = Customer
+    template_name = 'Ledger/choose_customer.html'
 
-    context = {
-        'customers': customers,
-        'redirect': 'cy_budget_customer_plant',
-    }
-    return render(request, 'Ledger/choose_customer.html', context)
+class ChooseCustomerBudgetView(ChooseCustomerView):
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['redirect'] = 'cy_budget_customer_plant'
+        return context
 
 @login_required
 def cy_budget_customer_plant(request, customer_name_slug):
@@ -1320,18 +1320,12 @@ def budget_global_region(request, year): # Budget table view
 ########## ACTUALS BY CUSTOMER BY PLANT ##########
 #################################################
 
-@login_required
-def cc_sale_customer_plant(request): #Choose customer
-    customers = []
-    for sale in Sale.objects.all().order_by('customer__name'):
-        if sale.customer not in customers:
-            customers.append(sale.customer)
+class ChooseCustomerSaleView(ChooseCustomerView):
 
-    context = {
-        'customers': customers,
-        'redirect': 'cy_sale_customer_plant',
-    }
-    return render(request, 'Ledger/choose_customer.html', context)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['redirect'] = 'cy_sale_customer_plant'
+        return context
 
 @login_required
 def cy_sale_customer_plant(request, customer_name_slug):
