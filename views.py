@@ -2,9 +2,11 @@ from django.shortcuts import render
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.forms import inlineformset_factory
+from django.contrib.auth.decorators import login_required
 
 from .models import Budget, Customer, Sale, Location
 
+@login_required
 def index(request):
     return render(request, 'Ledger/index.html')
 
@@ -12,6 +14,7 @@ def index(request):
 ########## BUDGET BY CUSTOMER BY PLANT ##########
 #################################################
 
+@login_required
 def cc_budget_customer_plant(request): #Choose customer
     customers = []
     for budget in Budget.objects.all():
@@ -24,6 +27,7 @@ def cc_budget_customer_plant(request): #Choose customer
     }
     return render(request, 'Ledger/choose_customer.html', context)
 
+@login_required
 def cy_budget_customer_plant(request, customer_name_slug):
 
     years = []
@@ -39,6 +43,7 @@ def cy_budget_customer_plant(request, customer_name_slug):
     }
     return render(request, 'Ledger/choose_year.html', context)
 
+@login_required
 def budget_customer_plant(request, customer_name_slug, year):
     
     budget_objects = Budget.objects.filter(customer__slug=customer_name_slug, year=year)
@@ -149,6 +154,7 @@ def budget_customer_plant(request, customer_name_slug, year):
 ########## BUDGET BY PLANT BY CUSTOMER ##########
 #################################################
 
+@login_required
 def cl_budget_plant_customer(request): # Choose location
 
     # create unique list of plant locations that have budgets recorded for them
@@ -163,6 +169,7 @@ def cl_budget_plant_customer(request): # Choose location
     }
     return render(request, 'Ledger/choose_location.html', context)
 
+@login_required
 def cy_budget_plant_customer(request, location_name_slug): # Choose year for budget by plant by customer
     
     years = []
@@ -178,6 +185,7 @@ def cy_budget_plant_customer(request, location_name_slug): # Choose year for bud
     }
     return render(request, 'Ledger/choose_year.html', context)
 
+@login_required
 def budget_plant_customer(request, location_name_slug, year): # Budget table view
 
     budget_objects = Budget.objects.filter(location__slug=location_name_slug, year=year).order_by('customer__name')
@@ -250,6 +258,7 @@ def budget_plant_customer(request, location_name_slug, year): # Budget table vie
 ########## BUDGET BY PLANT BY SECTOR ##########
 ###############################################
 
+@login_required
 def cl_budget_plant_sector(request): # Choose location
 
     budget_locations = []
@@ -265,6 +274,7 @@ def cl_budget_plant_sector(request): # Choose location
     }
     return render(request, 'Ledger/choose_location.html', context)
 
+@login_required
 def cy_budget_plant_sector(request, location_name_slug): # Choose year
     
     years = []
@@ -280,6 +290,7 @@ def cy_budget_plant_sector(request, location_name_slug): # Choose year
     }
     return render(request, 'Ledger/choose_year.html', context)
 
+@login_required
 def budget_plant_sector(request, location_name_slug, year): # Budget table view
 
     # list of budgets corresponding to this plant and year
@@ -391,6 +402,7 @@ def budget_plant_sector(request, location_name_slug, year): # Budget table view
 ########## BUDGET BY REGION BY PLANT ##########
 ###############################################
 
+@login_required
 def cl_budget_region_plant(request): # Choose location
     
     regions = []
@@ -404,6 +416,7 @@ def cl_budget_region_plant(request): # Choose location
     }
     return render(request, 'Ledger/choose_location.html', context)
 
+@login_required
 def cy_budget_region_plant(request, region_name_slug): # Choose year
     
     years = []
@@ -419,6 +432,7 @@ def cy_budget_region_plant(request, region_name_slug): # Choose year
     }
     return render(request, 'Ledger/choose_year.html', context)
 
+@login_required
 def budget_region_plant(request, region_name_slug, year): # Budget table view
 
     # list of budgets corresponding to this region and year
@@ -529,6 +543,7 @@ def budget_region_plant(request, region_name_slug, year): # Budget table view
 ########## BUDGET BY REGION BY CUSTOMER ##########
 ##################################################
 
+@login_required
 def cl_budget_region_customer(request): # Choose location
     regions = []
     for budget in Budget.objects.all().order_by('location__name'):
@@ -541,6 +556,7 @@ def cl_budget_region_customer(request): # Choose location
     }
     return render(request, 'Ledger/choose_location.html', context)
 
+@login_required
 def cy_budget_region_customer(request, region_name_slug): # Choose year
 
     years = []
@@ -556,6 +572,7 @@ def cy_budget_region_customer(request, region_name_slug): # Choose year
     }
     return render(request, 'Ledger/choose_year.html', context)
 
+@login_required
 def budget_region_customer(request, region_name_slug, year):
 
     
@@ -667,6 +684,7 @@ def budget_region_customer(request, region_name_slug, year):
 ########## BUDGET BY REGION BY SECTOR ##########
 ################################################
 
+@login_required
 def cl_budget_region_sector(request): # Choose location
 
     regions = []
@@ -680,6 +698,7 @@ def cl_budget_region_sector(request): # Choose location
     }
     return render(request, 'Ledger/choose_location.html', context)
 
+@login_required
 def cy_budget_region_sector(request, region_name_slug): # Choose year
 
     years = []
@@ -695,6 +714,7 @@ def cy_budget_region_sector(request, region_name_slug): # Choose year
     }
     return render(request, 'Ledger/choose_year.html', context)
 
+@login_required
 def budget_region_sector(request, region_name_slug, year): # Budget table view
 
     # list of budgets corresponding to this plant and year
@@ -805,6 +825,7 @@ def budget_region_sector(request, region_name_slug, year): # Budget table view
 ########## GLOBAL BUDGET BY PLANT ##########
 ###########################################
 
+@login_required
 def cy_budget_global_plant(request): # Choose year
     
     years = []
@@ -818,6 +839,7 @@ def cy_budget_global_plant(request): # Choose year
     }
     return render(request, 'Ledger/choose_year.html', context)
 
+@login_required
 def budget_global_plant(request, year): # Budget table view
     
     budget_objects = Budget.objects.filter(year=year).order_by('location__name')
@@ -927,6 +949,7 @@ def budget_global_plant(request, year): # Budget table view
 ########## GLOBAL BUDGET BY CUSTOMER ##########
 ##############################################
 
+@login_required
 def cy_budget_global_customer(request): # Choose year
 
     years = []
@@ -940,6 +963,7 @@ def cy_budget_global_customer(request): # Choose year
     }
     return render(request, 'Ledger/choose_year.html', context)
 
+@login_required
 def budget_global_customer(request, year): # Budget table view
 
     budget_objects = Budget.objects.filter(year=year).order_by('customer__name')
@@ -1049,6 +1073,7 @@ def budget_global_customer(request, year): # Budget table view
 ########## GLOBAL BUDGET BY SECTOR ##########
 ############################################
 
+@login_required
 def cy_budget_global_sector(request): # Choose year
 
     years = []
@@ -1062,6 +1087,7 @@ def cy_budget_global_sector(request): # Choose year
     }
     return render(request, 'Ledger/choose_year.html', context)
 
+@login_required
 def budget_global_sector(request, year): # Budget table view
     
     budget_objects = Budget.objects.filter(year=year).order_by('customer__sector')
@@ -1171,6 +1197,7 @@ def budget_global_sector(request, year): # Budget table view
 ########## GLOBAL BUDGET BY REGION ##########
 ############################################
 
+@login_required
 def cy_budget_global_region(request): # Choose year
 
     years = []
@@ -1184,6 +1211,7 @@ def cy_budget_global_region(request): # Choose year
     }
     return render(request, 'Ledger/choose_year.html', context)
 
+@login_required
 def budget_global_region(request, year): # Budget table view
     
     budget_objects = Budget.objects.filter(year=year).order_by('location__region')
@@ -1292,6 +1320,7 @@ def budget_global_region(request, year): # Budget table view
 ########## ACTUALS BY CUSTOMER BY PLANT ##########
 #################################################
 
+@login_required
 def cc_sale_customer_plant(request): #Choose customer
     customers = []
     for sale in Sale.objects.all().order_by('customer__name'):
@@ -1304,6 +1333,7 @@ def cc_sale_customer_plant(request): #Choose customer
     }
     return render(request, 'Ledger/choose_customer.html', context)
 
+@login_required
 def cy_sale_customer_plant(request, customer_name_slug):
 
     years = []
@@ -1319,6 +1349,7 @@ def cy_sale_customer_plant(request, customer_name_slug):
     }
     return render(request, 'Ledger/choose_year.html', context)
 
+@login_required
 def sale_customer_plant(request, customer_name_slug, year):
     
     sale_objects = Sale.objects.filter(customer__slug=customer_name_slug, year=year)
@@ -1428,6 +1459,7 @@ def sale_customer_plant(request, customer_name_slug, year):
 ########## ACTUALS BY PLANT BY CUSTOMER ##########
 ##################################################
 
+@login_required
 def cl_sale_plant_customer(request):
 
     sale_locations = []
@@ -1441,6 +1473,7 @@ def cl_sale_plant_customer(request):
     }
     return render(request, 'Ledger/choose_location.html', context)
 
+@login_required
 def cy_sale_plant_customer(request, location_name_slug):
 
     years = []
@@ -1456,6 +1489,7 @@ def cy_sale_plant_customer(request, location_name_slug):
     }
     return render(request, 'Ledger/choose_year.html', context)
 
+@login_required
 def sale_plant_customer(request, location_name_slug, year):
 
     sale_objects = Sale.objects.filter(location__slug=location_name_slug, year=year).order_by('customer__name')
@@ -1528,6 +1562,7 @@ def sale_plant_customer(request, location_name_slug, year):
 ########## ACTUALS BY PLANT BY SECTOR ##########
 ################################################
 
+@login_required
 def cl_sale_plant_sector(request):
 
     sale_locations = []
@@ -1541,6 +1576,7 @@ def cl_sale_plant_sector(request):
     }
     return render(request, 'Ledger/choose_location.html', context)
 
+@login_required
 def cy_sale_plant_sector(request, location_name_slug):
 
     years = []
@@ -1556,6 +1592,7 @@ def cy_sale_plant_sector(request, location_name_slug):
     }
     return render(request, 'Ledger/choose_year.html', context)
 
+@login_required
 def sale_plant_sector(request, location_name_slug, year):
 
     sale_objects = Sale.objects.filter(location__slug=location_name_slug, year=year).order_by('customer__sector')
@@ -1666,6 +1703,7 @@ def sale_plant_sector(request, location_name_slug, year):
 ########## ACTUALS BY REGION BY PLANT ##########
 ################################################
 
+@login_required
 def cl_sale_region_plant(request):
 
     regions = []
@@ -1679,6 +1717,7 @@ def cl_sale_region_plant(request):
     }
     return render(request, 'Ledger/choose_location.html', context)
 
+@login_required
 def cy_sale_region_plant(request, region_name_slug):
 
     years = []
@@ -1694,6 +1733,7 @@ def cy_sale_region_plant(request, region_name_slug):
     }
     return render(request, 'Ledger/choose_year.html', context)
 
+@login_required
 def sale_region_plant(request, region_name_slug, year):
     
     sale_objects = Sale.objects.filter(location__region__slug=region_name_slug, year=year).order_by('location__name')
@@ -1803,6 +1843,7 @@ def sale_region_plant(request, region_name_slug, year):
 ########## ACTUALS BY REGION BY CUSTOMER ##########
 ###################################################
 
+@login_required
 def cl_sale_region_customer(request):
 
     regions = []
@@ -1816,6 +1857,7 @@ def cl_sale_region_customer(request):
     }
     return render(request, 'Ledger/choose_location.html', context)
 
+@login_required
 def cy_sale_region_customer(request, region_name_slug):
 
     years = []
@@ -1831,6 +1873,7 @@ def cy_sale_region_customer(request, region_name_slug):
     }
     return render(request, 'Ledger/choose_year.html', context)
 
+@login_required
 def sale_region_customer(request, region_name_slug, year):
 
     sale_objects = Sale.objects.filter(location__region__slug=region_name_slug, year=year).order_by('customer__name')
@@ -1940,6 +1983,7 @@ def sale_region_customer(request, region_name_slug, year):
 ########## ACTUALS BY REGION BY SECTOR ##########
 #################################################
 
+@login_required
 def cl_sale_region_sector(request):
 
     regions = []
@@ -1953,6 +1997,7 @@ def cl_sale_region_sector(request):
     }
     return render(request, 'Ledger/choose_location.html', context)
 
+@login_required
 def cy_sale_region_sector(request, region_name_slug):
 
     years = []
@@ -1968,6 +2013,7 @@ def cy_sale_region_sector(request, region_name_slug):
     }
     return render(request, 'Ledger/choose_year.html', context)
 
+@login_required
 def sale_region_sector(request, region_name_slug, year):
     
     sale_objects = Sale.objects.filter(location__region__slug=region_name_slug, year=year).order_by('customer__sector')
@@ -2077,6 +2123,7 @@ def sale_region_sector(request, region_name_slug, year):
 ########## GLOBAL SALES BY PLANT ##########
 ###########################################
 
+@login_required
 def cy_sale_global_plant(request):
 
     years = []
@@ -2090,6 +2137,7 @@ def cy_sale_global_plant(request):
     }
     return render(request, 'Ledger/choose_year.html', context)
 
+@login_required
 def sale_global_plant(request, year):
 
     sale_objects = Sale.objects.filter(year=year).order_by('location__name')
@@ -2199,6 +2247,7 @@ def sale_global_plant(request, year):
 ########## GLOBAL SALES BY CUSTOMER ##########
 ##############################################
 
+@login_required
 def cy_sale_global_customer(request):
 
     years = []
@@ -2212,6 +2261,7 @@ def cy_sale_global_customer(request):
     }
     return render(request, 'Ledger/choose_year.html', context)
 
+@login_required
 def sale_global_customer(request, year):
 
     sale_objects = Sale.objects.filter(year=year).order_by('customer__name')
@@ -2321,6 +2371,7 @@ def sale_global_customer(request, year):
 ########## GLOBAL SALES BY SECTOR ##########
 ############################################
 
+@login_required
 def cy_sale_global_sector(request):
 
     years = []
@@ -2334,6 +2385,7 @@ def cy_sale_global_sector(request):
     }
     return render(request, 'Ledger/choose_year.html', context)
 
+@login_required
 def sale_global_sector(request, year):
 
     sale_objects = Sale.objects.filter(year=year).order_by('customer__sector')
@@ -2443,6 +2495,7 @@ def sale_global_sector(request, year):
 ########## GLOBAL SALES BY REGION ##########
 ############################################
 
+@login_required
 def cy_sale_global_region(request):
 
     years = []
@@ -2456,6 +2509,7 @@ def cy_sale_global_region(request):
     }
     return render(request, 'Ledger/choose_year.html', context)
 
+@login_required
 def sale_global_region(request, year):
 
     sale_objects = Sale.objects.filter(year=year).order_by('location__region')
@@ -2560,6 +2614,7 @@ def sale_global_region(request, year):
     }
     return render(request, 'Ledger/sale.html', context)
 
+@login_required
 def form_budget(request, location_name_slug):
     location = Location.objects.get(slug=location_name_slug)
     BudgetInlineFormSet = inlineformset_factory(Location, Budget, fields=(
