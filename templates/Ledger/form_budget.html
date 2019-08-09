@@ -1,4 +1,4 @@
-{% extends 'Ledger/base.html' %} {% load static %}
+{% extends 'Ledger/base.html' %} {% load static %} {% load crispy_forms_tags %}
 
 {% block body %}
 <div class="container-fluid my-5 mx-auto">
@@ -17,6 +17,7 @@
             <thead class="thead-light">
                 <tr>
                     <th scope="col">Customer</th>
+                    <th scope="col">Year</th>
                     <th scope="col">Jan</th>
                     <th scope="col">Feb</th>
                     <th scope="col">Mar</th>
@@ -29,7 +30,6 @@
                     <th scope="col">Oct</th>
                     <th scope="col">Nov</th>
                     <th scope="col">Dec</th>
-                    <th scope="col">Year</th>
                     <th></th>
                 </tr>
             </thead>
@@ -38,6 +38,7 @@
                 {{ form.id }}
                 <tr class="formset_row">
                     <td class="mdb-select md-form">{{ form.customer }}</td>
+                    <td>{{ form.year }}</td>
                     <td>{{ form.jan }}</td>
                     <td>{{ form.feb }}</td>
                     <td>{{ form.mar }}</td>
@@ -50,7 +51,6 @@
                     <td>{{ form.oct }}</td>
                     <td>{{ form.nov }}</td>
                     <td>{{ form.dec }}</td>
-                    <td>{{ form.year }}</td>
                     <td>{{ form.DELETE }}</td>
                 </tr>
                 {% endfor %}
