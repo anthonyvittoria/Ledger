@@ -13,7 +13,7 @@
 {% block body %}
 <div class="container mt-5 mx-auto text-center">
     <h3>Select customer</h3>
-    {% if customers %}
+    {% if object_list %}
     <table id="table" class="table table-hover table-borderless" cellspacing="0" width="50%">
         <thead class="thead-light">
             <tr>
@@ -21,7 +21,7 @@
             </tr>
         </thead>
         <tbody>
-            {% for customer in customers %}
+            {% for customer in object_list %}
             
                 <tr data-href="{% url redirect customer.slug %}">
                     <td>{{ customer }}</td>
