@@ -7,6 +7,6 @@ Ledger is a web application designed for enterprise budget management. As its fe
 ## Installing
 Clone this repository into your Django project directory and add 'Ledger' to `INSTALLED_APPS` in settings.py. Ledger does not require any non-standard Python packages except for Django 2.2:
 
-`pip install Django==2.2.3`
+`pip install Django==2.2.2`
 
 Ledger uses Bootstrap and MDBootstrap for styling and functionality. All necessary files can be found [here](https://mdbootstrap.com/docs/jquery/getting-started/download/).
