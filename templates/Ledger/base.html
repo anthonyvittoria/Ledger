@@ -6,51 +6,169 @@
 {% block head %}
 
 <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        {% block title %}<title>Ledger</title>{% endblock %}
-        <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700&display=swap" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css?family=Montserrat:700&display=swap" rel="stylesheet"> 
-        <link rel="icon" type="image/png" href="{% static 'Ledger/img/favicon.ico' %}" sizes="32x32" />
-        
-        <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="{% static 'Ledger/css/bootstrap.min.css' %}">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-        <!-- Custom CSS -->
-        <link rel="stylesheet" href="{% static 'Ledger/css/main.css' %}">
+{% block title %}<title>Ledger</title>{% endblock %}
 
-        <!-- MDB -->
-        <link rel="stylesheet" href="{% static 'Ledger/css/mdb.min.css' %}">
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Montserrat:700&display=swap" rel="stylesheet"> 
 
-        {% block customstyle %}{% endblock %}
+<!-- Favicon -->
+<link rel="icon" type="image/png" href="{% static 'Ledger/img/favicon.ico' %}" sizes="32x32" />
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="{% static 'Ledger/css/bootstrap.min.css' %}">
+
+<!-- Custom CSS -->
+<link rel="stylesheet" href="{% static 'Ledger/css/main.css' %}">
+
+<!-- MDB -->
+<link rel="stylesheet" href="{% static 'Ledger/css/mdb.min.css' %}">
+
+<!-- Fontawesome -->
+<link rel="stylesheet" href="{% static 'Ledger/css/fontawesome/all.css' %}">
+
+<style>
+.sidenav {
+  height: 100%; /* 100% Full-height */
+  width: 0; /* 0 width - change this with JavaScript */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Stay on top */
+  top: 0; /* Stay at the top */
+  left: 0;
+  background-color: #212529; /* MDB Color*/
+  overflow-x: hidden; /* Disable horizontal scroll */
+  padding-top: 60px; /* Place content 60px from the top */
+  transition: 0.3s; /* 0.3 second transition effect to slide in the sidenav */
+}
+.sidenav .panel {
+  color: #818181;
+}
+.sidenav button {
+  outline: none;
+}
+.sidenav a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 15px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+}
+.sidenav a:hover {
+  color: white;
+}
+.sidenav .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+.accordion {
+  background-color: #212529;
+  color: #818181;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+  transition: 0.4s;
+}
+.active, .accordion:hover {
+  background-color: #2d3339;
+}
+.accordion:after {
+  content: '+'; /* Unicode character for "plus" sign (+) */
+  font-size: 13px;
+  color: #777;
+  float: right;
+  margin-left: 5px;
+}
+.active:after {
+  content: "\2212";
+}
+.panel {
+  padding: 0 18px;
+  background-color: #212529;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+}
+.panel.show {
+  max-height: 500px;
+}
+</style>
+
+{% block customstyle %}{% endblock %}
 
 {% endblock %}
 </head>
 <body>
 {% block navbar %}
 
-<nav class="navbar fixed-top border-bottom navbar-expand-lg navbar-dark mdb-color">
-  <a class="navbar-brand font-weight-bold" href="{% url 'index' %}" style="font-family: 'Montserrat', sans-serif; letter-spacing: -0.5px;">
+<!-- Navbar -->
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark" style="background-color: #4f5963; min-height: 60px;">
+
+  <div id="mySidenav" class="sidenav">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <a href="{% url 'index' %}" class="navbar-brand" style="font-family: 'Montserrat', sans-serif; letter-spacing: -0.5px; font-size: 30px;">
+    <img src="{% static 'Ledger/img/navbarlogo.png' %}" alt="Ledger logo" width="32px" height="32px" class="mr-1"/>
+    Ledger
+    </a>
+    {% if user.is_authenticated %}
+    <button class="accordion">Actuals</button>
+    <div class="panel">
+        <a href="{% url 'cc_sale_customer_plant' %}">Customer by Plant</a>
+        <a href="{% url 'cl_sale_plant_customer' %}">Plant by Customer</a>
+        <a href="{% url 'cl_sale_plant_sector' %}">Plant by Sector</a>
+        <a href="{% url 'cl_sale_region_plant' %}">Region by Plant</a>
+        <a href="{% url 'cl_sale_region_customer' %}">Region by Customer</a>
+        <a href="{% url 'cl_sale_region_sector' %}">Region by Sector</a>
+        <a href="{% url 'cy_sale_global_plant' %}">Global by Plant</a>
+        <a href="{% url 'cy_sale_global_customer' %}">Global by Customer</a>
+        <a href="{% url 'cy_sale_global_sector' %}">Global by Sector</a>
+        <a href="{% url 'cy_sale_global_region' %}">Global by Region</a>
+    </div>
+    <button class="accordion">Budgets</button>
+    <div class="panel">
+      <a href="{% url 'cc_budget_customer_plant' %}">Customer by Plant</a>
+      <a href="{% url 'cl_budget_plant_customer' %}">Plant by Customer</a>
+      <a href="{% url 'cl_budget_plant_sector' %}">Plant by Sector</a>
+      <a href="{% url 'cl_budget_region_plant' %}">Region by Plant</a>
+      <a href="{% url 'cl_budget_region_customer' %}">Region by Customer</a>
+      <a href="{% url 'cl_budget_region_sector' %}">Region by Sector</a>
+      <a href="{% url 'cy_budget_global_plant' %}">Global by Plant</a>
+      <a href="{% url 'cy_budget_global_customer' %}">Global by Customer</a>
+      <a href="{% url 'cy_budget_global_sector' %}">Global by Sector</a>
+      <a href="{% url 'cy_budget_global_region' %}">Global by Region</a>
+    </div>
+    <button class="accordion">Administration</button>
+    <div class="panel">
+      <a href="{% url 'admin:index' %}">Admin Portal</a>
+      <a href="{% url 'register' %}">Register a user</a>
+    </div>
+    {% else %}
+    <a href="{% url 'login' %}">Login</a>
+    {% endif %}
+
+  </div>
+  
+  <!-- <a class="navbar-brand font-weight-bold" href="{% url 'index' %}" style="font-family: 'Montserrat', sans-serif; letter-spacing: -0.5px;">
     <img src="{% static 'Ledger/img/navbarlogo.png' %}" width="32px" height="32px" class="mr-1"/>
     Ledger
-  </a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample05" aria-controls="navbarsExample05" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+  </a> -->
+  <!-- Collapse button -->
+  <a class="mr-3 fa fa-lg fa-bars text-white" onclick="openNav()"></a>
 
   <div class="collapse navbar-collapse">
-    {% if user.is_authenticated %}
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'admin:index' %}">Admin Portal</a>
-      </li>
-      <li class="nav-item">
-          <a class="nav-link" href="{% url 'form_budget' 'elk-grove' %}">Edit Budget</a>
-      </li>
-      <li class="nav-item">
-          <a class="nav-link" href="{% url 'register' %}">Register</a>
-      </li>
-    </ul>
-    {% endif %}
     <ul class="navbar-nav ml-auto">
       {% if user.is_authenticated %}
       <li class="nav-item mr-2">
@@ -81,5 +199,44 @@
 </div>
 {% endif %}  
 
-{% block body %} {% endblock %}
+{% block body %} 
+
+
+{% endblock %}
+
+{% block javascript %}
+<script>
+    /* Set the width of the side navigation to 250px */
+  function openNav() {
+    document.getElementById("mySidenav").style.width = "250px";
+  }
+  
+  /* Set the width of the side navigation to 0 */
+  function closeNav() {
+    document.getElementById("mySidenav").style.width = "0";
+  }
+  </script>
+<script>
+var acc = document.getElementsByClassName("accordion");
+var i;
+
+function click_action() {
+  if (this.classList.contains('active')) {
+    this.classList.toggle('active');
+    this.nextElementSibling.classList.toggle('show');
+  } else {
+  $('.accordion').removeClass('active');
+  $('.panel').removeClass('show');
+
+  this.classList.toggle("active");
+  this.nextElementSibling.classList.toggle("show");
+  }
+}
+
+for (i = 0; i < acc.length; i++) {
+  acc[i].onclick = click_action;
+}
+</script>
+
+{% endblock %}
 </body>
