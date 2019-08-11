@@ -7,5 +7,7 @@ static/Ledger/js/*
 !static/Ledger/js/jquery.formset.js
 static/Ledger/css/*
 !static/Ledger/css/main.css
+static/Ledger/fonts/*
+static/Ledger/webfonts/*
 *.pyc
 *.pyo
