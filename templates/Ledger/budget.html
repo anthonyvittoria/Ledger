@@ -18,7 +18,7 @@
     {% endblock %}
 
     {% block body%}
-    <div class="container-fluid">
+    <div class="container-fluid bg-white">
         <h3 class="mt-5 text-center">{% if global %}Global{% elif location %}{{ location }}{% elif region %}{{ region }}{% elif customer %}{{ customer }}{% endif %} {{ year }} Budget</h3>
         <h5 class="text-center">by {{ first_col|capfirst }}</h5>
             {% if budget_data %}
@@ -203,8 +203,8 @@
                 });
                 $('.dataTables_length').addClass('bs-select inline float-left mb-3');
                 $('.dataTables_filter').addClass('bs-select inline float-right');
-                $('.btn').addClass('mx-1 btn-mdb-color');
-                $('.btn').removeClass('btn-secondary');                
+                $('.btn').addClass('mx-1 btn-primary');
+                $('.btn').removeClass('btn-secondary');
             });
             
         </script>

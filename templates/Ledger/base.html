@@ -117,6 +117,7 @@
 <!-- Navbar -->
 <nav class="navbar fixed-top navbar-expand-lg navbar-dark" style="background-color: #394047; min-height: 60px;">
 
+  <!-- Sidenav -->
   <div id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
     <a href="{% url 'index' %}" class="navbar-brand" style="font-family: 'Montserrat', sans-serif; letter-spacing: -0.5px; font-size: 30px;">
@@ -160,11 +161,9 @@
     {% endif %}
 
   </div>
-  
-  <!-- <a class="navbar-brand font-weight-bold" href="{% url 'index' %}" style="font-family: 'Montserrat', sans-serif; letter-spacing: -0.5px;">
-    <img src="{% static 'Ledger/img/navbarlogo.png' %}" width="32px" height="32px" class="mr-1"/>
-    Ledger
-  </a> -->
+
+  <!-- Navbar -->
+
   <!-- Collapse button -->
   <a class="mr-3 fa fa-lg fa-bars text-white" onclick="openNav()"></a>
 
@@ -208,11 +207,15 @@
 <script>
   /* Set the width of the side navigation to 250px */
 function openNav() {
+  $('.accordion').show();
+  $('.panel').show();
   document.getElementById("mySidenav").style.width = "250px";
 }
 
 /* Set the width of the side navigation to 0 */
 function closeNav() {
+  $('.accordion').hide();
+  $('.panel').hide();
   document.getElementById("mySidenav").style.width = "0";
   $('.accordion').removeClass("active");
   $('.panel').removeClass("show");

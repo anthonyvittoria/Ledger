@@ -1,50 +1,20 @@
 {% extends 'Ledger/base.html' %} {% load static %}
 
-{% block customstyle %}
-<style type="text/css">
-    .dropdown-item {
-        font-weight: 300;
-    }
-</style>
-{% endblock %}
-
 {% block body %}
-    <div class="container mx-auto text-center">
-        <h1 class="mx-auto mt-5 logo">Ledger</h1>
-        <h5 class="mx-auto mt-1 mb-4">Budget management made simple.</h5>
-        <div class="btn-group dropright mx-2">
-            <button id="indexSale" class="mx-auto mb-1 btn btn-mdb-color btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Actuals</button>
-            <div class="dropdown-menu" aria-labelledby="indexSale">
-                <a href="{% url 'cc_sale_customer_plant' %}" class="dropdown-item">Sales by Customer by Plant</a>
-                <a href="{% url 'cl_sale_plant_customer' %}" class="dropdown-item">Sales by Plant by Customer</a>
-                <a href="{% url 'cl_sale_plant_sector' %}" class="dropdown-item">Sales by Plant by Sector</a>
-                <a href="{% url 'cl_sale_region_plant' %}" class="dropdown-item">Sales by Region by Plant</a>
-                <a href="{% url 'cl_sale_region_customer' %}" class="dropdown-item">Sales by Region by Customer</a>
-                <a href="{% url 'cl_sale_region_sector' %}" class="dropdown-item">Sales by Region by Sector</a>
-                <div class="dropdown-divider"></div>
-                <a href="{% url 'cy_sale_global_plant' %}" class="dropdown-item">Global sales by Plant</a>
-                <a href="{% url 'cy_sale_global_customer' %}" class="dropdown-item">Global sales by Customer</a>
-                <a href="{% url 'cy_sale_global_sector' %}" class="dropdown-item">Global sales by Sector</a>
-                <a href="{% url 'cy_sale_global_region' %}" class="dropdown-item">Global sales by Region</a>
-            </div>
-        </div>
-        <div class="btn-group dropright mx-2">
-            <button id="indexBudget" class="mx-auto mb-1 btn btn-mdb-color btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Budgets</button>
-            <div class="dropdown-menu" aria-labelledby="indexBudget">
-                <a href="{% url 'cc_budget_customer_plant' %}" class="dropdown-item">Sales by Customer by Plant</a>
-                <a href="{% url 'cl_budget_plant_customer' %}" class="dropdown-item">Sales by Plant by Customer</a>
-                <a href="{% url 'cl_budget_plant_sector' %}" class="dropdown-item">Sales by Plant by Sector</a>
-                <a href="{% url 'cl_budget_region_plant' %}" class="dropdown-item">Sales by Region by Plant</a>
-                <a href="{% url 'cl_budget_region_customer' %}" class="dropdown-item">Sales by Region by Customer</a>
-                <a href="{% url 'cl_budget_region_sector' %}" class="dropdown-item">Sales by Region by Sector</a>
-                <div class="dropdown-divider"></div>
-                <a href="{% url 'cy_budget_global_plant' %}" class="dropdown-item">Global sales by Plant</a>
-                <a href="{% url 'cy_budget_global_customer' %}" class="dropdown-item">Global sales by Customer</a>
-                <a href="{% url 'cy_budget_global_sector' %}" class="dropdown-item">Global sales by Sector</a>
-                <a href="{% url 'cy_budget_global_region' %}" class="dropdown-item">Global sales by Region</a>
+<div class="container my-5">
+    <div class="jumbotron card card-image" style="background-image: url('https://mdbootstrap.com/img/Photos/Others/gradient1.jpg');">
+        <div class="container mx-auto text-center">
+            <div class="text-center text-white py-5 px-4">
+                <div>
+                    <h1 style="font-family: 'Montserrat', sans-serif; font-weight: bold;">Budget management made simple.</h1>
+                    <br>
+                    <p>{% lorem %}</p>
+                </div>
             </div>
         </div>
     </div>
+
+</div>
     
 
 
