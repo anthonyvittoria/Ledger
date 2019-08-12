@@ -12,36 +12,44 @@ from .models import Budget, Customer, Sale, Location
 class IndexView(LoginRequiredMixin, TemplateView):
     template_name = 'Ledger/index.html'
 
-#################################################
-########## BUDGET BY CUSTOMER BY PLANT ##########
-#################################################
-
+# Base Views
 class ChooseCustomerView(LoginRequiredMixin, ListView):
     model = Customer
     template_name = 'Ledger/choose_customer.html'
 
-class ChooseCustomerBudgetView(ChooseCustomerView):
+class ChooseLocationView(LoginRequiredMixin, ListView):
+    model = Location
+    template_name = 'Ledger/choose_location.html'
 
+class ChooseYearView(LoginRequiredMixin, TemplateView):
+    template_name = 'Ledger/choose_year.html'
+
+#################################################
+########## BUDGET BY CUSTOMER BY PLANT ##########
+#################################################
+
+class ChooseCustomerBudgetCustomerPlant(ChooseCustomerView):
     def get_context_data(self, **kwargs):
+        customers = []
+        for b in Budget.objects.all():
+            if b.customer not in customers:
+                customers.append(b.customer)
         context = super().get_context_data(**kwargs)
         context['redirect'] = 'cy_budget_customer_plant'
+        context['object_list'] = customers
         return context
 
-@login_required
-def cy_budget_customer_plant(request, customer_name_slug):
-
-    years = []
-
-    for budget in Budget.objects.filter(customer__slug=customer_name_slug).order_by('year'):
-        if budget.year not in years:
-            years.append(budget.year)
-
-    context = {
-        'years': years,
-        'location_name_slug': customer_name_slug,
-        'redirect': 'budget_customer_plant',
-    }
-    return render(request, 'Ledger/choose_year.html', context)
+class ChooseYearBudgetCustomerPlant(ChooseYearView):
+    def get_context_data(self, **kwargs):
+        years = []
+        for budget in Budget.objects.filter(customer__slug=self.kwargs['customer_name_slug']).order_by('year'):
+            if budget.year not in years:
+                years.append(budget.year)
+        context = super().get_context_data(**kwargs)
+        context['redirect'] = 'budget_customer_plant'
+        context['location_name_slug'] = self.kwargs['customer_name_slug']
+        context['years'] = years
+        return context
 
 @login_required
 def budget_customer_plant(request, customer_name_slug, year):
@@ -154,36 +162,29 @@ def budget_customer_plant(request, customer_name_slug, year):
 ########## BUDGET BY PLANT BY CUSTOMER ##########
 #################################################
 
-@login_required
-def cl_budget_plant_customer(request): # Choose location
+class ChooseLocationBudgetPlantCustomer(ChooseLocationView):
+    def get_context_data(self, **kwargs):
+        budget_locations = []
+        for budget in Budget.objects.all().order_by('location__name'):
+            if budget.location not in budget_locations:
+                budget_locations.append(budget.location)
+        context = super().get_context_data(**kwargs)
+        context['redirect'] = 'cy_budget_plant_customer'
+        context['locations'] = budget_locations
+        return context
 
-    # create unique list of plant locations that have budgets recorded for them
-    budget_locations = []
-    for budget in Budget.objects.all().order_by('location__name'):
-        if budget.location not in budget_locations:
-            budget_locations.append(budget.location)
+class ChooseYearBudgetPlantCustomer(ChooseYearView):
+    def get_context_data(self, **kwargs):
+        years = []
+        for budget in Budget.objects.filter(location__slug=self.kwargs['location_name_slug']).order_by('year'):
+            if budget.year not in years:
+                years.append(budget.year)
 
-    context = {
-        'locations': budget_locations,
-        'redirect': 'cy_budget_plant_customer',
-    }
-    return render(request, 'Ledger/choose_location.html', context)
-
-@login_required
-def cy_budget_plant_customer(request, location_name_slug): # Choose year for budget by plant by customer
-    
-    years = []
-
-    for budget in Budget.objects.filter(location__slug=location_name_slug).order_by('year'):
-        if budget.year not in years:
-            years.append(budget.year)
-
-    context = {
-        'years': years,
-        'location_name_slug': location_name_slug,
-        'redirect': 'budget_plant_customer',
-    }
-    return render(request, 'Ledger/choose_year.html', context)
+        context = super().get_context_data(**kwargs)
+        context['redirect'] = 'budget_plant_customer'
+        context['location_name_slug'] = self.kwargs['location_name_slug']
+        context['years'] = years
+        return context
 
 @login_required
 def budget_plant_customer(request, location_name_slug, year): # Budget table view
@@ -258,37 +259,28 @@ def budget_plant_customer(request, location_name_slug, year): # Budget table vie
 ########## BUDGET BY PLANT BY SECTOR ##########
 ###############################################
 
-@login_required
-def cl_budget_plant_sector(request): # Choose location
+class ChooseLocationBudgetPlantSector(ChooseLocationView):
+    def get_context_data(self, **kwargs):
+        budget_locations = []
+        for budget in Budget.objects.all().order_by('location__name'):
+            if budget.location not in budget_locations:
+                budget_locations.append(budget.location)
+        context = super().get_context_data(**kwargs)
+        context['locations'] = budget_locations
+        context['redirect'] = 'cy_budget_plant_sector'
+        return context
 
-    budget_locations = []
-
-    # create unique list of plant locations that have budgets recorded for them
-    for budget in Budget.objects.all().order_by('location__name'):
-        if budget.location not in budget_locations:
-            budget_locations.append(budget.location)
-
-    context = {
-        'locations': budget_locations,
-        'redirect': 'cy_budget_plant_sector',
-    }
-    return render(request, 'Ledger/choose_location.html', context)
-
-@login_required
-def cy_budget_plant_sector(request, location_name_slug): # Choose year
-    
-    years = []
-
-    for budget in Budget.objects.filter(location__slug=location_name_slug).order_by('year'):
-        if budget.year not in years:
-            years.append(budget.year)
-
-    context = {
-        'years': years,
-        'location_name_slug': location_name_slug,
-        'redirect': 'budget_plant_sector',
-    }
-    return render(request, 'Ledger/choose_year.html', context)
+class ChooseYearBudgetPlantSector(ChooseYearView):
+    def get_context_data(self, **kwargs):
+        years = []
+        for budget in Budget.objects.filter(location__slug=self.kwargs['location_name_slug']).order_by('year'):
+            if budget.year not in years:
+                years.append(budget.year)
+        context = super().get_context_data(**kwargs)
+        context['years'] = years
+        context['location_name_slug'] = self.kwargs['location_name_slug']
+        context['redirect'] = 'budget_plant_sector'
+        return context
 
 @login_required
 def budget_plant_sector(request, location_name_slug, year): # Budget table view
@@ -402,35 +394,28 @@ def budget_plant_sector(request, location_name_slug, year): # Budget table view
 ########## BUDGET BY REGION BY PLANT ##########
 ###############################################
 
-@login_required
-def cl_budget_region_plant(request): # Choose location
-    
-    regions = []
-    for budget in Budget.objects.all().order_by('location__name'):
-        if budget.location.region not in regions:
-            regions.append(budget.location.region)
-    
-    context = {
-        'locations': regions,
-        'redirect': 'cy_budget_region_plant',
-    }
-    return render(request, 'Ledger/choose_location.html', context)
+class ChooseLocationBudgetRegionPlant(ChooseLocationView):
+    def get_context_data(self, **kwargs):
+        regions = []
+        for budget in Budget.objects.all().order_by('location__name'):
+            if budget.location.region not in regions:
+                regions.append(budget.location.region)
+        context = super().get_context_data(**kwargs)
+        context['locations'] = regions
+        context['redirect'] = 'cy_budget_region_plant'
+        return context
 
-@login_required
-def cy_budget_region_plant(request, region_name_slug): # Choose year
-    
-    years = []
-
-    for budget in Budget.objects.filter(location__region__slug=region_name_slug).order_by('year'):
-        if budget.year not in years:
-            years.append(budget.year)
-    
-    context = {
-        'years': years,
-        'location_name_slug': region_name_slug,
-        'redirect': 'budget_region_plant',
-    }
-    return render(request, 'Ledger/choose_year.html', context)
+class ChooseYearBudgetRegionPlant(ChooseYearView):
+    def get_context_data(self, **kwargs):
+        years = []
+        for budget in Budget.objects.filter(location__region__slug=self.kwargs['region_name_slug']).order_by('year'):
+            if budget.year not in years:
+                years.append(budget.year)
+        context = super().get_context_data(**kwargs)
+        context['years'] = years
+        context['location_name_slug'] = self.kwargs['region_name_slug']
+        context['redirect'] = 'budget_region_plant'
+        return context
 
 @login_required
 def budget_region_plant(request, region_name_slug, year): # Budget table view
@@ -543,34 +528,29 @@ def budget_region_plant(request, region_name_slug, year): # Budget table view
 ########## BUDGET BY REGION BY CUSTOMER ##########
 ##################################################
 
-@login_required
-def cl_budget_region_customer(request): # Choose location
-    regions = []
-    for budget in Budget.objects.all().order_by('location__name'):
-        if budget.location.region not in regions:
-            regions.append(budget.location.region)
-    
-    context = {
-        'locations': regions,
-        'redirect': 'cy_budget_region_customer',
-    }
-    return render(request, 'Ledger/choose_location.html', context)
+class ChooseLocationBudgetRegionCustomer(ChooseLocationView):
+    def get_context_data(self, **kwargs):
+        regions = []
+        for budget in Budget.objects.all().order_by('location__name'):
+            if budget.location.region not in regions:
+                regions.append(budget.location.region)
+        context = super().get_context_data(**kwargs)
+        context['locations'] = regions
+        context['redirect'] = 'cy_budget_region_customer'
+        return context
 
-@login_required
-def cy_budget_region_customer(request, region_name_slug): # Choose year
-
-    years = []
-
-    for budget in Budget.objects.filter(location__region__slug=region_name_slug).order_by('year'):
-        if budget.year not in years:
-            years.append(budget.year)
-    
-    context = {
-        'years': years,
-        'location_name_slug': region_name_slug,
-        'redirect': 'budget_region_customer',
-    }
-    return render(request, 'Ledger/choose_year.html', context)
+class ChooseYearBudgetRegionCustomer(ChooseYearView):
+    def get_context_data(self, **kwargs):
+        years = []
+        for budget in Budget.objects.filter(
+            location__region__slug=self.kwargs['region_name_slug']).order_by('year'):
+            if budget.year not in years:
+                years.append(budget.year)
+        context = super().get_context_data(**kwargs)
+        context['years'] = years
+        context['location_name_slug'] = self.kwargs['region_name_slug']
+        context['redirect'] = 'budget_region_customer'
+        return context
 
 @login_required
 def budget_region_customer(request, region_name_slug, year):
@@ -684,35 +664,28 @@ def budget_region_customer(request, region_name_slug, year):
 ########## BUDGET BY REGION BY SECTOR ##########
 ################################################
 
-@login_required
-def cl_budget_region_sector(request): # Choose location
+class ChooseLocationBudgetRegionSector(ChooseLocationView):
+    def get_context_data(self, **kwargs):
+        regions = []
+        for budget in Budget.objects.all().order_by('location__name'):
+            if budget.location.region not in regions:
+                regions.append(budget.location.region)
+        context = super().get_context_data(**kwargs)
+        context['locations'] = regions
+        context['redirect'] = 'cy_budget_region_sector'
+        return context
 
-    regions = []
-    for budget in Budget.objects.all().order_by('location__name'):
-        if budget.location.region not in regions:
-            regions.append(budget.location.region)
-    
-    context = {
-        'locations': regions,
-        'redirect': 'cy_budget_region_sector',
-    }
-    return render(request, 'Ledger/choose_location.html', context)
-
-@login_required
-def cy_budget_region_sector(request, region_name_slug): # Choose year
-
-    years = []
-
-    for budget in Budget.objects.filter(location__region__slug=region_name_slug).order_by('year'):
-        if budget.year not in years:
-            years.append(budget.year)
-    
-    context = {
-        'years': years,
-        'location_name_slug': region_name_slug,
-        'redirect': 'budget_region_sector',
-    }
-    return render(request, 'Ledger/choose_year.html', context)
+class ChooseYearBudgetRegionSector(ChooseYearView):
+    def get_context_data(self, **kwargs):
+        years = []
+        for budget in Budget.objects.filter(location__region__slug=self.kwargs['region_name_slug']).order_by('year'):
+            if budget.year not in years:
+                years.append(budget.year)
+        context = super().get_context_data(**kwargs)
+        context['years'] = years
+        context['location_name_slug'] = self.kwargs['region_name_slug']
+        context['redirect'] = 'budget_region_sector'
+        return context
 
 @login_required
 def budget_region_sector(request, region_name_slug, year): # Budget table view
@@ -825,19 +798,16 @@ def budget_region_sector(request, region_name_slug, year): # Budget table view
 ########## GLOBAL BUDGET BY PLANT ##########
 ###########################################
 
-@login_required
-def cy_budget_global_plant(request): # Choose year
-    
-    years = []
-    for budget in Budget.objects.all().order_by('year'):
-        if budget.year not in years:
-            years.append(budget.year)
-
-    context = {
-        'years': years,
-        'redirect': 'budget_global_plant',
-    }
-    return render(request, 'Ledger/choose_year.html', context)
+class ChooseYearBudgetGlobalPlant(ChooseYearView):
+    def get_context_data(self, **kwargs):
+        years = []
+        for budget in Budget.objects.all().order_by('year'):
+            if budget.year not in years:
+                years.append(budget.year)
+        context = super().get_context_data(**kwargs)
+        context['years'] = years
+        context['redirect'] = 'budget_global_plant'
+        return context
 
 @login_required
 def budget_global_plant(request, year): # Budget table view
@@ -949,19 +919,16 @@ def budget_global_plant(request, year): # Budget table view
 ########## GLOBAL BUDGET BY CUSTOMER ##########
 ##############################################
 
-@login_required
-def cy_budget_global_customer(request): # Choose year
-
-    years = []
-    for budget in Budget.objects.all().order_by('year'):
-        if budget.year not in years:
-            years.append(budget.year)
-
-    context = {
-        'years': years,
-        'redirect': 'budget_global_customer',
-    }
-    return render(request, 'Ledger/choose_year.html', context)
+class ChooseYearBudgetGlobalCustomer(ChooseYearView):
+    def get_context_data(self, **kwargs):
+        years = []
+        for budget in Budget.objects.all().order_by('year'):
+            if budget.year not in years:
+                years.append(budget.year)
+        context = super().get_context_data(**kwargs)
+        context['years'] = years
+        context['redirect'] = 'budget_global_customer'
+        return context
 
 @login_required
 def budget_global_customer(request, year): # Budget table view
@@ -1073,19 +1040,16 @@ def budget_global_customer(request, year): # Budget table view
 ########## GLOBAL BUDGET BY SECTOR ##########
 ############################################
 
-@login_required
-def cy_budget_global_sector(request): # Choose year
-
-    years = []
-    for budget in Budget.objects.all().order_by('year'):
-        if budget.year not in years:
-            years.append(budget.year)
-
-    context = {
-        'years': years,
-        'redirect': 'budget_global_sector',
-    }
-    return render(request, 'Ledger/choose_year.html', context)
+class ChooseYearBudgetGlobalSector(ChooseYearView):
+    def get_context_data(self, **kwargs):
+        years = []
+        for budget in Budget.objects.all().order_by('year'):
+            if budget.year not in years:
+                years.append(budget.year)
+        context = super().get_context_data(**kwargs)
+        context['years'] = years
+        context['redirect'] = 'budget_global_sector'
+        return context
 
 @login_required
 def budget_global_sector(request, year): # Budget table view
@@ -1197,19 +1161,16 @@ def budget_global_sector(request, year): # Budget table view
 ########## GLOBAL BUDGET BY REGION ##########
 ############################################
 
-@login_required
-def cy_budget_global_region(request): # Choose year
-
-    years = []
-    for budget in Budget.objects.all().order_by('year'):
-        if budget.year not in years:
-            years.append(budget.year)
-
-    context = {
-        'years': years,
-        'redirect': 'budget_global_region',
-    }
-    return render(request, 'Ledger/choose_year.html', context)
+class ChooseYearBudgetGlobalRegion(ChooseYearView):
+    def get_context_data(self, **kwargs):
+        years = []
+        for budget in Budget.objects.all().order_by('year'):
+            if budget.year not in years:
+                years.append(budget.year)
+        context = super().get_context_data(**kwargs)
+        context['years'] = years
+        context['redirect'] = 'budget_global_region'
+        return context
 
 @login_required
 def budget_global_region(request, year): # Budget table view
@@ -1320,28 +1281,28 @@ def budget_global_region(request, year): # Budget table view
 ########## ACTUALS BY CUSTOMER BY PLANT ##########
 #################################################
 
-class ChooseCustomerSaleView(ChooseCustomerView):
-
+class ChooseCustomerSaleCustomerPlant(ChooseCustomerView):
     def get_context_data(self, **kwargs):
+        customers = []
+        for s in Sale.objects.all():
+            if s.customer not in customers:
+                customers.append(s.customer)
         context = super().get_context_data(**kwargs)
         context['redirect'] = 'cy_sale_customer_plant'
+        context['object_list'] = customers
         return context
 
-@login_required
-def cy_sale_customer_plant(request, customer_name_slug):
-
-    years = []
-
-    for sale in Sale.objects.filter(customer__slug=customer_name_slug).order_by('year'):
-        if sale.year not in years:
-            years.append(sale.year)
-
-    context = {
-        'years': years,
-        'location_name_slug': customer_name_slug,
-        'redirect': 'sale_customer_plant',
-    }
-    return render(request, 'Ledger/choose_year.html', context)
+class ChooseYearSaleCustomerPlant(ChooseYearView):
+    def get_context_data(self, **kwargs):
+        years = []
+        for sale in Sale.objects.filter(customer__slug=self.kwargs['customer_name_slug']).order_by('year'):
+            if sale.year not in years:
+                years.append(sale.year)
+        context = super().get_context_data(**kwargs)
+        context['years'] = years
+        context['location_name_slug'] = self.kwargs['customer_name_slug']
+        context['redirect'] = 'sale_customer_plant'
+        return context
 
 @login_required
 def sale_customer_plant(request, customer_name_slug, year):
@@ -1453,35 +1414,28 @@ def sale_customer_plant(request, customer_name_slug, year):
 ########## ACTUALS BY PLANT BY CUSTOMER ##########
 ##################################################
 
-@login_required
-def cl_sale_plant_customer(request):
+class ChooseLocationSalePlantCustomer(ChooseLocationView):
+    def get_context_data(self, **kwargs):
+        sale_locations = []
+        for sale in Sale.objects.all().order_by('location__name'):
+            if sale.location not in sale_locations:
+                sale_locations.append(sale.location)
+        context = super().get_context_data(**kwargs)
+        context['locations'] = sale_locations
+        context['redirect'] = 'cy_sale_plant_customer'
+        return context
 
-    sale_locations = []
-    for sale in Sale.objects.all().order_by('location__name'):
-        if sale.location not in sale_locations:
-            sale_locations.append(sale.location)
-
-    context = {
-        'locations': sale_locations,
-        'redirect': 'cy_sale_plant_customer',
-    }
-    return render(request, 'Ledger/choose_location.html', context)
-
-@login_required
-def cy_sale_plant_customer(request, location_name_slug):
-
-    years = []
-
-    for sale in Sale.objects.filter(location__slug=location_name_slug).order_by('year'):
-        if sale.year not in years:
-            years.append(sale.year)
-
-    context = {
-        'years': years,
-        'location_name_slug': location_name_slug,
-        'redirect': 'sale_plant_customer',
-    }
-    return render(request, 'Ledger/choose_year.html', context)
+class ChooseYearSalePlantCustomer(ChooseYearView):
+    def get_context_data(self, **kwargs):
+        years = []
+        for sale in Sale.objects.filter(location__slug=self.kwargs['location_name_slug']).order_by('year'):
+            if sale.year not in years:
+                years.append(sale.year)
+        context = super().get_context_data(**kwargs)
+        context['years'] = years
+        context['location_name_slug'] = location_name_slug
+        context['redirect'] = 'sale_plant_customer'
+        return context
 
 @login_required
 def sale_plant_customer(request, location_name_slug, year):
@@ -1556,35 +1510,28 @@ def sale_plant_customer(request, location_name_slug, year):
 ########## ACTUALS BY PLANT BY SECTOR ##########
 ################################################
 
-@login_required
-def cl_sale_plant_sector(request):
+class ChooseLocationSalePlantSector(ChooseLocationView):
+    def get_context_data(self, **kwargs):
+        sale_locations = []
+        for sale in Sale.objects.all().order_by('location__name'):
+            if sale.location not in sale_locations:
+                sale_locations.append(sale.location)
+        context = super().get_context_data(**kwargs)
+        context['locations'] = sale_locations
+        context['redirect'] = 'cy_sale_plant_sector'
+        return context
 
-    sale_locations = []
-    for sale in Sale.objects.all().order_by('location__name'):
-        if sale.location not in sale_locations:
-            sale_locations.append(sale.location)
-
-    context = {
-        'locations': sale_locations,
-        'redirect': 'cy_sale_plant_sector',
-    }
-    return render(request, 'Ledger/choose_location.html', context)
-
-@login_required
-def cy_sale_plant_sector(request, location_name_slug):
-
-    years = []
-
-    for sale in Sale.objects.filter(location__slug=location_name_slug).order_by('year'):
-        if sale.year not in years:
-            years.append(sale.year)
-
-    context = {
-        'years': years,
-        'location_name_slug': location_name_slug,
-        'redirect': 'sale_plant_sector',
-    }
-    return render(request, 'Ledger/choose_year.html', context)
+class ChooseYearSalePlantSector(ChooseYearView):
+    def get_context_data(self, **kwargs):
+        years = []
+        for sale in Sale.objects.filter(location__slug=self.kwargs['location_name_slug']).order_by('year'):
+            if sale.year not in years:
+                years.append(sale.year)
+        context = super().get_context_data(**kwargs)
+        context['years'] = years
+        context['location_name_slug'] = self.kwargs['location_name_slug']
+        context['redirect'] = 'sale_plant_sector'
+        return context
 
 @login_required
 def sale_plant_sector(request, location_name_slug, year):
@@ -1697,35 +1644,29 @@ def sale_plant_sector(request, location_name_slug, year):
 ########## ACTUALS BY REGION BY PLANT ##########
 ################################################
 
-@login_required
-def cl_sale_region_plant(request):
+class ChooseLocationSaleRegionPlant(ChooseLocationView):
+    def get_context_data(self, **kwargs):
+        regions = []
+        for sale in Sale.objects.all().order_by('location__name'):
+            if sale.location.region not in regions:
+                regions.append(sale.location.region)
+        context = super().get_context_data(**kwargs)
+        context['locations'] = regions
+        context['redirect'] = 'cy_sale_region_plant'
+        return context
 
-    regions = []
-    for sale in Sale.objects.all().order_by('location__name'):
-        if sale.location.region not in regions:
-            regions.append(sale.location.region)
-    
-    context = {
-        'locations': regions,
-        'redirect': 'cy_sale_region_plant',
-    }
-    return render(request, 'Ledger/choose_location.html', context)
-
-@login_required
-def cy_sale_region_plant(request, region_name_slug):
-
-    years = []
-
-    for sale in Sale.objects.filter(location__region__slug=region_name_slug).order_by('year'):
-        if sale.year not in years:
-            years.append(sale.year)
-    
-    context = {
-        'years': years,
-        'location_name_slug': region_name_slug,
-        'redirect': 'sale_region_plant',
-    }
-    return render(request, 'Ledger/choose_year.html', context)
+class ChooseYearSaleRegionPlant(ChooseYearView):
+    def get_context_data(self, **kwargs):
+        years = []
+        for sale in Sale.objects.filter(
+            location__region__slug=self.kwargs['region_name_slug']).order_by('year'):
+            if sale.year not in years:
+                years.append(sale.year)
+        context = super().get_context_data(**kwargs)
+        context['years'] = years
+        context['location_name_slug'] = self.kwargs['region_name_slug']
+        context['redirect'] = 'sale_region_plant'
+        return context
 
 @login_required
 def sale_region_plant(request, region_name_slug, year):
@@ -1837,35 +1778,28 @@ def sale_region_plant(request, region_name_slug, year):
 ########## ACTUALS BY REGION BY CUSTOMER ##########
 ###################################################
 
-@login_required
-def cl_sale_region_customer(request):
+class ChooseLocationSaleRegionCustomer(ChooseLocationView):
+    def get_context_data(self, **kwargs):
+        regions = []
+        for sale in Sale.objects.all().order_by('location__name'):
+            if sale.location.region not in regions:
+                regions.append(sale.location.region)
+        context = super().get_context_data(**kwargs)
+        context['locations'] = regions
+        context['redirect'] = 'cy_sale_region_customer'
+        return context
 
-    regions = []
-    for sale in Sale.objects.all().order_by('location__name'):
-        if sale.location.region not in regions:
-            regions.append(sale.location.region)
-    
-    context = {
-        'locations': regions,
-        'redirect': 'cy_sale_region_customer',
-    }
-    return render(request, 'Ledger/choose_location.html', context)
-
-@login_required
-def cy_sale_region_customer(request, region_name_slug):
-
-    years = []
-
-    for sale in Sale.objects.filter(location__region__slug=region_name_slug).order_by('year'):
-        if sale.year not in years:
-            years.append(sale.year)
-    
-    context = {
-        'years': years,
-        'location_name_slug': region_name_slug,
-        'redirect': 'sale_region_customer',
-    }
-    return render(request, 'Ledger/choose_year.html', context)
+class ChooseYearSaleRegionCustomer(ChooseYearView):
+    def get_context_data(self, **kwargs):
+        years = []
+        for sale in Sale.objects.filter(
+            location__region__slug=self.kwargs['region_name_slug']).order_by('year'):
+            if sale.year not in years:
+                years.append(sale.year)
+        context = super().get_context_data(**kwargs)
+        context['years'] = years
+        context['location_name_slug'] = self.kwargs['region_name_slug']
+        context['redirect'] = 'sale_region_customer'
 
 @login_required
 def sale_region_customer(request, region_name_slug, year):
@@ -1977,35 +1911,28 @@ def sale_region_customer(request, region_name_slug, year):
 ########## ACTUALS BY REGION BY SECTOR ##########
 #################################################
 
-@login_required
-def cl_sale_region_sector(request):
+class ChooseLocationSaleRegionSector(ChooseLocationView):
+    def get_context_data(self, **kwargs):
+        regions = []
+        for sale in Sale.objects.all().order_by('location__name'):
+            if sale.location.region not in regions:
+                regions.append(sale.location.region)
+        context = super().get_context_data(**kwargs)
+        context['locations'] = regions
+        context['redirect'] = 'cy_sale_region_sector'
+        return context
 
-    regions = []
-    for sale in Sale.objects.all().order_by('location__name'):
-        if sale.location.region not in regions:
-            regions.append(sale.location.region)
-    
-    context = {
-        'locations': regions,
-        'redirect': 'cy_sale_region_sector',
-    }
-    return render(request, 'Ledger/choose_location.html', context)
-
-@login_required
-def cy_sale_region_sector(request, region_name_slug):
-
-    years = []
-
-    for sale in Sale.objects.filter(location__region__slug=region_name_slug).order_by('year'):
-        if sale.year not in years:
-            years.append(sale.year)
-    
-    context = {
-        'years': years,
-        'location_name_slug': region_name_slug,
-        'redirect': 'sale_region_sector',
-    }
-    return render(request, 'Ledger/choose_year.html', context)
+class ChooseYearSaleRegionSector(ChooseYearView):
+    def get_context_data(self, **kwargs):
+        years = []
+        for sale in Sale.objects.filter(location__region__slug=self.kwargs['region_name_slug']).order_by('year'):
+            if sale.year not in years:
+                years.append(sale.year)
+        context = super().get_context_data(**kwargs)
+        context['years'] = years
+        context['location_name_slug'] = self.kwargs['region_name_slug']
+        context['redirect'] = 'sale_region_sector'
+        return context
 
 @login_required
 def sale_region_sector(request, region_name_slug, year):
@@ -2117,19 +2044,16 @@ def sale_region_sector(request, region_name_slug, year):
 ########## GLOBAL SALES BY PLANT ##########
 ###########################################
 
-@login_required
-def cy_sale_global_plant(request):
-
-    years = []
-    for sale in Sale.objects.all().order_by('year'):
-        if sale.year not in years:
-            years.append(sale.year)
-
-    context = {
-        'years': years,
-        'redirect': 'sale_global_plant',
-    }
-    return render(request, 'Ledger/choose_year.html', context)
+class ChooseYearSaleGlobalPlant(ChooseYearView):
+    def get_context_data(self, **kwargs):
+        years = []
+        for sale in Sale.objects.all().order_by('year'):
+            if sale.year not in years:
+                years.append(sale.year)
+        context = super().get_context_data(**kwargs)
+        context['years'] = years
+        context['redirect'] = 'sale_global_plant'
+        return context
 
 @login_required
 def sale_global_plant(request, year):
@@ -2241,19 +2165,16 @@ def sale_global_plant(request, year):
 ########## GLOBAL SALES BY CUSTOMER ##########
 ##############################################
 
-@login_required
-def cy_sale_global_customer(request):
-
-    years = []
-    for sale in Sale.objects.all().order_by('year'):
-        if sale.year not in years:
-            years.append(sale.year)
-
-    context = {
-        'years': years,
-        'redirect': 'sale_global_customer',
-    }
-    return render(request, 'Ledger/choose_year.html', context)
+class ChooseYearSaleGlobalCustomer(ChooseYearView):
+    def get_context_data(self, **kwargs):
+        years = []
+        for sale in Sale.objects.all().order_by('year'):
+            if sale.year not in years:
+                years.append(sale.year)
+        context = super().get_context_data(**kwargs)
+        context['years'] = years
+        context['redirect'] = 'sale_global_customer'
+        return context
 
 @login_required
 def sale_global_customer(request, year):
@@ -2365,19 +2286,16 @@ def sale_global_customer(request, year):
 ########## GLOBAL SALES BY SECTOR ##########
 ############################################
 
-@login_required
-def cy_sale_global_sector(request):
-
-    years = []
-    for sale in Sale.objects.all().order_by('year'):
-        if sale.year not in years:
-            years.append(sale.year)
-
-    context = {
-        'years': years,
-        'redirect': 'sale_global_sector',
-    }
-    return render(request, 'Ledger/choose_year.html', context)
+class ChooseYearSaleGlobalSector(ChooseYearView):
+    def get_context_data(self, **kwargs):
+        years = []
+        for sale in Sale.objects.all().order_by('year'):
+            if sale.year not in years:
+                years.append(sale.year)
+        context = super().get_context_data(**kwargs)
+        context['years'] = years
+        context['redirect'] = 'sale_global_sector'
+        return context
 
 @login_required
 def sale_global_sector(request, year):
@@ -2489,19 +2407,16 @@ def sale_global_sector(request, year):
 ########## GLOBAL SALES BY REGION ##########
 ############################################
 
-@login_required
-def cy_sale_global_region(request):
-
-    years = []
-    for sale in Sale.objects.all().order_by('year'):
-        if sale.year not in years:
-            years.append(sale.year)
-
-    context = {
-        'years': years,
-        'redirect': 'sale_global_region',
-    }
-    return render(request, 'Ledger/choose_year.html', context)
+class ChooseYearSaleGlobalRegion(ChooseYearView):
+    def get_context_data(self, **kwargs):
+        years = []
+        for sale in Sale.objects.all().order_by('year'):
+            if sale.year not in years:
+                years.append(sale.year)
+        context = super().get_context_data(**kwargs)
+        context['years'] = years
+        context['redirect'] = 'sale_global_region'
+        return context
 
 @login_required
 def sale_global_region(request, year):
