@@ -82,7 +82,7 @@
   font-size: 15px;
   transition: 0.4s;
 }
-.active, .accordion:hover {
+.nav-active, .accordion:hover {
   background-color: #2d3339;
 }
 .accordion:after {
@@ -92,7 +92,7 @@
   float: right;
   margin-left: 5px;
 }
-.active:after {
+.nav-active:after {
   content: "\2212";
 }
 .panel {
@@ -138,7 +138,7 @@
         <a href="{% url 'cy_sale_global_sector' %}">Global by Sector</a>
         <a href="{% url 'cy_sale_global_region' %}">Global by Region</a>
     </div>
-    <button class="accordion"><p class="fas fa-book mr-1"></p> Budgets</button>
+    <button class="accordion"><p class="fas fa-balance-scale mr-1"></p> Budgets</button>
     <div class="panel">
       <a href="{% url 'cc_budget_customer_plant' %}">Customer by Plant</a>
       <a href="{% url 'cl_budget_plant_customer' %}">Plant by Customer</a>
@@ -217,7 +217,7 @@ function closeNav() {
   $('.accordion').hide();
   $('.panel').hide();
   document.getElementById("mySidenav").style.width = "0";
-  $('.accordion').removeClass("active");
+  $('.accordion').removeClass("nav-active");
   $('.panel').removeClass("show");
 }
 </script>
@@ -226,14 +226,14 @@ var acc = document.getElementsByClassName("accordion");
 var i;
 
 function click_action() {
-  if (this.classList.contains('active')) {
-    this.classList.toggle('active');
+  if (this.classList.contains('nav-active')) {
+    this.classList.toggle('nav-active');
     this.nextElementSibling.classList.toggle('show');
   } else {
-  $('.accordion').removeClass('active');
+  $('.accordion').removeClass('nav-active');
   $('.panel').removeClass('show');
 
-  this.classList.toggle("active");
+  this.classList.toggle("nav-active");
   this.nextElementSibling.classList.toggle("show");
   }
 }
