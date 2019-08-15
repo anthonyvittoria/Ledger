@@ -1,0 +1,81 @@
+{% extends 'Ledger/base.html' %} {% load static %}{% load humanize %}
+
+{% block customstyle %}
+<!-- MDB Datatables -->
+<link rel="stylesheet" href="{% static 'Ledger/css/addons/datatables.min.css' %}">
+<style>
+    tr[data-href] {
+        cursor: pointer;
+    }
+</style>
+{% endblock %}
+
+{% block body%}
+    <div class="container mt-5 mx-auto text-center">
+        <h3>Select Quarter</h3>
+        {% if object_list %}
+        <table id="table" class="table table-hover table-borderless" cellspacing="0" width="50%">
+            <thead class="thead-light">
+                <tr>
+                    <th style="display: none;"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for quarter in object_list %}
+                    {% if customer_name_slug %}
+                    <tr data-href="{% url redirect customer_name_slug quarter %}">
+                        <td>{{ quarter|upper }}</td>
+                    </tr>
+                    {% else %}
+                    <tr data-href="{% url redirect quarter %}">
+                        <td>{{ quarter|upper }}</td>
+                    </tr>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% comment %}
+        <div class="list-group my-5 mx-auto" style="width: 20em;">
+            {% for year in years %}
+                {% if location_name_slug %}
+                <a href="{% url redirect location_name_slug year %}" style="text-decoration: none;"><button type="button" class="list-group-item list-group-item-action my-1">{{ year }}</button></a>
+                {% else %}
+                <a href="{% url redirect year %}" style="text-decoration: none;"><button type="button" class="list-group-item list-group-item-action my-1">{{ year }}</button></a>
+                {% endif %}
+            {% endfor %}
+        </div>
+        {% endcomment %}
+        {% else %}
+        <h6 class="mt-5 mx-auto">No data could be loaded!</h6>
+        {% endif %}
+    </div>
+
+<!-- jQuery -->
+<script type="text/javascript" src="{% static 'Ledger/js/jquery-3.4.1.min.js' %}"></script>
+<!-- Bootstrap -->
+<script type="text/javascript" src="{% static 'Ledger/js/bootstrap.min.js' %}"></script>
+<!-- MDB Datatables -->
+<script type="text/javascript" src="{% static 'Ledger/js/addons/datatables.min.js' %}"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#table').DataTable({
+            "paging": false,
+            "scrollCollapse": true,
+            "bInfo": false,
+            scrollX: true,
+        });
+        $('.dataTables_length').addClass('bs-select');
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const rows = document.querySelectorAll("tr[data-href]");
+        rows.forEach(row => {
+            row.addEventListener("click", () => {
+                window.location.href = row.dataset.href;
+            });
+        });
+    });
+</script>
+{% endblock %}
