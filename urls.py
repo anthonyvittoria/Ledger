@@ -5,7 +5,8 @@ from . import views
 urlpatterns = [
         # path('', views.index, name='index'),
         path('', views.IndexView.as_view(), name='index'),
-        path('form/<slug:location_name_slug>/', views.form_budget, name='form_budget'),
+        path('form/', views.BudgetFormChooseLocation.as_view(), name='cl_budget_form'),
+        path('form/<slug:location_name_slug>/', views.form_budget, name='budget_form'),
 
         ### Budget by Customer by Plant ###
         path('budget/customer-plant/', views.ChooseCustomerBudgetCustomerPlant.as_view(), name='cc_budget_customer_plant'),
