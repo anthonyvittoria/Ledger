@@ -31,16 +31,16 @@
 
 <style>
 .sidenav {
-  height: 100%; /* 100% Full-height */
-  width: 0; /* 0 width - change this with JavaScript */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Stay on top */
-  top: 0; /* Stay at the top */
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
   left: 0;
-  background-color: #212529; /* MDB Color*/
-  overflow-x: hidden; /* Disable horizontal scroll */
-  padding-top: 60px; /* Place content 60px from the top */
-  transition: 0.3s; /* 0.3 second transition effect to slide in the sidenav */
+  background-color: #212529;
+  overflow-x: hidden;
+  padding-top: 60px;
+  transition: 0.2s;
 }
 .sidenav .panel {
   color: #818181;
@@ -86,7 +86,7 @@
   background-color: #2d3339;
 }
 .accordion:after {
-  content: '+'; /* Unicode character for "plus" sign (+) */
+  content: '+';
   font-size: 13px;
   color: #777;
   float: right;
@@ -115,17 +115,17 @@
 {% block navbar %}
 
 <!-- Navbar -->
-<nav class="navbar fixed-top navbar-expand-lg navbar-dark" style="background-color: #394047; min-height: 60px;">
+<nav class="navbar fixed-top navbar-expand-sm navbar-dark justify-content-between" style="background-color: #394047; line-height: 40px;">
 
   <!-- Sidenav -->
-  <div id="mySidenav" class="sidenav">
+  <div id="mySidenav" class="sidenav" style="line-height: normal;">
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-    <a href="{% url 'index' %}" class="navbar-brand" style="font-family: 'Montserrat', sans-serif; letter-spacing: -0.5px; font-size: 30px;">
+    <a href="{% url 'index' %}" class="navbar-brand mb-2" style="font-family: 'Montserrat', sans-serif; letter-spacing: -0.5px; font-size: 30px;">
     <img src="{% static 'Ledger/img/navbarlogo.png' %}" alt="Ledger logo" width="32px" height="32px" class="mr-1"/>
     Ledger
     </a>
     {% if user.is_authenticated %}
-    <button class="accordion"><p class="fas fa-money-check-alt mr-1"></p> Actuals</button>
+    <button class="accordion" style="line-height: 40px;"><p class="fas fa-money-check-alt mr-1"></p> Actuals</button>
     <div class="panel">
         <a href="{% url 'cc_sale_customer_plant' %}">Customer by Plant</a>
         <a href="{% url 'cl_sale_plant_customer' %}">Plant by Customer</a>
@@ -138,7 +138,7 @@
         <a href="{% url 'cy_sale_global_sector' %}">Global by Sector</a>
         <a href="{% url 'cy_sale_global_region' %}">Global by Region</a>
     </div>
-    <button class="accordion"><p class="fas fa-balance-scale mr-1"></p> Budgets</button>
+    <button class="accordion" style="line-height: 40px;"><p class="fas fa-balance-scale mr-1"></p> Budgets</button>
     <div class="panel">
       <a href="{% url 'cc_budget_customer_plant' %}">Customer by Plant</a>
       <a href="{% url 'cl_budget_plant_customer' %}">Plant by Customer</a>
@@ -151,42 +151,53 @@
       <a href="{% url 'cy_budget_global_sector' %}">Global by Sector</a>
       <a href="{% url 'cy_budget_global_region' %}">Global by Region</a>
     </div>
-    <button class="accordion"><p class="fas fa-user-shield mr-1"></p> Administration</button>
+    <button class="accordion" style="line-height: 40px;"><p class="fas fa-check-double mr-1"></p> Actuals vs Budgets</button>
+    <div class="panel">
+      <a href="{% url 'cc_budget_customer_plant' %}">Customer by Plant</a>
+      <a href="{% url 'cl_budget_plant_customer' %}">Plant by Customer</a>
+      <a href="{% url 'cl_budget_plant_sector' %}">Plant by Sector</a>
+      <a href="{% url 'cl_budget_region_plant' %}">Region by Plant</a>
+      <a href="{% url 'cl_budget_region_customer' %}">Region by Customer</a>
+      <a href="{% url 'cl_budget_region_sector' %}">Region by Sector</a>
+      <a href="{% url 'cy_budget_global_plant' %}">Global by Plant</a>
+      <a href="{% url 'cy_budget_global_customer' %}">Global by Customer</a>
+      <a href="{% url 'cy_budget_global_sector' %}">Global by Sector</a>
+      <a href="{% url 'cy_budget_global_region' %}">Global by Region</a>
+    </div>
+    {% if user.is_staff %}
+    <button class="accordion" style="line-height: 40px;"><p class="fas fa-user-shield mr-1"></p> Administration</button>
     <div class="panel">
       <a href="{% url 'admin:index' %}">Admin Portal</a>
+      {% if user.is_superuser %}
       <a href="{% url 'register' %}">Register a user</a>
+      {% endif %}
     </div>
-    {% else %}
-    <a href="{% url 'login' %}">Login</a>
     {% endif %}
-
+    {% endif %}
+    
   </div>
 
   <!-- Navbar -->
 
   <!-- Collapse button -->
+  {% if user.is_authenticated %}
   <a class="mr-3 fa fa-lg fa-bars text-white" onclick="openNav()"></a>
+  {% endif %}
 
-  <div class="collapse navbar-collapse">
-    <ul class="navbar-nav ml-auto">
-      {% if user.is_authenticated %}
-      <li class="nav-item mr-2">
-        {% if user.first_name %}
-        <p class="navbar-text">Welcome, {{ user.first_name }}</p>
-        {% else %}
-        <p class="navbar-text">Welcome, {{ user.username }}</p>
-        {% endif %}
-      </li>
-      <li class="nav-item">
-        <a href="{% url 'logout' %}" class="nav-link ml-auto">Logout</a>
-      </li>
+  <ul class="navbar-nav ml-auto">
+    {% if user.is_authenticated %}
+      {% if user.first_name %}
+        <span class="navbar-text mr-2" style="color: #ccc7c7;">Welcome, {{ user.first_name }}</span>
       {% else %}
-      <li class="nav-item">
-        <a href="{% url 'login' %}" class="nav-link ml-auto">Login</a>
-      </li>
+        <span class="navbar-text mr-2" style="color: #ccc7c7;">Welcome, {{ user.username }}</span>
       {% endif %}
-    </ul>
-  </div>
+        <a href="{% url 'logout' %}" class="font-weight-bold btn btn-primary"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    {% else %}
+    <li class="nav-item">
+      <a href="{% url 'login' %}" class="font-weight-bold btn btn-primary"><i class="fas fa-user mr-1"></i>Login</a>
+    </li>
+    {% endif %}
+  </ul>
 </nav>
 {% endblock %} 
 
