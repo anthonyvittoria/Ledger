@@ -43,10 +43,7 @@ class VersusView(LoginRequiredMixin, TemplateView):
 
 class ChooseCustomerBudgetCustomerPlant(ChooseCustomerView):
     def get_context_data(self, **kwargs):
-        customers = []
-        for b in Budget.objects.all():
-            if b.customer not in customers:
-                customers.append(b.customer)
+        customers = {budget.customer for budget in Budget.objects.all()}
         context = super().get_context_data(**kwargs)
         context['redirect'] = 'cy_budget_customer_plant'
         context['object_list'] = customers
@@ -54,10 +51,8 @@ class ChooseCustomerBudgetCustomerPlant(ChooseCustomerView):
 
 class ChooseYearBudgetCustomerPlant(ChooseYearView):
     def get_context_data(self, **kwargs):
-        years = []
-        for budget in Budget.objects.filter(customer__slug=self.kwargs['customer_name_slug']).order_by('year'):
-            if budget.year not in years:
-                years.append(budget.year)
+        years = {budget.year for budget in Budget.objects.filter(
+            customer__slug=self.kwargs['customer_name_slug']).order_by('year')}
         context = super().get_context_data(**kwargs)
         context['redirect'] = 'budget_customer_plant'
         context['location_name_slug'] = self.kwargs['customer_name_slug']
@@ -162,10 +157,7 @@ class BudgetCustomerPlant(BudgetView):
 
 class ChooseLocationBudgetPlantCustomer(ChooseLocationView):
     def get_context_data(self, **kwargs):
-        budget_locations = []
-        for budget in Budget.objects.all().order_by('location__name'):
-            if budget.location not in budget_locations:
-                budget_locations.append(budget.location)
+        budget_locations = {budget.location for budget in Budget.objects.all().order_by('location__name')}
         context = super().get_context_data(**kwargs)
         context['redirect'] = 'cy_budget_plant_customer'
         context['locations'] = budget_locations
@@ -173,11 +165,8 @@ class ChooseLocationBudgetPlantCustomer(ChooseLocationView):
 
 class ChooseYearBudgetPlantCustomer(ChooseYearView):
     def get_context_data(self, **kwargs):
-        years = []
-        for budget in Budget.objects.filter(location__slug=self.kwargs['location_name_slug']).order_by('year'):
-            if budget.year not in years:
-                years.append(budget.year)
-
+        years = {budget.year for budget in Budget.objects.filter(
+            location__slug=self.kwargs['location_name_slug']).order_by('year')}
         context = super().get_context_data(**kwargs)
         context['redirect'] = 'budget_plant_customer'
         context['location_name_slug'] = self.kwargs['location_name_slug']
@@ -248,10 +237,7 @@ class BudgetPlantCustomer(BudgetView):
 
 class ChooseLocationBudgetPlantSector(ChooseLocationView):
     def get_context_data(self, **kwargs):
-        budget_locations = []
-        for budget in Budget.objects.all().order_by('location__name'):
-            if budget.location not in budget_locations:
-                budget_locations.append(budget.location)
+        budget_locations = {budget.location for budget in Budget.objects.all().order_by('location__name')}
         context = super().get_context_data(**kwargs)
         context['locations'] = budget_locations
         context['redirect'] = 'cy_budget_plant_sector'
@@ -259,10 +245,8 @@ class ChooseLocationBudgetPlantSector(ChooseLocationView):
 
 class ChooseYearBudgetPlantSector(ChooseYearView):
     def get_context_data(self, **kwargs):
-        years = []
-        for budget in Budget.objects.filter(location__slug=self.kwargs['location_name_slug']).order_by('year'):
-            if budget.year not in years:
-                years.append(budget.year)
+        years = {budget.year for budget in Budget.objects.filter(
+            location__slug=self.kwargs['location_name_slug']).order_by('year')}
         context = super().get_context_data(**kwargs)
         context['years'] = years
         context['location_name_slug'] = self.kwargs['location_name_slug']
@@ -368,10 +352,7 @@ class BudgetPlantSector(BudgetView):
 
 class ChooseLocationBudgetRegionPlant(ChooseLocationView):
     def get_context_data(self, **kwargs):
-        regions = []
-        for budget in Budget.objects.all().order_by('location__name'):
-            if budget.location.region not in regions:
-                regions.append(budget.location.region)
+        regions = {budget.location.region for budget in Budget.objects.all().order_by('location__name')}
         context = super().get_context_data(**kwargs)
         context['locations'] = regions
         context['redirect'] = 'cy_budget_region_plant'
@@ -379,10 +360,8 @@ class ChooseLocationBudgetRegionPlant(ChooseLocationView):
 
 class ChooseYearBudgetRegionPlant(ChooseYearView):
     def get_context_data(self, **kwargs):
-        years = []
-        for budget in Budget.objects.filter(location__region__slug=self.kwargs['region_name_slug']).order_by('year'):
-            if budget.year not in years:
-                years.append(budget.year)
+        years = {budget.year for budget in Budget.objects.filter(
+            location__region__slug=self.kwargs['region_name_slug']).order_by('year')}
         context = super().get_context_data(**kwargs)
         context['years'] = years
         context['location_name_slug'] = self.kwargs['region_name_slug']
@@ -487,10 +466,7 @@ class BudgetRegionPlant(BudgetView):
 
 class ChooseLocationBudgetRegionCustomer(ChooseLocationView):
     def get_context_data(self, **kwargs):
-        regions = []
-        for budget in Budget.objects.all().order_by('location__name'):
-            if budget.location.region not in regions:
-                regions.append(budget.location.region)
+        regions = {budget.location.region for budget in Budget.objects.all().order_by('location__name')}
         context = super().get_context_data(**kwargs)
         context['locations'] = regions
         context['redirect'] = 'cy_budget_region_customer'
@@ -498,11 +474,8 @@ class ChooseLocationBudgetRegionCustomer(ChooseLocationView):
 
 class ChooseYearBudgetRegionCustomer(ChooseYearView):
     def get_context_data(self, **kwargs):
-        years = []
-        for budget in Budget.objects.filter(
-            location__region__slug=self.kwargs['region_name_slug']).order_by('year'):
-            if budget.year not in years:
-                years.append(budget.year)
+        years = {budget.year for budget in Budget.objects.filter(
+            location__region__slug=self.kwargs['region_name_slug']).order_by('year')}
         context = super().get_context_data(**kwargs)
         context['years'] = years
         context['location_name_slug'] = self.kwargs['region_name_slug']
@@ -607,10 +580,7 @@ class BudgetRegionCustomer(BudgetView):
 
 class ChooseLocationBudgetRegionSector(ChooseLocationView):
     def get_context_data(self, **kwargs):
-        regions = []
-        for budget in Budget.objects.all().order_by('location__name'):
-            if budget.location.region not in regions:
-                regions.append(budget.location.region)
+        regions = {budget.location.region for budget in Budget.objects.all().order_by('location__name')}
         context = super().get_context_data(**kwargs)
         context['locations'] = regions
         context['redirect'] = 'cy_budget_region_sector'
@@ -618,10 +588,8 @@ class ChooseLocationBudgetRegionSector(ChooseLocationView):
 
 class ChooseYearBudgetRegionSector(ChooseYearView):
     def get_context_data(self, **kwargs):
-        years = []
-        for budget in Budget.objects.filter(location__region__slug=self.kwargs['region_name_slug']).order_by('year'):
-            if budget.year not in years:
-                years.append(budget.year)
+        years = {budget.year for budget in Budget.objects.filter(
+            location__region__slug=self.kwargs['region_name_slug']).order_by('year')}
         context = super().get_context_data(**kwargs)
         context['years'] = years
         context['location_name_slug'] = self.kwargs['region_name_slug']
@@ -726,10 +694,7 @@ class BudgetRegionSector(BudgetView):
 
 class ChooseYearBudgetGlobalPlant(ChooseYearView):
     def get_context_data(self, **kwargs):
-        years = []
-        for budget in Budget.objects.all().order_by('year'):
-            if budget.year not in years:
-                years.append(budget.year)
+        years = {budget.year for budget in Budget.objects.all().order_by('year')}
         context = super().get_context_data(**kwargs)
         context['years'] = years
         context['redirect'] = 'budget_global_plant'
@@ -832,10 +797,7 @@ class BudgetGlobalPlant(BudgetView):
 
 class ChooseYearBudgetGlobalCustomer(ChooseYearView):
     def get_context_data(self, **kwargs):
-        years = []
-        for budget in Budget.objects.all().order_by('year'):
-            if budget.year not in years:
-                years.append(budget.year)
+        years = {budget.year for budget in Budget.objects.all().order_by('year')}
         context = super().get_context_data(**kwargs)
         context['years'] = years
         context['redirect'] = 'budget_global_customer'
@@ -938,10 +900,7 @@ class BudgetGlobalCustomer(BudgetView):
 
 class ChooseYearBudgetGlobalSector(ChooseYearView):
     def get_context_data(self, **kwargs):
-        years = []
-        for budget in Budget.objects.all().order_by('year'):
-            if budget.year not in years:
-                years.append(budget.year)
+        years = {budget.year for budget in Budget.objects.all().order_by('year')}
         context = super().get_context_data(**kwargs)
         context['years'] = years
         context['redirect'] = 'budget_global_sector'
@@ -1044,10 +1003,7 @@ class BudgetGlobalSector(BudgetView):
 
 class ChooseYearBudgetGlobalRegion(ChooseYearView):
     def get_context_data(self, **kwargs):
-        years = []
-        for budget in Budget.objects.all().order_by('year'):
-            if budget.year not in years:
-                years.append(budget.year)
+        years = {budget.year for budget in Budget.objects.all().order_by('year')}
         context = super().get_context_data(**kwargs)
         context['years'] = years
         context['redirect'] = 'budget_global_region'
@@ -1150,10 +1106,7 @@ class BudgetGlobalRegion(BudgetView):
 
 class ChooseCustomerSaleCustomerPlant(ChooseCustomerView):
     def get_context_data(self, **kwargs):
-        customers = []
-        for s in Sale.objects.all():
-            if s.customer not in customers:
-                customers.append(s.customer)
+        customers = {sale.customer for sale in Sale.objects.all()}
         context = super().get_context_data(**kwargs)
         context['redirect'] = 'cy_sale_customer_plant'
         context['object_list'] = customers
@@ -1161,10 +1114,8 @@ class ChooseCustomerSaleCustomerPlant(ChooseCustomerView):
 
 class ChooseYearSaleCustomerPlant(ChooseYearView):
     def get_context_data(self, **kwargs):
-        years = []
-        for sale in Sale.objects.filter(customer__slug=self.kwargs['customer_name_slug']).order_by('year'):
-            if sale.year not in years:
-                years.append(sale.year)
+        years = {sale.year for sale in Sale.objects.filter(
+            customer__slug=self.kwargs['customer_name_slug']).order_by('year')}
         context = super().get_context_data(**kwargs)
         context['years'] = years
         context['location_name_slug'] = self.kwargs['customer_name_slug']
@@ -1269,21 +1220,16 @@ class SaleCustomerPlant(SaleView):
 
 class ChooseLocationSalePlantCustomer(ChooseLocationView):
     def get_context_data(self, **kwargs):
-        sale_locations = []
-        for sale in Sale.objects.all().order_by('location__name'):
-            if sale.location not in sale_locations:
-                sale_locations.append(sale.location)
+        locations = {sale.location for sale in Sale.objects.all().order_by('location__name')}
         context = super().get_context_data(**kwargs)
-        context['locations'] = sale_locations
+        context['locations'] = locations
         context['redirect'] = 'cy_sale_plant_customer'
         return context
 
 class ChooseYearSalePlantCustomer(ChooseYearView):
     def get_context_data(self, **kwargs):
-        years = []
-        for sale in Sale.objects.filter(location__slug=self.kwargs['location_name_slug']).order_by('year'):
-            if sale.year not in years:
-                years.append(sale.year)
+        years = {sale.year for sale in Sale.objects.filter(
+            location__slug=self.kwargs['location_name_slug']).order_by('year')}
         context = super().get_context_data(**kwargs)
         context['years'] = years
         context['location_name_slug'] = self.kwargs['location_name_slug']
@@ -1354,21 +1300,16 @@ class SalePlantCustomer(SaleView):
 
 class ChooseLocationSalePlantSector(ChooseLocationView):
     def get_context_data(self, **kwargs):
-        sale_locations = []
-        for sale in Sale.objects.all().order_by('location__name'):
-            if sale.location not in sale_locations:
-                sale_locations.append(sale.location)
+        locations = {sale.location for sale in Sale.objects.all().order_by('location_name')}
         context = super().get_context_data(**kwargs)
-        context['locations'] = sale_locations
+        context['locations'] = locations
         context['redirect'] = 'cy_sale_plant_sector'
         return context
 
 class ChooseYearSalePlantSector(ChooseYearView):
     def get_context_data(self, **kwargs):
-        years = []
-        for sale in Sale.objects.filter(location__slug=self.kwargs['location_name_slug']).order_by('year'):
-            if sale.year not in years:
-                years.append(sale.year)
+        years = {sale.year for sale in Sale.objects.filter(
+            location__slug=self.kwargs['location_name_slug']).order_by('year')}
         context = super().get_context_data(**kwargs)
         context['years'] = years
         context['location_name_slug'] = self.kwargs['location_name_slug']
@@ -1474,10 +1415,7 @@ class SalePlantSector(SaleView):
 
 class ChooseLocationSaleRegionPlant(ChooseLocationView):
     def get_context_data(self, **kwargs):
-        regions = []
-        for sale in Sale.objects.all().order_by('location__name'):
-            if sale.location.region not in regions:
-                regions.append(sale.location.region)
+        regions = {sale.location.region for sale in Sale.objects.all().order_by('location__name')}
         context = super().get_context_data(**kwargs)
         context['locations'] = regions
         context['redirect'] = 'cy_sale_region_plant'
@@ -1485,11 +1423,8 @@ class ChooseLocationSaleRegionPlant(ChooseLocationView):
 
 class ChooseYearSaleRegionPlant(ChooseYearView):
     def get_context_data(self, **kwargs):
-        years = []
-        for sale in Sale.objects.filter(
-            location__region__slug=self.kwargs['region_name_slug']).order_by('year'):
-            if sale.year not in years:
-                years.append(sale.year)
+        years = {sale.year for sale in Sale.objects.filter(
+            location__region__slug=self.kwargs['region_name_slug']).order_by('year')}
         context = super().get_context_data(**kwargs)
         context['years'] = years
         context['location_name_slug'] = self.kwargs['region_name_slug']
@@ -1820,10 +1755,7 @@ class SaleRegionSector(SaleView):
 
 class ChooseYearSaleGlobalPlant(ChooseYearView):
     def get_context_data(self, **kwargs):
-        years = []
-        for sale in Sale.objects.all().order_by('year'):
-            if sale.year not in years:
-                years.append(sale.year)
+        years = {sale.year for sale in Sale.objects.all().order_by('year')}
         context = super().get_context_data(**kwargs)
         context['years'] = years
         context['redirect'] = 'sale_global_plant'
@@ -1926,10 +1858,7 @@ class SaleGlobalPlant(SaleView):
 
 class ChooseYearSaleGlobalCustomer(ChooseYearView):
     def get_context_data(self, **kwargs):
-        years = []
-        for sale in Sale.objects.all().order_by('year'):
-            if sale.year not in years:
-                years.append(sale.year)
+        years = {sale.year for sale in Sale.objects.all().order_by('year')}
         context = super().get_context_data(**kwargs)
         context['years'] = years
         context['redirect'] = 'sale_global_customer'
@@ -2032,10 +1961,7 @@ class SaleGlobalCustomer(SaleView):
 
 class ChooseYearSaleGlobalSector(ChooseYearView):
     def get_context_data(self, **kwargs):
-        years = []
-        for sale in Sale.objects.all().order_by('year'):
-            if sale.year not in years:
-                years.append(sale.year)
+        years = {sale.year for sale in Sale.objects.all().order_by('year')}
         context = super().get_context_data(**kwargs)
         context['years'] = years
         context['redirect'] = 'sale_global_sector'
@@ -2139,10 +2065,6 @@ class SaleGlobalSector(SaleView):
 class ChooseYearSaleGlobalRegion(ChooseYearView):
     def get_context_data(self, **kwargs):
         years = {sale.year for sale in Sale.objects.all().order_by('year')}
-        # years = []
-        # for sale in Sale.objects.all().order_by('year'):
-        #     if sale.year not in years:
-        #         years.append(sale.year)
         context = super().get_context_data(**kwargs)
         context['years'] = years
         context['redirect'] = 'sale_global_region'
