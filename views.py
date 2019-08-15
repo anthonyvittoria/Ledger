@@ -2239,6 +2239,18 @@ class SaleGlobalRegion(SaleView):
         context['sale_total'] = sale_total
         return context
 
+######################################
+########## EDIT BUDGET FORM ##########
+######################################
+
+class BudgetFormChooseLocation(ChooseLocationView):
+    def get_context_data(self, **kwargs):
+        locations = {budget.location for budget in Budget.objects.all()}
+        context = super().get_context_data(**kwargs)
+        context['locations'] = locations
+        context['redirect'] = 'budget_form'
+        return context
+
 @login_required
 def form_budget(request, location_name_slug):
     location = Location.objects.get(slug=location_name_slug)
@@ -2256,7 +2268,11 @@ def form_budget(request, location_name_slug):
             return HttpResponseRedirect('')
     else:
         formset = BudgetInlineFormSet(instance=location)
-    return render(request, 'Ledger/form_budget.html', {'formset': formset, 'location': location})
+    return render(request, 'Ledger/budget_form2.html', {'formset': formset, 'location': location})
+
+###########################################
+########## A VS B CUSTOMER PLANT ##########
+###########################################
 
 class ChooseCustomerVsCustomerPlant(ChooseCustomerView):
     def get_context_data(self, **kwargs):
