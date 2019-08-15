@@ -2,7 +2,7 @@
 
     {% block title %}
     <title id="title">
-        {% if global %}Global{% elif location %}{{ location }}{% elif region %}{{ region }}{% elif customer %}{{ customer }}{% endif %} {{ year }} Budget by {{ first_col|capfirst }}
+        {% if global %}Global{% elif location %}{{ location }}{% elif region %}{{ region }}{% elif customer %}{{ customer }}{% endif %} {{ year }} Actual by {{ first_col|capfirst }}
     </title>
     {% endblock %}
     {% block customstyle %}
@@ -18,8 +18,8 @@
     {% endblock %}
 
     {% block body%}
-    <div class="container-fluid">
-        <h3 class="mt-5 text-center">{% if global %}Global{% elif location %}{{ location }}{% elif region %}{{ region }}{% elif customer %}{{ customer }}{% endif %} {{ year }} Sales</h3>
+    <div class="container-fluid bg-white">
+        <h3 class="mt-5 text-center">{% if global %}Global{% elif location %}{{ location }}{% elif region %}{{ region }}{% elif customer %}{{ customer }}{% endif %} {{ year }} Actual</h3>
         <h5 class="text-center">by {{ first_col|capfirst }}</h5>
             {% if sale_data %}
             <div class="row"></div>
@@ -203,8 +203,8 @@
                 });
                 $('.dataTables_length').addClass('bs-select inline float-left mb-3');
                 $('.dataTables_filter').addClass('bs-select inline float-right');
-                $('.btn').addClass('mx-1 btn-mdb-color');
-                $('.btn').removeClass('btn-secondary');                
+                $('.btn').addClass('mx-1 btn-primary');
+                $('.btn').removeClass('btn-secondary');
             });
             
         </script>
