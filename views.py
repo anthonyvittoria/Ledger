@@ -1300,7 +1300,7 @@ class SalePlantCustomer(SaleView):
 
 class ChooseLocationSalePlantSector(ChooseLocationView):
     def get_context_data(self, **kwargs):
-        locations = {sale.location for sale in Sale.objects.all().order_by('location_name')}
+        locations = {sale.location for sale in Sale.objects.all().order_by('location__name')}
         context = super().get_context_data(**kwargs)
         context['locations'] = locations
         context['redirect'] = 'cy_sale_plant_sector'
