@@ -1,15 +1,6 @@
 from django.db import models
 from django.template.defaultfilters import slugify
 
-class Capability(models.Model):
-    name = models.CharField(primary_key=True, max_length=45)
-
-    class Meta:
-        verbose_name_plural = "Capabilities"
-
-    def __str__(self):
-        return self.name
-
 class Region(models.Model):
     name = models.CharField(primary_key=True, max_length=45)
     slug = models.SlugField(unique=True, default="")

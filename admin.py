@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Budget, Capability, Customer, Location, Region, Sale, Sector
+from .models import Budget, Customer, Location, Region, Sale, Sector
 
 class BudgetInlineLocation(admin.TabularInline):
     model = Budget
@@ -48,7 +48,6 @@ class SaleAdmin(admin.ModelAdmin):
     format_date.short_description = 'Date'
 
 admin.site.register(Budget, BudgetAdmin)
-admin.site.register(Capability)
 admin.site.register(Customer, CustomerAdmin)
 admin.site.register(Location, LocationAdmin)
 admin.site.register(Region, RegionAdmin)
