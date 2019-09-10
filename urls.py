@@ -101,8 +101,8 @@ urlpatterns = [
         path('sale/global-region/<int:year>', views.SaleGlobalRegion.as_view(), name='sale_global_region'),
 
         ### VS Customer by Plant ###
-        path('vs/customer_plant/', views.ChooseCustomerVsCustomerPlant.as_view(), name='cc_vs_customer_plant'),
-        path('vs/customer_plant/<slug:customer_name_slug>', views.ChooseQuarterVsCustomerPlant.as_view(), name='cq_vs_customer_plant'),
-        path('vs/customer_plant/<slug:customer_name_slug>/<int:year>', views.ChooseYearVsCustomerPlant.as_view(), name='cy_vs_customer_plant'),
-        path('vs/customer_plant/<slug:customer_name_slug>/<int:year>/<str:q>', views.VsCustomerPlant.as_view(), name='vs_customer_plant'),
+        path('vs/customer-plant/', views.ChooseCustomerVsCustomerPlant.as_view(), name='cc_vs_customer_plant'),
+        path('vs/customer-plant/<slug:customer_name_slug>/', views.ChooseYearVsCustomerPlant.as_view(), name='cy_vs_customer_plant'),
+        path('vs/customer-plant/<slug:customer_name_slug>/<int:year>', views.ChooseQuarterVsCustomerPlant.as_view(), name='cq_vs_customer_plant'),
+        path('vs/customer-plant/<slug:customer_name_slug>/<int:year>/<str:q>', views.VsCustomerPlant.as_view(), name='vs_customer_plant'),
 ]
