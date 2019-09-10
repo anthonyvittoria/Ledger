@@ -2198,9 +2198,6 @@ def form_budget(request, location_name_slug):
 
 class ChooseCustomerVsCustomerPlant(ChooseCustomerView):
     def get_context_data(self, **kwargs):
-        # b_customers = [budget.customer.id for budget in Budget.objects.all()]
-        # c_customers = [sale.customer.id for sale in Sale.objects.all()]
-        # inter = intersection(b_customers, c_customers)
         customers = {
             budget.customer for budget in Budget.objects.all()
         } & {
@@ -2208,7 +2205,7 @@ class ChooseCustomerVsCustomerPlant(ChooseCustomerView):
         }
         context = super().get_context_data(**kwargs)
         context['redirect'] = 'cy_vs_customer_plant'
-        context['customers'] = customers
+        context['object_list'] = customers
         return context
 
 class ChooseYearVsCustomerPlant(ChooseYearView):
