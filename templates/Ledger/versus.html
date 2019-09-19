@@ -1,0 +1,260 @@
+{% extends 'Ledger/base.html' %} {% load static %} {% load humanize %}
+
+    {% block title %}
+    <title id="title">
+        {{ customer }} {{ q }} {{ year }} Actuals vs Budgets by {{ first_col|capfirst }}
+    </title>
+    {% endblock %}
+    {% block customstyle %}
+    <!-- MDB Datatables -->
+    <link rel="stylesheet" href="{% static 'Ledger/css/addons/datatables.min.css' %}">
+    <link rel="stylesheet" href="{% static 'Ledger/css/addons/buttons.bootstrap4.min.css' %}">
+    <link rel="stylesheet" href="{% static 'Ledger/css/addons/buttons.dataTables.min.css' %}">
+    <style type="text/css">
+        .inline {
+            display: inline-block;
+        }
+        .no-pointer {
+            cursor: default;
+        }
+    </style>
+    {% endblock %}
+
+    {% block body %}
+    <div class="container-fluid bg-white">
+        <h3 class="mt-5 text-center">{% if customer %}{{ customer }}{% elif plant %}{{ plant }}{% endif %} {{ q }} {{ year }}</h3>
+        <h5 class="text-center">Actuals vs Budgets by {{ first_col|capfirst }}</h5>
+            {% if data %}
+            <div class="row"></div>
+            <table id="table" class="table table-hover table-bordered table-sm my-5 mx-auto text-left" cellspacing=0 width="100%">
+                <thead class="thead-light" style="-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;" unselectable="on" onselectstart="return false;" onmousedown="return false;">
+                    <tr>
+                        <th scope="col" rowspan="2">{{ first_col|capfirst }}</th>
+                        {% if second_col %}
+                        <th scope="col">{{ second_col|capfirst }}</th>
+                        {% endif %}
+                        {% if q == 'Q1' %}
+                        <th colspan="2" class="text-center no-pointer">Jan</th>
+                        <th colspan="2" class="text-center no-pointer">Feb</th>
+                        <th colspan="2" class="text-center no-pointer">Mar</th>
+                        {% elif q == 'Q2' %}
+                        <th colspan="2" class="text-center no-pointer">Apr</th>
+                        <th colspan="2" class="text-center no-pointer">May</th>
+                        <th colspan="2" class="text-center no-pointer">Jun</th>
+                        {% elif q == 'Q3' %}
+                        <th colspan="2" class="text-center no-pointer">Jul</th>
+                        <th colspan="2" class="text-center no-pointer">Aug</th>
+                        <th colspan="2" class="text-center no-pointer">Sep</th>
+                        {% elif q == 'Q4' %}
+                        <th colspan="2" class="text-center no-pointer">Oct</th>
+                        <th colspan="2" class="text-center no-pointer">Nov</th>
+                        <th colspan="2" class="text-center no-pointer">Dec</th>
+                        {% else %}
+                        <th colspan="2" class="text-center no-pointer">N/A</th>
+                        <th colspan="2" class="text-center no-pointer">N/A</th>
+                        <th colspan="2" class="text-center no-pointer">N/A</th>
+                        {% endif %}
+                        <th colspan="2" class="text-center no-pointer">Total</th>
+                    </tr>
+                    <tr>
+                        <th>Actual</th>
+                        <th>Budget</th>
+                        <th>Actual</th>
+                        <th>Budget</th>
+                        <th>Actual</th>
+                        <th>Budget</th>
+                        <th>Actual</th>
+                        <th>Budget</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for plant, value in data.items %}
+                    {% if plant != 'totals' %}
+                    <tr>
+                        <td>{{ plant.name }}</td>
+                        {% if q == 'Q1' %}
+                        <!-- January -->
+                        {% if value.jan.actual > value.jan.budget %}
+                        <td class="text-success">{{ value.jan.actual }}</td>
+                        {% elif value.jan.actual < value.jan.budget %}
+                        <td class="text-danger">{{ value.jan.actual }}</td>
+                        {% else %}
+                        <td>{{ value.jan.actual }}</td>
+                        {% endif %}
+                        <td>{{ value.jan.budget }}</td>
+                        <!-- February -->
+                        {% if value.feb.actual > value.feb.budget %}
+                        <td class="text-success">{{ value.feb.actual }}</td>
+                        {% elif value.feb.actual < value.feb.budget %}
+                        <td class="text-danger">{{ value.feb.actual }}</td>
+                        {% else %}
+                        <td>{{ value.feb.actual }}</td>
+                        {% endif %}
+                        <td>{{ value.feb.budget }}</td>
+                        <!-- March -->
+                        {% if value.mar.actual > value.mar.budget %}
+                        <td class="text-success">{{ value.mar.actual }}</td>
+                        {% elif value.mar.actual < value.mar.budget %}
+                        <td class="text-danger">{{ value.mar.actual }}</td>
+                        {% else %}
+                        <td>{{ value.mar.actual }}</td>
+                        {% endif %}
+                        <td>{{ value.mar.budget }}</td>
+                        {% with total_budget=value.jan.budget|add:value.feb.budget|add:value.mar.budget %}
+                        {% with total_actual=value.jan.actual|add:value.feb.actual|add:value.mar.actual %}
+                        {% if total_actual > total_budget %}
+                        <td class="text-success">{{ total_actual }}</td>
+                        {% elif total_actual < total_budget %}
+                        <td class="text-danger">{{ total_actual }}</td>
+                        {% else %}
+                        <td>{{ total_actual }}</td>
+                        {% endif %}
+                        {% endwith %}
+                        <td>{{ total_budget }}</td>
+                        {% endwith %}
+
+                        {% elif q == 'Q2' %}
+                        {% if value.apr.actual > value.apr.budget %}
+                        <td class="text-success">{{ value.apr.actual }}</td>
+                        {% elif value.apr.actual < value.apr.budget %}
+                        <td class="text-danger">{{ value.apr.actual }}</td>
+                        {% else %}
+                        <td>{{ value.apr.actual }}</td>
+                        {% endif %}
+                        <td>{{ value.apr.budget }}</td>
+                        <!-- February -->
+                        {% if value.may.actual > value.may.budget %}
+                        <td class="text-success">{{ value.may.actual }}</td>
+                        {% elif value.may.actual < value.may.budget %}
+                        <td class="text-danger">{{ value.may.actual }}</td>
+                        {% else %}
+                        <td>{{ value.may.actual }}</td>
+                        {% endif %}
+                        <td>{{ value.may.budget }}</td>
+                        <!-- March -->
+                        {% if value.jun.actual > value.jun.budget %}
+                        <td class="text-success">{{ value.jun.actual }}</td>
+                        {% elif value.jun.actual < value.jun.budget %}
+                        <td class="text-danger">{{ value.jun.actual }}</td>
+                        {% else %}
+                        <td>{{ value.jun.actual }}</td>
+                        {% endif %}
+                        <td>{{ value.jun.budget }}</td>
+                        {% with total_budget=value.apr.budget|add:value.may.budget|add:value.jun.budget %}
+                        {% with total_actual=value.apr.actual|add:value.may.actual|add:value.jun.actual %}
+                        {% if total_actual > total_budget %}
+                        <td class="text-success">{{ total_actual }}</td>
+                        {% elif total_actual < total_budget %}
+                        <td class="text-danger">{{ total_actual }}</td>
+                        {% else %}
+                        <td>{{ total_actual }}</td>
+                        {% endif %}
+                        {% endwith %}
+                        <td>{{ total_budget }}</td>
+                        {% endwith %}
+
+                        {% elif q == 'Q3' %}
+                        <td>{{ value.jul.actual }}</td>
+                        <td>{{ value.jul.budget }}</td>
+                        <td>{{ value.aug.actual }}</td>
+                        <td>{{ value.aug.budget }}</td>
+                        <td>{{ value.sep.actual }}</td>
+                        <td>{{ value.sep.budget }}</td>
+                        <td>{{ value.jul.actual|add:value.aug.actual|add:value.sep.actual }}</td>
+                        <td>{{ value.jul.budget|add:value.aug.budget|add:value.sep.budget }}</td>
+                        {% elif q == 'Q4' %}
+                        <td>{{ value.oct.actual }}</td>
+                        <td>{{ value.oct.budget }}</td>
+                        <td>{{ value.nov.actual }}</td>
+                        <td>{{ value.nov.budget }}</td>
+                        <td>{{ value.dec.actual }}</td>
+                        <td>{{ value.dec.budget }}</td>
+                        <td>{{ value.oct.actual|add:value.nov.actual|add:value.dec.actual }}</td>
+                        <td>{{ value.oct.budget|add:value.nov.budget|add:value.dec.budget }}</td>
+                        {% endif %}
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th class="font-weight-bold">Total:</th>
+                        {% if q == 'Q1' %}
+                        <th class="font-weight-bold">{{ totals.jan_actual }}</th>
+                        <th class="font-weight-bold">{{ totals.jan_budget }}</th>
+                        <th class="font-weight-bold">{{ totals.feb_actual }}</th>
+                        <th class="font-weight-bold">{{ totals.feb_budget }}</th>
+                        <th class="font-weight-bold">{{ totals.mar_actual }}</th>
+                        <th class="font-weight-bold">{{ totals.mar_budget }}</th>
+                        {% elif q == 'Q2' %}
+                        <th class="font-weight-bold">{{ totals.apr_actual }}</th>
+                        <th class="font-weight-bold">{{ totals.apr_budget }}</th>
+                        <th class="font-weight-bold">{{ totals.may_actual }}</th>
+                        <th class="font-weight-bold">{{ totals.may_budget }}</th>
+                        <th class="font-weight-bold">{{ totals.jun_actual }}</th>
+                        <th class="font-weight-bold">{{ totals.jun_budget }}</th>
+                        {% elif q == 'Q3' %}
+                        <th class="font-weight-bold">{{ totals.jul_actual }}</th>
+                        <th class="font-weight-bold">{{ totals.jul_budget }}</th>
+                        <th class="font-weight-bold">{{ totals.aug_actual }}</th>
+                        <th class="font-weight-bold">{{ totals.aug_budget }}</th>
+                        <th class="font-weight-bold">{{ totals.sep_actual }}</th>
+                        <th class="font-weight-bold">{{ totals.sep_budget }}</th>
+                        {% elif q == 'Q4' %}
+                        <th class="font-weight-bold">{{ totals.oct_actual }}</th>
+                        <th class="font-weight-bold">{{ totals.oct_budget }}</th>
+                        <th class="font-weight-bold">{{ totals.nov_actual }}</th>
+                        <th class="font-weight-bold">{{ totals.nov_budget }}</th>
+                        <th class="font-weight-bold">{{ totals.dec_actual }}</th>
+                        <th class="font-weight-bold">{{ totals.dec_budget }}</th>
+                        {% else %}
+                        <th class="font-weight-bold">N/A</th>
+                        <th class="font-weight-bold">N/A</th>
+                        <th class="font-weight-bold">N/A</th>
+                        <th class="font-weight-bold">N/A</th>
+                        <th class="font-weight-bold">N/A</th>
+                        <th class="font-weight-bold">N/A</th>
+                        {% endif %}
+                        <th class="font-weight-bold">{{ totals.total_actual }}</th>
+                        <th class="font-weight-bold">{{ totals.total_budget }}</th>
+                    </tr>
+                </tfoot>
+            </table>
+            {% endif %}
+        </div>
+        <!-- jQuery -->
+        <script type="text/javascript" src="{% static 'Ledger/js/jquery-3.4.1.min.js' %}"></script>
+        <!-- Bootstrap -->
+        <script type="text/javascript" src="{% static 'Ledger/js/bootstrap.min.js' %}"></script>
+        <!-- MDB Datatables -->
+        <script type="text/javascript" src="{% static 'Ledger/js/addons/datatables.min.js' %}"></script>
+        <!-- Datatables buttons -->
+        <script type="text/javascript" src="{% static 'Ledger/js/addons/dataTables.buttons.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'Ledger/js/addons/buttons.bootstrap4.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'Ledger/js/addons/buttons.html5.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'Ledger/js/addons/buttons.print.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'Ledger/js/addons/buttons.flash.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'Ledger/js/addons/jszip.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'Ledger/js/addons/pdfmake.min.js' %}"></script>
+        <script type="text/html" src="{% static 'Ledger/js/addons/vfs_fonts.js' %}"></script>
+
+        <script>
+            $(document).ready(function () {
+                $('#table').DataTable({
+                    "pageLength": 10,
+                    "dom": "fltBpi",
+                    "buttons": [
+                        'copy',
+                        'excel',
+                        'pdf',
+                        'print'
+                    ]
+                });
+                $('.dataTables_length').addClass('bs-select inline float-left mb-3');
+                $('.dataTables_filter').addClass('bs-select inline float-right');
+                $('.btn').addClass('mx-1 btn-primary');
+                $('.btn').removeClass('btn-secondary');
+            });
+            
+        </script>
+    {% endblock %}

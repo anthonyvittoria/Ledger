@@ -13,7 +13,7 @@
 {% block body%}
     <div class="container mt-5 mx-auto text-center">
         <h3>Select Quarter</h3>
-        {% if object_list %}
+        {% if quarters %}
         <table id="table" class="table table-hover table-borderless" cellspacing="0" width="50%">
             <thead class="thead-light">
                 <tr>
@@ -21,31 +21,17 @@
                 </tr>
             </thead>
             <tbody>
-                {% for quarter in object_list %}
+                {% for quarter in quarters %}
                     {% if customer_name_slug %}
-                    <tr data-href="{% url redirect customer_name_slug quarter %}">
-                        <td>{{ quarter|upper }}</td>
-                    </tr>
-                    {% else %}
-                    <tr data-href="{% url redirect quarter %}">
-                        <td>{{ quarter|upper }}</td>
-                    </tr>
+                    <tr data-href="{% url redirect customer_name_slug year quarter %}">
+                    {% elif location_name_slug %}
+                    <tr data-href="{% url redirect location_name_slug year quarter %}">
                     {% endif %}
+                        <td>{{ quarter|upper }}</td>
+                    </tr>
                 {% endfor %}
             </tbody>
         </table>
-
-        {% comment %}
-        <div class="list-group my-5 mx-auto" style="width: 20em;">
-            {% for year in years %}
-                {% if location_name_slug %}
-                <a href="{% url redirect location_name_slug year %}" style="text-decoration: none;"><button type="button" class="list-group-item list-group-item-action my-1">{{ year }}</button></a>
-                {% else %}
-                <a href="{% url redirect year %}" style="text-decoration: none;"><button type="button" class="list-group-item list-group-item-action my-1">{{ year }}</button></a>
-                {% endif %}
-            {% endfor %}
-        </div>
-        {% endcomment %}
         {% else %}
         <h6 class="mt-5 mx-auto">No data could be loaded!</h6>
         {% endif %}

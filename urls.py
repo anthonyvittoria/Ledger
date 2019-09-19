@@ -103,6 +103,12 @@ urlpatterns = [
         ### VS Customer by Plant ###
         path('vs/customer-plant/', views.ChooseCustomerVsCustomerPlant.as_view(), name='cc_vs_customer_plant'),
         path('vs/customer-plant/<slug:customer_name_slug>/', views.ChooseYearVsCustomerPlant.as_view(), name='cy_vs_customer_plant'),
-        path('vs/customer-plant/<slug:customer_name_slug>/<int:year>', views.ChooseQuarterVsCustomerPlant.as_view(), name='cq_vs_customer_plant'),
-        path('vs/customer-plant/<slug:customer_name_slug>/<int:year>/<str:q>', views.VsCustomerPlant.as_view(), name='vs_customer_plant'),
+        path('vs/customer-plant/<slug:customer_name_slug>/<int:year>/', views.ChooseQuarterVsCustomerPlant.as_view(), name='cq_vs_customer_plant'),
+        path('vs/customer-plant/<slug:customer_name_slug>/<int:year>/<str:q>/', views.VsCustomerPlant.as_view(), name='vs_customer_plant'),
+         
+        ### VS Plant by Customer ###
+        path('vs/plant-customer/', views.ChooseLocationVsPlantCustomer.as_view(), name='cl_vs_plant_customer'),
+        path('vs/plant-customer/<slug:location_name_slug>/', views.ChooseYearVsPlantCustomer.as_view(), name='cy_vs_plant_customer'),
+        path('vs/plant-customer/<slug:location_name_slug>/<int:year>/', views.ChooseQuarterVsPlantCustomer.as_view(), name='cq_vs_plant_customer'),
+        path('vs/plant-customer/<slug:location_name_slug>/<int:year>/<str:q>', views.VsPlantCustomer.as_view(), name='vs_plant_customer'),
 ]

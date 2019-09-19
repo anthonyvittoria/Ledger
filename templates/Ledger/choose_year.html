@@ -26,6 +26,10 @@
                     <tr data-href="{% url redirect location_name_slug year %}">
                         <td>{{ year }}</td>
                     </tr>
+                    {% elif customer %}
+                    <tr data-href="{% url redirect customer year %}">
+                        <td>{{ year }}</td>
+                    </tr>
                     {% else %}
                     <tr data-href="{% url redirect year %}">
                         <td>{{ year }}</td>
