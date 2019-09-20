@@ -28,6 +28,7 @@
 
 <!-- Fontawesome -->
 <link rel="stylesheet" href="{% static 'Ledger/css/fontawesome/all.css' %}">
+<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
 
 <style>
 .sidenav {
@@ -153,10 +154,10 @@
     </div>
     <button class="accordion" style="line-height: 40px;"><p class="fas fa-check-double mr-1"></p> Actuals vs Budgets</button>
     <div class="panel">
-      <a href="{% url 'cc_budget_customer_plant' %}">Customer by Plant</a>
-      <a href="{% url 'cl_budget_plant_customer' %}">Plant by Customer</a>
-      <a href="{% url 'cl_budget_plant_sector' %}">Plant by Sector</a>
-      <a href="{% url 'cl_budget_region_plant' %}">Region by Plant</a>
+      <a href="{% url 'cc_vs_customer_plant' %}">Customer by Plant</a>
+      <a href="{% url 'cl_vs_plant_customer' %}">Plant by Customer</a>
+      <a href="{% url 'cl_vs_plant_sector' %}">Plant by Sector</a>
+      <a href="{% url 'cl_vs_region_plant' %}">Region by Plant</a>
       <a href="{% url 'cl_budget_region_customer' %}">Region by Customer</a>
       <a href="{% url 'cl_budget_region_sector' %}">Region by Sector</a>
       <a href="{% url 'cy_budget_global_plant' %}">Global by Plant</a>

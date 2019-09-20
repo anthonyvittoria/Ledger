@@ -7,7 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.list import ListView
 from django.views.generic.base import TemplateView
 
-from .models import Budget, Customer, Sale, Location
+from .models import Budget, Customer, Sale, Location, Region
 from .utilities import intersection
 
 class IndexView(LoginRequiredMixin, TemplateView):
@@ -2481,9 +2481,9 @@ class ChooseLocationVsPlantCustomer(ChooseLocationView):
 class ChooseYearVsPlantCustomer(ChooseYearView):
     def get_context_data(self, **kwargs):
         years = {
-            budget.year for budget in Budget.objects.all()
+            budget.year for budget in Budget.objects.filter(location__slug=self.kwargs['location_name_slug'])
         } & {
-            sale.year for sale in Sale.objects.all()
+            sale.year for sale in Sale.objects.filter(location__slug=self.kwargs['location_name_slug'])
         }
         context = super().get_context_data(**kwargs)
         context['years'] = years
@@ -2723,6 +2723,602 @@ class VsPlantCustomer(VersusView):
             context['data'] = data
             context['plant'] = plant
             context['totals'] = totals
+            context['q'] = 'Q4'
+        else:
+            pass
+        return context
+
+#########################################
+########## A VS B PLANT SECTOR ##########
+#########################################
+
+class ChooseLocationVsPlantSector(ChooseLocationView):
+    def get_context_data(self, **kwargs):
+        locations = {
+            budget.location for budget in Budget.objects.all()
+        } & {
+            sale.location for sale in Sale.objects.all()
+        }
+        context = super().get_context_data(**kwargs)
+        context['locations'] = locations
+        context['redirect'] = 'cy_vs_plant_sector'
+        return context
+
+class ChooseYearVsPlantSector(ChooseYearView):
+    def get_context_data(self, **kwargs):
+        years = {
+            budget.year for budget in Budget.objects.filter(location__slug=self.kwargs['location_name_slug'])
+        } & {
+            sale.year for sale in Sale.objects.filter(location__slug=self.kwargs['location_name_slug'])
+        }
+        context = super().get_context_data(**kwargs)
+        context['years'] = years
+        context['redirect'] = 'cq_vs_plant_sector'
+        return context
+
+class ChooseQuarterVsPlantSector(ChooseQuarterView):
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['quarters'] = ['q1', 'q2', 'q3', 'q4']
+        context['redirect'] = 'vs_plant_sector'
+        return context
+
+class VsPlantSector(VersusView):
+    def get_context_data(self, **kwargs):
+        plant = Location.objects.get(slug=self.kwargs['location_name_slug'])
+        sectors = {
+            budget.customer.sector for budget in Budget.objects.filter(location=plant)
+        } & {
+            sale.customer.sector for sale in Sale.objects.filter(location=plant)
+        }
+        print(sectors)
+        if self.kwargs['q'] == 'q1':
+            data = {
+                'totals': {
+                    'actual': 0,
+                    'budget': 0
+                }
+            }
+            for sector in sectors:
+                data[sector] = {
+                    'jan': {
+                        'budget': 0,
+                        'actual': 0
+                    },
+                    'feb': {
+                        'budget': 0,
+                        'actual': 0
+                    },
+                    'mar': {
+                        'budget': 0,
+                        'actual': 0
+                    },
+                }
+                for budget in Budget.objects.filter(customer__sector=sector, location=plant):
+                    data[sector]['jan']['budget'] += budget.jan
+                    data[sector]['feb']['budget'] += budget.feb
+                    data[sector]['mar']['budget'] += budget.mar
+                for sale in Sale.objects.filter(customer__sector=sector, location=plant):
+                    data[sector]['jan']['actual'] += sale.jan
+                    data[sector]['feb']['actual'] += sale.feb
+                    data[sector]['mar']['actual'] += sale.mar
+                data['totals']['actual'] += data[sector]['jan']['actual']
+                data['totals']['actual'] += data[sector]['feb']['actual']
+                data['totals']['actual'] += data[sector]['mar']['actual']
+                data['totals']['budget'] += data[sector]['jan']['budget']
+                data['totals']['budget'] += data[sector]['feb']['budget']
+                data['totals']['budget'] += data[sector]['mar']['budget']
+            totals = {
+                'jan_actual': 0,
+                'jan_budget': 0,
+                'feb_actual': 0,
+                'feb_budget': 0,
+                'mar_actual': 0,
+                'mar_budget': 0,
+                'total_actual': 0,
+                'total_budget': 0
+            }
+            for key, value in data.items():
+                if key != 'totals':
+                    totals['jan_actual'] += value['jan']['actual']
+                    totals['jan_budget'] += value['jan']['budget']
+                    totals['feb_actual'] += value['feb']['actual']
+                    totals['feb_budget'] += value['feb']['budget']
+                    totals['mar_actual'] += value['mar']['actual']
+                    totals['mar_budget'] += value['mar']['budget']
+            totals['total_actual'] = data['totals']['actual']
+            totals['total_budget'] = data['totals']['budget']
+            context = super().get_context_data(**kwargs)
+            context['first_col'] = 'sector'
+            context['data'] = data
+            context['plant'] = plant
+            context['totals'] = totals
+            context['q'] = 'Q1'
+
+        elif self.kwargs['q'] == 'q2':
+            data = {
+                'totals': {
+                    'actual': 0,
+                    'budget': 0
+                }
+            }
+            for sector in sectors:
+                data[sector] = {
+                    'apr': {
+                        'budget': 0,
+                        'actual': 0
+                    },
+                    'may': {
+                        'budget': 0,
+                        'actual': 0
+                    },
+                    'jun': {
+                        'budget': 0,
+                        'actual': 0
+                    },
+                }
+                for budget in Budget.objects.filter(customer__sector=sector, location=plant):
+                    data[sector]['apr']['budget'] += budget.apr
+                    data[sector]['may']['budget'] += budget.may
+                    data[sector]['jun']['budget'] += budget.jun
+                for sale in Sale.objects.filter(customer__sector=sector, location=plant):
+                    data[sector]['apr']['actual'] += sale.apr
+                    data[sector]['may']['actual'] += sale.may
+                    data[sector]['jun']['actual'] += sale.jun
+                data['totals']['actual'] += data[sector]['apr']['actual']
+                data['totals']['actual'] += data[sector]['may']['actual']
+                data['totals']['actual'] += data[sector]['jun']['actual']
+                data['totals']['budget'] += data[sector]['apr']['budget']
+                data['totals']['budget'] += data[sector]['may']['budget']
+                data['totals']['budget'] += data[sector]['jun']['budget']
+            totals = {
+                'apr_actual': 0,
+                'apr_budget': 0,
+                'may_actual': 0,
+                'may_budget': 0,
+                'jun_actual': 0,
+                'jun_budget': 0,
+                'total_actual': 0,
+                'total_budget': 0
+            }
+            for key, value in data.items():
+                if key != 'totals':
+                    totals['apr_actual'] += value['apr']['actual']
+                    totals['apr_budget'] += value['apr']['budget']
+                    totals['may_actual'] += value['may']['actual']
+                    totals['may_budget'] += value['may']['budget']
+                    totals['jun_actual'] += value['jun']['actual']
+                    totals['jun_budget'] += value['jun']['budget']
+            totals['total_actual'] = data['totals']['actual']
+            totals['total_budget'] = data['totals']['budget']
+            context = super().get_context_data(**kwargs)
+            context['first_col'] = 'sector'
+            context['data'] = data
+            context['plant'] = plant
+            context['totals'] = totals
+            context['q'] = 'Q2'
+
+        elif self.kwargs['q'] == 'q3':
+            data = {
+                'totals': {
+                    'actual': 0,
+                    'budget': 0
+                }
+            }
+            for sector in sectors:
+                data[sector] = {
+                    'jul': {
+                        'budget': 0,
+                        'actual': 0
+                    },
+                    'aug': {
+                        'budget': 0,
+                        'actual': 0
+                    },
+                    'sep': {
+                        'budget': 0,
+                        'actual': 0
+                    },
+                }
+                for budget in Budget.objects.filter(customer__sector=sector, location=plant):
+                    data[sector]['jul']['budget'] += budget.jul
+                    data[sector]['aug']['budget'] += budget.aug
+                    data[sector]['sep']['budget'] += budget.sep
+                for sale in Sale.objects.filter(customer__sector=sector, location=plant):
+                    data[sector]['jul']['actual'] += sale.jul
+                    data[sector]['aug']['actual'] += sale.aug
+                    data[sector]['sep']['actual'] += sale.sep
+                data['totals']['actual'] += data[sector]['jul']['actual']
+                data['totals']['actual'] += data[sector]['aug']['actual']
+                data['totals']['actual'] += data[sector]['sep']['actual']
+                data['totals']['budget'] += data[sector]['jul']['budget']
+                data['totals']['budget'] += data[sector]['aug']['budget']
+                data['totals']['budget'] += data[sector]['sep']['budget']
+            totals = {
+                'jul_actual': 0,
+                'jul_budget': 0,
+                'aug_actual': 0,
+                'aug_budget': 0,
+                'sep_actual': 0,
+                'sep_budget': 0,
+                'total_actual': 0,
+                'total_budget': 0
+            }
+            for key, value in data.items():
+                if key != 'totals':
+                    totals['jul_actual'] += value['jul']['actual']
+                    totals['jul_budget'] += value['jul']['budget']
+                    totals['aug_actual'] += value['aug']['actual']
+                    totals['aug_budget'] += value['aug']['budget']
+                    totals['sep_actual'] += value['sep']['actual']
+                    totals['sep_budget'] += value['sep']['budget']
+            totals['total_actual'] = data['totals']['actual']
+            totals['total_budget'] = data['totals']['budget']
+            context = super().get_context_data(**kwargs)
+            context['first_col'] = 'sector'
+            context['data'] = data
+            context['plant'] = plant
+            context['totals'] = totals
+            context['q'] = 'Q3'
+
+        elif self.kwargs['q'] == 'q4':
+            data = {
+                'totals': {
+                    'actual': 0,
+                    'budget': 0
+                }
+            }
+            for sector in sectors:
+                data[sector] = {
+                    'oct': {
+                        'budget': 0,
+                        'actual': 0
+                    },
+                    'nov': {
+                        'budget': 0,
+                        'actual': 0
+                    },
+                    'dec': {
+                        'budget': 0,
+                        'actual': 0
+                    },
+                }
+                for budget in Budget.objects.filter(customer__sector=sector, location=plant):
+                    data[sector]['oct']['budget'] += budget.oct
+                    data[sector]['nov']['budget'] += budget.nov
+                    data[sector]['dec']['budget'] += budget.dec
+                for sale in Sale.objects.filter(customer__sector=sector, location=plant):
+                    data[sector]['oct']['actual'] += sale.oct
+                    data[sector]['nov']['actual'] += sale.nov
+                    data[sector]['dec']['actual'] += sale.dec
+                data['totals']['actual'] += data[sector]['oct']['actual']
+                data['totals']['actual'] += data[sector]['nov']['actual']
+                data['totals']['actual'] += data[sector]['dec']['actual']
+                data['totals']['budget'] += data[sector]['oct']['budget']
+                data['totals']['budget'] += data[sector]['nov']['budget']
+                data['totals']['budget'] += data[sector]['dec']['budget']
+            totals = {
+                'oct_actual': 0,
+                'oct_budget': 0,
+                'nov_actual': 0,
+                'nov_budget': 0,
+                'dec_actual': 0,
+                'dec_budget': 0,
+                'total_actual': 0,
+                'total_budget': 0
+            }
+            for key, value in data.items():
+                if key != 'totals':
+                    totals['oct_actual'] += value['oct']['actual']
+                    totals['oct_budget'] += value['oct']['budget']
+                    totals['nov_actual'] += value['nov']['actual']
+                    totals['nov_budget'] += value['nov']['budget']
+                    totals['dec_actual'] += value['dec']['actual']
+                    totals['dec_budget'] += value['dec']['budget']
+            totals['total_actual'] = data['totals']['actual']
+            totals['total_budget'] = data['totals']['budget']
+            context = super().get_context_data(**kwargs)
+            context['first_col'] = 'sector'
+            context['data'] = data
+            context['plant'] = plant
+            context['totals'] = totals
+            context['q'] = 'Q4'
+        else:
+            pass
+        return context
+
+#########################################
+########## A VS B REGION PLANT ##########
+#########################################
+
+class ChooseLocationVsRegionPlant(ChooseLocationView):
+    def get_context_data(self, **kwargs):
+        locations = {
+            budget.location.region for budget in Budget.objects.all()
+        } & {
+            sale.location.region for sale in Sale.objects.all()
+        }
+        context = super().get_context_data(**kwargs)
+        context['locations'] = locations
+        context['redirect'] = 'cy_vs_region_plant'
+        return context
+
+class ChooseYearVsRegionPlant(ChooseYearView):
+    def get_context_data(self, **kwargs):
+        years = {
+            budget.year for budget in Budget.objects.filter(location__region__slug=self.kwargs['region_name_slug'])
+        } & {
+            sale.year for sale in Sale.objects.filter(location__region__slug=self.kwargs['region_name_slug'])
+        }
+        context = super().get_context_data(**kwargs)
+        context['years'] = years
+        context['redirect'] = 'cq_vs_region_plant'
+        return context
+
+class ChooseQuarterVsRegionPlant(ChooseQuarterView):
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['quarters'] = ['q1', 'q2', 'q3', 'q4']
+        context['redirect'] = 'vs_region_plant'
+        return context
+
+class VsRegionPlant(VersusView):
+    def get_context_data(self, **kwargs):
+        plants = {
+            budget.location for budget in Budget.objects.filter(location__region__slug=self.kwargs['region_name_slug'])
+        } & {
+            sale.location for sale in Sale.objects.filter(location__region__slug=self.kwargs['region_name_slug'])
+        }
+        if self.kwargs['q'] == 'q1':
+            data = {
+                'totals': {
+                    'actual': 0,
+                    'budget': 0
+                }
+            }
+            for plant in plants:
+                data[plant] = {
+                    'jan': {
+                        'budget': 0,
+                        'actual': 0
+                    },
+                    'feb': {
+                        'budget': 0,
+                        'actual': 0
+                    },
+                    'mar': {
+                        'budget': 0,
+                        'actual': 0
+                    },
+                }
+                for budget in Budget.objects.filter(location__region__slug=self.kwargs['region_name_slug']):
+                    data[plant]['jan']['budget'] += budget.jan
+                    data[plant]['feb']['budget'] += budget.feb
+                    data[plant]['mar']['budget'] += budget.mar
+                for sale in Sale.objects.filter(location__region__slug=self.kwargs['region_name_slug']):
+                    data[plant]['jan']['actual'] += sale.jan
+                    data[plant]['feb']['actual'] += sale.feb
+                    data[plant]['mar']['actual'] += sale.mar
+                data['totals']['actual'] += data[plant]['jan']['actual']
+                data['totals']['actual'] += data[plant]['feb']['actual']
+                data['totals']['actual'] += data[plant]['mar']['actual']
+                data['totals']['budget'] += data[plant]['jan']['budget']
+                data['totals']['budget'] += data[plant]['feb']['budget']
+                data['totals']['budget'] += data[plant]['mar']['budget']
+            totals = {
+                'jan_actual': 0,
+                'jan_budget': 0,
+                'feb_actual': 0,
+                'feb_budget': 0,
+                'mar_actual': 0,
+                'mar_budget': 0,
+                'total_actual': 0,
+                'total_budget': 0
+            }
+            for key, value in data.items():
+                if key != 'totals':
+                    totals['jan_actual'] += value['jan']['actual']
+                    totals['jan_budget'] += value['jan']['budget']
+                    totals['feb_actual'] += value['feb']['actual']
+                    totals['feb_budget'] += value['feb']['budget']
+                    totals['mar_actual'] += value['mar']['actual']
+                    totals['mar_budget'] += value['mar']['budget']
+            totals['total_actual'] = data['totals']['actual']
+            totals['total_budget'] = data['totals']['budget']
+            context = super().get_context_data(**kwargs)
+            context['first_col'] = 'plant'
+            context['data'] = data
+            context['totals'] = totals
+            context['region'] = Region.objects.get(slug=self.kwargs['region_name_slug'])
+            context['q'] = 'Q1'
+
+        elif self.kwargs['q'] == 'q2':
+            data = {
+                'totals': {
+                    'actual': 0,
+                    'budget': 0
+                }
+            }
+            for plant in plants:
+                data[plant] = {
+                    'apr': {
+                        'budget': 0,
+                        'actual': 0
+                    },
+                    'may': {
+                        'budget': 0,
+                        'actual': 0
+                    },
+                    'jun': {
+                        'budget': 0,
+                        'actual': 0
+                    },
+                }
+                for budget in Budget.objects.filter(location__region__slug=self.kwargs['region_name_slug']):
+                    data[plant]['apr']['budget'] += budget.apr
+                    data[plant]['may']['budget'] += budget.may
+                    data[plant]['jun']['budget'] += budget.jun
+                for sale in Sale.objects.filter(location__region__slug=self.kwargs['region_name_slug']):
+                    data[plant]['apr']['actual'] += sale.apr
+                    data[plant]['may']['actual'] += sale.may
+                    data[plant]['jun']['actual'] += sale.jun
+                data['totals']['actual'] += data[plant]['apr']['actual']
+                data['totals']['actual'] += data[plant]['may']['actual']
+                data['totals']['actual'] += data[plant]['jun']['actual']
+                data['totals']['budget'] += data[plant]['apr']['budget']
+                data['totals']['budget'] += data[plant]['may']['budget']
+                data['totals']['budget'] += data[plant]['jun']['budget']
+            totals = {
+                'apr_actual': 0,
+                'apr_budget': 0,
+                'may_actual': 0,
+                'may_budget': 0,
+                'jun_actual': 0,
+                'jun_budget': 0,
+                'total_actual': 0,
+                'total_budget': 0
+            }
+            for key, value in data.items():
+                if key != 'totals':
+                    totals['apr_actual'] += value['apr']['actual']
+                    totals['apr_budget'] += value['apr']['budget']
+                    totals['may_actual'] += value['may']['actual']
+                    totals['may_budget'] += value['may']['budget']
+                    totals['jun_actual'] += value['jun']['actual']
+                    totals['jun_budget'] += value['jun']['budget']
+            totals['total_actual'] = data['totals']['actual']
+            totals['total_budget'] = data['totals']['budget']
+            context = super().get_context_data(**kwargs)
+            context['first_col'] = 'plant'
+            context['data'] = data
+            context['totals'] = totals
+            context['region'] = Region.objects.get(slug=self.kwargs['region_name_slug'])
+            context['q'] = 'Q2'
+
+        elif self.kwargs['q'] == 'q3':
+            data = {
+                'totals': {
+                    'actual': 0,
+                    'budget': 0
+                }
+            }
+            for plant in plants:
+                data[plant] = {
+                    'jul': {
+                        'budget': 0,
+                        'actual': 0
+                    },
+                    'aug': {
+                        'budget': 0,
+                        'actual': 0
+                    },
+                    'sep': {
+                        'budget': 0,
+                        'actual': 0
+                    },
+                }
+                for budget in Budget.objects.filter(location__region__slug=self.kwargs['region_name_slug']):
+                    data[plant]['jul']['budget'] += budget.jul
+                    data[plant]['aug']['budget'] += budget.aug
+                    data[plant]['sep']['budget'] += budget.sep
+                for sale in Sale.objects.filter(location__region__slug=self.kwargs['region_name_slug']):
+                    data[plant]['jul']['actual'] += sale.jul
+                    data[plant]['aug']['actual'] += sale.aug
+                    data[plant]['sep']['actual'] += sale.sep
+                data['totals']['actual'] += data[plant]['jul']['actual']
+                data['totals']['actual'] += data[plant]['aug']['actual']
+                data['totals']['actual'] += data[plant]['sep']['actual']
+                data['totals']['budget'] += data[plant]['jul']['budget']
+                data['totals']['budget'] += data[plant]['aug']['budget']
+                data['totals']['budget'] += data[plant]['sep']['budget']
+            totals = {
+                'jul_actual': 0,
+                'jul_budget': 0,
+                'aug_actual': 0,
+                'aug_budget': 0,
+                'sep_actual': 0,
+                'sep_budget': 0,
+                'total_actual': 0,
+                'total_budget': 0
+            }
+            for key, value in data.items():
+                if key != 'totals':
+                    totals['jul_actual'] += value['jul']['actual']
+                    totals['jul_budget'] += value['jul']['budget']
+                    totals['aug_actual'] += value['aug']['actual']
+                    totals['aug_budget'] += value['aug']['budget']
+                    totals['sep_actual'] += value['sep']['actual']
+                    totals['sep_budget'] += value['sep']['budget']
+            totals['total_actual'] = data['totals']['actual']
+            totals['total_budget'] = data['totals']['budget']
+            context = super().get_context_data(**kwargs)
+            context['first_col'] = 'plant'
+            context['data'] = data
+            context['totals'] = totals
+            context['region'] = Region.objects.get(slug=self.kwargs['region_name_slug'])
+            context['q'] = 'Q3'
+
+        elif self.kwargs['q'] == 'q4':
+            data = {
+                'totals': {
+                    'actual': 0,
+                    'budget': 0
+                }
+            }
+            for plant in plants:
+                data[plant] = {
+                    'oct': {
+                        'budget': 0,
+                        'actual': 0
+                    },
+                    'nov': {
+                        'budget': 0,
+                        'actual': 0
+                    },
+                    'dec': {
+                        'budget': 0,
+                        'actual': 0
+                    },
+                }
+                for budget in Budget.objects.filter(location__region__slug=self.kwargs['region_name_slug']):
+                    data[plant]['oct']['budget'] += budget.oct
+                    data[plant]['nov']['budget'] += budget.nov
+                    data[plant]['dec']['budget'] += budget.dec
+                for sale in Sale.objects.filter(location__region__slug=self.kwargs['region_name_slug']):
+                    data[plant]['oct']['actual'] += sale.oct
+                    data[plant]['nov']['actual'] += sale.nov
+                    data[plant]['dec']['actual'] += sale.dec
+                data['totals']['actual'] += data[plant]['oct']['actual']
+                data['totals']['actual'] += data[plant]['nov']['actual']
+                data['totals']['actual'] += data[plant]['dec']['actual']
+                data['totals']['budget'] += data[plant]['oct']['budget']
+                data['totals']['budget'] += data[plant]['nov']['budget']
+                data['totals']['budget'] += data[plant]['dec']['budget']
+            totals = {
+                'oct_actual': 0,
+                'oct_budget': 0,
+                'nov_actual': 0,
+                'nov_budget': 0,
+                'dec_actual': 0,
+                'dec_budget': 0,
+                'total_actual': 0,
+                'total_budget': 0
+            }
+            for key, value in data.items():
+                if key != 'totals':
+                    totals['oct_actual'] += value['oct']['actual']
+                    totals['oct_budget'] += value['oct']['budget']
+                    totals['nov_actual'] += value['nov']['actual']
+                    totals['nov_budget'] += value['nov']['budget']
+                    totals['dec_actual'] += value['dec']['actual']
+                    totals['dec_budget'] += value['dec']['budget']
+            totals['total_actual'] = data['totals']['actual']
+            totals['total_budget'] = data['totals']['budget']
+            context = super().get_context_data(**kwargs)
+            context['first_col'] = 'plant'
+            context['data'] = data
+            context['totals'] = totals
+            context['region'] = Region.objects.get(slug=self.kwargs['region_name_slug'])
             context['q'] = 'Q4'
         else:
             pass

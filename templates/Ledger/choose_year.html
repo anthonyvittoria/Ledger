@@ -26,6 +26,10 @@
                     <tr data-href="{% url redirect location_name_slug year %}">
                         <td>{{ year }}</td>
                     </tr>
+                    {% elif region_name_slug %}
+                    <tr data-href="{% url redirect region_name_slug year %}">
+                        <td>{{ year }}</td>
+                    </tr>
                     {% elif customer %}
                     <tr data-href="{% url redirect customer year %}">
                         <td>{{ year }}</td>
@@ -38,18 +42,6 @@
                 {% endfor %}
             </tbody>
         </table>
-
-        {% comment %}
-        <div class="list-group my-5 mx-auto" style="width: 20em;">
-            {% for year in years %}
-                {% if location_name_slug %}
-                <a href="{% url redirect location_name_slug year %}" style="text-decoration: none;"><button type="button" class="list-group-item list-group-item-action my-1">{{ year }}</button></a>
-                {% else %}
-                <a href="{% url redirect year %}" style="text-decoration: none;"><button type="button" class="list-group-item list-group-item-action my-1">{{ year }}</button></a>
-                {% endif %}
-            {% endfor %}
-        </div>
-        {% endcomment %}
         {% else %}
         <h6 class="mt-5 mx-auto">No data could be loaded!</h6>
         {% endif %}

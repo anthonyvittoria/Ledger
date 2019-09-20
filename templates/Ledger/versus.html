@@ -22,7 +22,7 @@
 
     {% block body %}
     <div class="container-fluid bg-white">
-        <h3 class="mt-5 text-center">{% if customer %}{{ customer }}{% elif plant %}{{ plant }}{% endif %} {{ q }} {{ year }}</h3>
+        <h3 class="mt-5 text-center">{% if customer %}{{ customer }}{% elif plant %}{{ plant }}{% elif region %}{{region}}{% endif %} {{ q }} {{ year }}</h3>
         <h5 class="text-center">Actuals vs Budgets by {{ first_col|capfirst }}</h5>
             {% if data %}
             <div class="row"></div>

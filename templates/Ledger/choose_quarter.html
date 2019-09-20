@@ -26,6 +26,8 @@
                     <tr data-href="{% url redirect customer_name_slug year quarter %}">
                     {% elif location_name_slug %}
                     <tr data-href="{% url redirect location_name_slug year quarter %}">
+                    {% elif region_name_slug %}
+                    <tr data-href="{% url redirect region_name_slug year quarter %}">
                     {% endif %}
                         <td>{{ quarter|upper }}</td>
                     </tr>

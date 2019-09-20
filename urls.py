@@ -111,4 +111,16 @@ urlpatterns = [
         path('vs/plant-customer/<slug:location_name_slug>/', views.ChooseYearVsPlantCustomer.as_view(), name='cy_vs_plant_customer'),
         path('vs/plant-customer/<slug:location_name_slug>/<int:year>/', views.ChooseQuarterVsPlantCustomer.as_view(), name='cq_vs_plant_customer'),
         path('vs/plant-customer/<slug:location_name_slug>/<int:year>/<str:q>', views.VsPlantCustomer.as_view(), name='vs_plant_customer'),
+
+        ### VS Plant by Sector ###
+        path('vs/plant-sector/', views.ChooseLocationVsPlantSector.as_view(), name='cl_vs_plant_sector'),
+        path('vs/plant-sector/<slug:location_name_slug>/', views.ChooseYearVsPlantSector.as_view(), name='cy_vs_plant_sector'),
+        path('vs/plant-sector/<slug:location_name_slug>/<int:year>/', views.ChooseQuarterVsPlantSector.as_view(), name='cq_vs_plant_sector'),
+        path('vs/plant-sector/<slug:location_name_slug>/<int:year>/<str:q>/', views.VsPlantSector.as_view(), name='vs_plant_sector'),
+
+        ### VS Region by Plant ###
+        path('vs/region-plant/', views.ChooseLocationVsRegionPlant.as_view(), name='cl_vs_region_plant'),
+        path('vs/region-plant/<slug:region_name_slug>/', views.ChooseYearVsRegionPlant.as_view(), name='cy_vs_region_plant'),
+        path('vs/region-plant/<slug:region_name_slug>/<int:year>/', views.ChooseQuarterVsRegionPlant.as_view(), name='cq_vs_region_plant'),
+        path('vs/region-plant/<slug:region_name_slug>/<int:year>/<str:q>/', views.VsRegionPlant.as_view(), name='vs_region_plant'),
 ]
