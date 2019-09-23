@@ -3388,11 +3388,11 @@ class VsRegionCustomer(VersusView):
                         'actual': 0
                     },
                 }
-                for budget in Budget.objects.filter(location__region__slug=self.kwargs['region_name_slug']):
+                for budget in Budget.objects.filter(location__region__slug=self.kwargs['region_name_slug'], customer=customer):
                     data[customer]['jan']['budget'] += budget.jan
                     data[customer]['feb']['budget'] += budget.feb
                     data[customer]['mar']['budget'] += budget.mar
-                for sale in Sale.objects.filter(location__region__slug=self.kwargs['region_name_slug']):
+                for sale in Sale.objects.filter(location__region__slug=self.kwargs['region_name_slug'], customer=customer):
                     data[customer]['jan']['actual'] += sale.jan
                     data[customer]['feb']['actual'] += sale.feb
                     data[customer]['mar']['actual'] += sale.mar
@@ -3451,11 +3451,11 @@ class VsRegionCustomer(VersusView):
                         'actual': 0
                     },
                 }
-                for budget in Budget.objects.filter(location__region__slug=self.kwargs['region_name_slug']):
+                for budget in Budget.objects.filter(location__region__slug=self.kwargs['region_name_slug'], customer=customer):
                     data[customer]['apr']['budget'] += budget.apr
                     data[customer]['may']['budget'] += budget.may
                     data[customer]['jun']['budget'] += budget.jun
-                for sale in Sale.objects.filter(location__region__slug=self.kwargs['region_name_slug']):
+                for sale in Sale.objects.filter(location__region__slug=self.kwargs['region_name_slug'], customer=customer):
                     data[customer]['apr']['actual'] += sale.apr
                     data[customer]['may']['actual'] += sale.may
                     data[customer]['jun']['actual'] += sale.jun
@@ -3514,11 +3514,11 @@ class VsRegionCustomer(VersusView):
                         'actual': 0
                     },
                 }
-                for budget in Budget.objects.filter(location__region__slug=self.kwargs['region_name_slug']):
+                for budget in Budget.objects.filter(location__region__slug=self.kwargs['region_name_slug'], customer=customer):
                     data[customer]['jul']['budget'] += budget.jul
                     data[customer]['aug']['budget'] += budget.aug
                     data[customer]['sep']['budget'] += budget.sep
-                for sale in Sale.objects.filter(location__region__slug=self.kwargs['region_name_slug']):
+                for sale in Sale.objects.filter(location__region__slug=self.kwargs['region_name_slug'], customer=customer):
                     data[customer]['jul']['actual'] += sale.jul
                     data[customer]['aug']['actual'] += sale.aug
                     data[customer]['sep']['actual'] += sale.sep
@@ -3577,11 +3577,11 @@ class VsRegionCustomer(VersusView):
                         'actual': 0
                     },
                 }
-                for budget in Budget.objects.filter(location__region__slug=self.kwargs['region_name_slug']):
+                for budget in Budget.objects.filter(location__region__slug=self.kwargs['region_name_slug'], customer=customer):
                     data[customer]['oct']['budget'] += budget.oct
                     data[customer]['nov']['budget'] += budget.nov
                     data[customer]['dec']['budget'] += budget.dec
-                for sale in Sale.objects.filter(location__region__slug=self.kwargs['region_name_slug']):
+                for sale in Sale.objects.filter(location__region__slug=self.kwargs['region_name_slug'], customer=customer):
                     data[customer]['oct']['actual'] += sale.oct
                     data[customer]['nov']['actual'] += sale.nov
                     data[customer]['dec']['actual'] += sale.dec
