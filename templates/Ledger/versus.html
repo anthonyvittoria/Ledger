@@ -22,7 +22,7 @@
 
     {% block body %}
     <div class="container-fluid bg-white">
-        <h3 class="mt-5 text-center">{% if customer %}{{ customer }}{% elif plant %}{{ plant }}{% elif region %}{{region}}{% endif %} {{ q }} {{ year }}</h3>
+        <h3 class="mt-5 text-center">{% if customer %}{{ customer }}{% elif plant %}{{ plant }}{% elif region %}{{region}}{% elif global %}Global{% endif %} {{ q }} {{ year }}</h3>
         <h5 class="text-center">Actuals vs Budgets by {{ first_col|capfirst }}</h5>
             {% if data %}
             <div class="row"></div>
@@ -228,6 +228,7 @@
         <script type="text/javascript" src="{% static 'Ledger/js/bootstrap.min.js' %}"></script>
         <!-- MDB Datatables -->
         <script type="text/javascript" src="{% static 'Ledger/js/addons/datatables.min.js' %}"></script>
+        <!-- <script type="text/javascript" src="{% static 'Ledger/js/addons/dataTables.fixedHeader.min.js' %}"></script> -->
         <!-- Datatables buttons -->
         <script type="text/javascript" src="{% static 'Ledger/js/addons/dataTables.buttons.min.js' %}"></script>
         <script type="text/javascript" src="{% static 'Ledger/js/addons/buttons.bootstrap4.min.js' %}"></script>
@@ -241,6 +242,7 @@
         <script>
             $(document).ready(function () {
                 $('#table').DataTable({
+                    // fixedHeader: true,
                     "pageLength": 10,
                     "dom": "fltBpi",
                     "buttons": [
