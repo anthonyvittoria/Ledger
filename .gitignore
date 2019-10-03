@@ -9,5 +9,6 @@ static/Ledger/css/*
 !static/Ledger/css/main.css
 static/Ledger/fonts/*
 static/Ledger/webfonts/*
+static/Ledger/FixedHeader*
 *.pyc
 *.pyo
