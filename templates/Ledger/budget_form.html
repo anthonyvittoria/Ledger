@@ -1,0 +1,106 @@
+{% extends 'Ledger/base.html' %} {% load static %} {% load crispy_forms_tags %}
+
+{% block customstyle %}
+<style type="text/css">
+    .inline {
+        display: inline-block;
+    }
+    .no-pointer {
+        cursor: default;
+    }
+    select {
+        width: 150px;
+    }
+    input {
+        width: 100px;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid my-5 mx-auto">
+    {% if messages %}
+    <div class="alert alert-success">
+        {% for message in messages %}
+        {{ message }}
+        {% endfor %}
+    </div>
+    {% endif %}
+    <h3 class="text-center">Editing {{ location }} {{ year }} Budget</h3>
+    <form method="post">
+        {% csrf_token %}
+        {{ formset.management_form }}
+        <div style="overflow-x: scroll">
+        <table id="table" class="table table-hover table-bordered table-sm my-5 mx-auto text-left" cellspacing=0>
+            <thead class="thead-light"></thead>
+                <tr class="no-pointer">
+                    <th scope="col">Customer</th>
+                    <th scope="col">Year</th>
+                    <th scope="col">Jan</th>
+                    <th scope="col">Feb</th>
+                    <th scope="col">Mar</th>
+                    <th scope="col">Apr</th>
+                    <th scope="col">May</th>
+                    <th scope="col">Jun</th>
+                    <th scope="col">Jul</th>
+                    <th scope="col">Aug</th>
+                    <th scope="col">Sep</th>
+                    <th scope="col">Oct</th>
+                    <th scope="col">Nov</th>
+                    <th scope="col">Dec</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for form in formset %}
+                {{ form.id }}
+                <tr class="formset_row">
+                    <td class="mdb-select md-form">{{ form.customer }}</td>
+                    <td>{{ form.year }}</td>
+                    <td>{{ form.jan }}</td>
+                    <td>{{ form.feb }}</td>
+                    <td>{{ form.mar }}</td>
+                    <td>{{ form.apr }}</td>
+                    <td>{{ form.may }}</td>
+                    <td>{{ form.jun }}</td>
+                    <td>{{ form.jul }}</td>
+                    <td>{{ form.aug }}</td>
+                    <td>{{ form.sep }}</td>
+                    <td>{{ form.oct }}</td>
+                    <td>{{ form.nov }}</td>
+                    <td>{{ form.dec }}</td>
+                    <!-- <td>{{ form.DELETE }}</td> --> {% comment %} Find way to put del btn on first col{% endcomment %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        </div>
+        <input type="submit" class="btn btn-primary" value="Save"/>
+    </form>
+    {% if form.errors %}
+    {{ form.errors }}
+    {% endif %}
+
+</div>
+<!-- jQuery -->
+<script type="text/javascript" src="{% static 'Ledger/js/jquery-3.4.1.min.js' %}"></script>
+<!-- MDB -->
+<script type="text/javascript" src="{% static 'Ledger/js/mdb.min.js' %}"></script>
+<!-- Popper -->
+<script type="text/javascript" src="{% static 'Ledger/js/popper.min.js' %}"></script>
+<!-- jQuery formset -->
+<script type="text/javascript" src="{% static 'Ledger/js/jquery.formset.js' %}"></script>
+
+<!-- MDB Datatables -->
+<script type="text/javascript" src="{% static 'Ledger/js/addons/datatables.min.js' %}"></script>
+
+<script src="{% static 'Ledger/js/jquery.formset.js' %}"></script>
+
+<script type="text/javascript">
+    $('.formset_row').formset({
+        addText: 'Add budget row',
+        deleteText: 'Remove',
+        prefix: 'location_id'
+    });
+</script>
+
+{% endblock %}

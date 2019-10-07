@@ -12,7 +12,7 @@
 
 <!-- Fonts -->
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css?family=Montserrat:700&display=swap" rel="stylesheet"> 
+<link href="https://fonts.googleapis.com/css?family=Montserrat:700&display=swap" rel="stylesheet">
 
 <!-- Favicon -->
 <link rel="icon" type="image/png" href="{% static 'Ledger/img/favicon.ico' %}" sizes="32x32" />
@@ -28,7 +28,6 @@
 
 <!-- Fontawesome -->
 <link rel="stylesheet" href="{% static 'Ledger/css/fontawesome/all.css' %}">
-<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
 
 <style>
 .sidenav {
@@ -126,7 +125,7 @@
     Ledger
     </a>
     {% if user.is_authenticated %}
-    <button class="accordion" style="line-height: 40px;"><p class="fas fa-money-check-alt mr-1"></p> Actuals</button>
+    <button class="accordion" style="line-height: 40px;"><p class="fas fa-money-check-alt mr-1"></p> Sales Actuals</button>
     <div class="panel">
         <a href="{% url 'cc_sale_customer_plant' %}">Customer by Plant</a>
         <a href="{% url 'cl_sale_plant_customer' %}">Plant by Customer</a>
@@ -139,7 +138,7 @@
         <a href="{% url 'cy_sale_global_sector' %}">Global by Sector</a>
         <a href="{% url 'cy_sale_global_region' %}">Global by Region</a>
     </div>
-    <button class="accordion" style="line-height: 40px;"><p class="fas fa-balance-scale mr-1"></p> Budgets</button>
+    <button class="accordion" style="line-height: 40px;"><p class="fas fa-balance-scale mr-1"></p> Sales Budgets</button>
     <div class="panel">
       <a href="{% url 'cc_budget_customer_plant' %}">Customer by Plant</a>
       <a href="{% url 'cl_budget_plant_customer' %}">Plant by Customer</a>
@@ -152,7 +151,7 @@
       <a href="{% url 'cy_budget_global_sector' %}">Global by Sector</a>
       <a href="{% url 'cy_budget_global_region' %}">Global by Region</a>
     </div>
-    <button class="accordion" style="line-height: 40px;"><p class="fas fa-check-double mr-1"></p> Actuals vs Budgets</button>
+    <button class="accordion" style="line-height: 40px;"><p class="fas fa-check-double mr-1"></p> Sales Actuals vs Budgets</button>
     <div class="panel">
       <a href="{% url 'cc_vs_customer_plant' %}">Customer by Plant</a>
       <a href="{% url 'cl_vs_plant_customer' %}">Plant by Customer</a>
@@ -221,7 +220,7 @@
 function openNav() {
   $('.accordion').show();
   $('.panel').show();
-  document.getElementById("mySidenav").style.width = "250px";
+  document.getElementById("mySidenav").style.width = "275px";
 }
 
 /* Set the width of the side navigation to 0 */

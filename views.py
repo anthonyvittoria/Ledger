@@ -2193,7 +2193,7 @@ def form_budget(request, location_name_slug):
             return HttpResponseRedirect('')
     else:
         formset = BudgetInlineFormSet(instance=location)
-    return render(request, 'Ledger/budget_form2.html', {'formset': formset, 'location': location})
+    return render(request, 'Ledger/budget_form.html', {'formset': formset, 'location': location})
 
 ###########################################
 ########## A VS B CUSTOMER PLANT ##########
