@@ -125,7 +125,7 @@
     Ledger
     </a>
     {% if user.is_authenticated %}
-    <button class="accordion" style="line-height: 40px;"><p class="fas fa-money-check-alt mr-1"></p> Sales Actuals</button>
+    <button id="accordionActuals" class="accordion" style="line-height: 40px;"><p class="fas fa-money-check-alt mr-1"></p> Sales Actuals</button>
     <div class="panel">
         <a href="{% url 'cc_sale_customer_plant' %}">Customer by Plant</a>
         <a href="{% url 'cl_sale_plant_customer' %}">Plant by Customer</a>
@@ -138,7 +138,7 @@
         <a href="{% url 'cy_sale_global_sector' %}">Global by Sector</a>
         <a href="{% url 'cy_sale_global_region' %}">Global by Region</a>
     </div>
-    <button class="accordion" style="line-height: 40px;"><p class="fas fa-balance-scale mr-1"></p> Sales Budgets</button>
+    <button id="accordionBudgets" class="accordion" style="line-height: 40px;"><p class="fas fa-balance-scale mr-1"></p> Sales Budgets</button>
     <div class="panel">
       <a href="{% url 'cc_budget_customer_plant' %}">Customer by Plant</a>
       <a href="{% url 'cl_budget_plant_customer' %}">Plant by Customer</a>
@@ -151,7 +151,7 @@
       <a href="{% url 'cy_budget_global_sector' %}">Global by Sector</a>
       <a href="{% url 'cy_budget_global_region' %}">Global by Region</a>
     </div>
-    <button class="accordion" style="line-height: 40px;"><p class="fas fa-check-double mr-1"></p> Sales Actuals vs Budgets</button>
+    <button id="accordionVs" class="accordion" style="line-height: 40px;"><p class="fas fa-check-double mr-1"></p> Sales Actuals vs Budgets</button>
     <div class="panel">
       <a href="{% url 'cc_vs_customer_plant' %}">Customer by Plant</a>
       <a href="{% url 'cl_vs_plant_customer' %}">Plant by Customer</a>
@@ -168,6 +168,7 @@
     <button class="accordion" style="line-height: 40px;"><p class="fas fa-user-shield mr-1"></p> Administration</button>
     <div class="panel">
       <a href="{% url 'admin:index' %}">Admin Portal</a>
+      <a href="{% url 'cl_budget_form' %}">Upload Budget</a>
       {% if user.is_superuser %}
       <a href="{% url 'register' %}">Register a user</a>
       {% endif %}
@@ -231,7 +232,13 @@ function closeNav() {
   $('.accordion').removeClass("nav-active");
   $('.panel').removeClass("show");
 }
+
+function openNavTo(section) {
+  openNav();
+  $('#accordion' + section).click();
+}
 </script>
+
 <script>
 var acc = document.getElementsByClassName("accordion");
 var i;
