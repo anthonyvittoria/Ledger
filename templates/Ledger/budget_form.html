@@ -35,7 +35,6 @@
             <thead class="thead-light"></thead>
                 <tr class="no-pointer">
                     <th scope="col">Customer</th>
-                    <th scope="col">Year</th>
                     <th scope="col">Jan</th>
                     <th scope="col">Feb</th>
                     <th scope="col">Mar</th>
@@ -48,14 +47,15 @@
                     <th scope="col">Oct</th>
                     <th scope="col">Nov</th>
                     <th scope="col">Dec</th>
+                    <th scope="col">year</th>
                 </tr>
             </thead>
             <tbody>
                 {% for form in formset %}
+                {% if form.year.value == year %}
                 {{ form.id }}
                 <tr class="formset_row">
                     <td class="mdb-select md-form">{{ form.customer }}</td>
-                    <td>{{ form.year }}</td>
                     <td>{{ form.jan }}</td>
                     <td>{{ form.feb }}</td>
                     <td>{{ form.mar }}</td>
@@ -68,13 +68,14 @@
                     <td>{{ form.oct }}</td>
                     <td>{{ form.nov }}</td>
                     <td>{{ form.dec }}</td>
-                    <!-- <td>{{ form.DELETE }}</td> --> {% comment %} Find way to put del btn on first col{% endcomment %}
+                    <td>{{ form.year }}</td>
                 </tr>
+                {% endif %}
                 {% endfor %}
             </tbody>
         </table>
         </div>
-        <input type="submit" class="btn btn-primary" value="Save"/>
+        <input type="submit" class="btn btn-primary" value="Save">
     </form>
     {% if form.errors %}
     {{ form.errors }}

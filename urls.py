@@ -3,10 +3,11 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-        # path('', views.index, name='index'),
+        ### Upload budget form
         path('', views.IndexView.as_view(), name='index'),
-        path('form/', views.BudgetFormChooseLocation.as_view(), name='cl_budget_form'),
-        path('form/<slug:location_name_slug>/', views.form_budget, name='budget_form'),
+        path('budget-form/', views.BudgetFormChooseLocation.as_view(), name='cl_budget_form'),
+        path('budget-form/<slug:location_name_slug>/', views.BudgetFormChooseYear.as_view(), name='cy_budget_form'),
+        path('budget-form/<slug:location_name_slug>/<int:year>', views.form_budget, name='budget_form'),
 
         ### Budget by Customer by Plant ###
         path('budget/customer-plant/', views.ChooseCustomerBudgetCustomerPlant.as_view(), name='cc_budget_customer_plant'),

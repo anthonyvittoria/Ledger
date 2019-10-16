@@ -2173,18 +2173,34 @@ class BudgetFormChooseLocation(ChooseLocationView):
         locations = {budget.location for budget in Budget.objects.all()}
         context = super().get_context_data(**kwargs)
         context['locations'] = locations
+        context['redirect'] = 'cy_budget_form'
+        return context
+
+class BudgetFormChooseYear(ChooseYearView):
+    def get_context_data(self, **kwargs):
+        years = {budget.year for budget in Budget.objects.filter(
+            location__slug=self.kwargs['location_name_slug']).order_by('year')}
+        context = super().get_context_data(**kwargs)
+        context['years'] = years
+        context['location_name_slug'] = self.kwargs['location_name_slug']
         context['redirect'] = 'budget_form'
         return context
 
+### TO DO ###
+# breadcrumbs
+ 
+### Questions ###
+# should finished budget form be cloned for sales? ***yes***
+
 @login_required
-def form_budget(request, location_name_slug):
+def form_budget(request, location_name_slug, year):
     location = Location.objects.get(slug=location_name_slug)
     BudgetInlineFormSet = inlineformset_factory(Location, Budget, fields=(
         'customer', 'jan', 'feb',
         'mar', 'apr', 'may', 'jun',
         'jul', 'aug', 'sep', 'oct',
         'nov', 'dec', 'year',
-    ), extra=1, min_num=1)
+    ), extra=0, min_num=1)
     if request.method == 'POST':
         formset = BudgetInlineFormSet(request.POST, instance=location)
         if formset.is_valid():
@@ -2192,8 +2208,9 @@ def form_budget(request, location_name_slug):
             messages.success(request, "Budget updated successfully.")
             return HttpResponseRedirect('')
     else:
+        print('INVALID' * 3, location)
         formset = BudgetInlineFormSet(instance=location)
-    return render(request, 'Ledger/budget_form.html', {'formset': formset, 'location': location})
+    return render(request, 'Ledger/budget_form.html', {'formset': formset, 'location': location, 'year': year})
 
 ###########################################
 ########## A VS B CUSTOMER PLANT ##########
