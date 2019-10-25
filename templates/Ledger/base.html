@@ -10,10 +10,6 @@
 
 {% block title %}<title>Ledger</title>{% endblock %}
 
-<!-- Fonts -->
-<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css?family=Montserrat:700&display=swap" rel="stylesheet">
-
 <!-- Favicon -->
 <link rel="icon" type="image/png" href="{% static 'Ledger/img/favicon.ico' %}" sizes="32x32" />
 
@@ -165,7 +161,7 @@
       <a href="{% url 'cy_vs_global_region' %}">Global by Region</a>
     </div>
     {% if user.is_staff %}
-    <button class="accordion" style="line-height: 40px;"><p class="fas fa-user-shield mr-1"></p> Administration</button>
+    <button id="accordionAdmin" class="accordion" style="line-height: 40px;"><p class="fas fa-user-shield mr-1"></p> Administration</button>
     <div class="panel">
       <a href="{% url 'admin:index' %}">Admin Portal</a>
       <a href="{% url 'cl_budget_form' %}">Upload Budget</a>
@@ -217,11 +213,13 @@
 
 {% block javascript %}
 <script>
+var navIsOpen = false;
   /* Set the width of the side navigation to 250px */
 function openNav() {
   $('.accordion').show();
   $('.panel').show();
   document.getElementById("mySidenav").style.width = "275px";
+  navIsOpen = true;
 }
 
 /* Set the width of the side navigation to 0 */
@@ -231,11 +229,18 @@ function closeNav() {
   document.getElementById("mySidenav").style.width = "0";
   $('.accordion').removeClass("nav-active");
   $('.panel').removeClass("show");
+  navIsOpen = false;
 }
 
 function openNavTo(section) {
-  openNav();
-  $('#accordion' + section).click();
+  if (navIsOpen) {
+    $('#accordion' + section).click();
+  } else {
+    openNav();
+    setTimeout(function() {
+      $('#accordion' + section).click();
+    }, 175);
+  }
 }
 </script>
 
