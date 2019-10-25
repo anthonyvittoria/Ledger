@@ -11,8 +11,8 @@
     select {
         width: 150px;
     }
-    input {
-        width: 100px;
+    input:not(.btn) {
+        width: 75px;
     }
 </style>
 {% endblock %}
@@ -47,7 +47,9 @@
                     <th scope="col">Oct</th>
                     <th scope="col">Nov</th>
                     <th scope="col">Dec</th>
-                    <th scope="col">year</th>
+                    <!-- <th scope="col">Year</th> -->
+                    <th scope="col">Delete</th>
+
                 </tr>
             </thead>
             <tbody>
@@ -68,7 +70,8 @@
                     <td>{{ form.oct }}</td>
                     <td>{{ form.nov }}</td>
                     <td>{{ form.dec }}</td>
-                    <td>{{ form.year }}</td>
+                    <!-- <td>{{ form.year }}</td> -->
+                    <td>{{ form.DELETE }}</td>
                 </tr>
                 {% endif %}
                 {% endfor %}
