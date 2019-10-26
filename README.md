@@ -11,4 +11,4 @@ Clone this repository into your Django project directory and add 'Ledger' to `IN
 
 `pip install django-crispy-forms`
 
-Bootstrap and MDBootstrap are used for styling and functionality. All necessary files can be found [here](https://mdbootstrap.com/docs/jquery/getting-started/download/). MDBootstrap uses a number of FontAwesome icons. Get FontAwesome [here](https://fontawesome.com/start).
+Bootstrap and MDBootstrap are used for styling and functionality. All necessary files can be found [here](https://mdbootstrap.com/docs/jquery/getting-started/download/). A number of FontAwesome icons are also used. Get FontAwesome [here](https://fontawesome.com/start).
