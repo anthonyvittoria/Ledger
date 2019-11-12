@@ -71,7 +71,7 @@
                     {% for plant, value in data.items %}
                     {% if plant != 'totals' %}
                     <tr>
-                        <td>{{ plant.name }}</td>
+                        <td title="{{ plant.name }}">{{ plant.name }}</td>
                         {% if q == 'Q1' %}
                         <!-- January -->
                         {% if value.jan.actual > value.jan.budget %}
