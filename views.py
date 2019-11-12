@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.http import HttpResponseRedirect, HttpResponseNotFound
 from django.forms import inlineformset_factory
@@ -9,6 +9,7 @@ from django.views.generic.base import TemplateView
 
 from .models import Budget, Customer, Sale, Location, Region
 from .utilities import intersection
+# from .forms import BudgetFormSet
 
 class IndexView(LoginRequiredMixin, TemplateView):
     template_name = 'Ledger/index.html'
@@ -24,6 +25,9 @@ class ChooseLocationView(LoginRequiredMixin, ListView):
 
 class ChooseYearView(LoginRequiredMixin, TemplateView):
     template_name = 'Ledger/choose_year.html'
+
+class ChooseYearFormView(LoginRequiredMixin, TemplateView):
+    template_name = 'Ledger/choose_year_form.html'
 
 class BudgetView(LoginRequiredMixin, TemplateView):
     template_name = 'Ledger/budget.html'
@@ -2176,7 +2180,7 @@ class BudgetFormChooseLocation(ChooseLocationView):
         context['redirect'] = 'cy_budget_form'
         return context
 
-class BudgetFormChooseYear(ChooseYearView):
+class BudgetFormChooseYear(ChooseYearFormView):
     def get_context_data(self, **kwargs):
         years = {budget.year for budget in Budget.objects.filter(
             location__slug=self.kwargs['location_name_slug']).order_by('year')}
@@ -2185,6 +2189,15 @@ class BudgetFormChooseYear(ChooseYearView):
         context['location_name_slug'] = self.kwargs['location_name_slug']
         context['redirect'] = 'budget_form'
         return context
+
+@login_required
+def new_year_form(request, location_name_slug):
+    if request.method == 'POST':
+        # context = {'year': request.POST.get('year'),}
+        year = request.POST.get('year')
+        return redirect('budget_form', location_name_slug=location_name_slug, year=request.POST.get('year'))
+    else:
+        return render(request, 'Ledger/new_year_form.html')
 
 ### TO DO ###
 # breadcrumbs
@@ -2195,21 +2208,23 @@ class BudgetFormChooseYear(ChooseYearView):
 @login_required
 def form_budget(request, location_name_slug, year):
     location = Location.objects.get(slug=location_name_slug)
-    BudgetInlineFormSet = inlineformset_factory(Location, Budget, fields=(
+    BudgetFormSet = inlineformset_factory(Location, Budget, fields=(
         'customer', 'jan', 'feb',
         'mar', 'apr', 'may', 'jun',
         'jul', 'aug', 'sep', 'oct',
         'nov', 'dec', 'year',
     ), extra=0, min_num=1)
     if request.method == 'POST':
-        formset = BudgetInlineFormSet(request.POST, instance=location)
+        formset = BudgetFormSet(request.POST, instance=location, queryset=Budget.objects.filter(year=year))
         if formset.is_valid():
             formset.save()
-            messages.success(request, "Budget updated successfully.")
+            messages.success(request, location.name + " " + str(year) + " budget updated successfully.")
             return HttpResponseRedirect('')
+        else:
+            print("FORMSET NOT VALID!!! " * 3)
+            return render(request, 'Ledger/budget_form.html', {'formset': formset, 'location': location, 'year': year})
     else:
-        print('INVALID' * 3, location)
-        formset = BudgetInlineFormSet(instance=location)
+        formset = BudgetFormSet(instance=location, queryset=Budget.objects.filter(year=year))
     return render(request, 'Ledger/budget_form.html', {'formset': formset, 'location': location, 'year': year})
 
 ###########################################

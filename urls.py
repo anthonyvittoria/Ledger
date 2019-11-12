@@ -7,6 +7,7 @@ urlpatterns = [
         path('', views.IndexView.as_view(), name='index'),
         path('budget-form/', views.BudgetFormChooseLocation.as_view(), name='cl_budget_form'),
         path('budget-form/<slug:location_name_slug>/', views.BudgetFormChooseYear.as_view(), name='cy_budget_form'),
+        path('budget-form/<slug:location_name_slug>/new_year', views.new_year_form, name='new_year_form'),
         path('budget-form/<slug:location_name_slug>/<int:year>', views.form_budget, name='budget_form'),
 
         ### Budget by Customer by Plant ###

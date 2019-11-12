@@ -1,0 +1,20 @@
+{% extends 'Ledger/base.html' %} {% load static %}
+
+{% block body%}
+    <div class="container mt-5 mx-auto text-center">
+        <h3 class="mb-4">Enter new year</h3>
+        <form action="" method="post">
+            {% csrf_token %}
+            <input type="text" name="year">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        
+    </div>
+
+<!-- jQuery -->
+<script type="text/javascript" src="{% static 'Ledger/js/jquery-3.4.1.min.js' %}"></script>
+<!-- Bootstrap -->
+<script type="text/javascript" src="{% static 'Ledger/js/bootstrap.min.js' %}"></script>
+<!-- MDB Datatables -->
+<script type="text/javascript" src="{% static 'Ledger/js/addons/datatables.min.js' %}"></script>
+{% endblock %}
