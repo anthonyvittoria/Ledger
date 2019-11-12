@@ -165,6 +165,7 @@
     <div class="panel">
       <a href="{% url 'admin:index' %}">Admin Portal</a>
       <a href="{% url 'cl_budget_form' %}">Upload Budget</a>
+      <a href="{% url 'cl_sale_form' %}">Upload Sales</a>
       {% if user.is_superuser %}
       <a href="{% url 'register' %}">Register a user</a>
       {% endif %}

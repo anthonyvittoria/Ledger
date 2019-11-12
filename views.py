@@ -2191,19 +2191,12 @@ class BudgetFormChooseYear(ChooseYearFormView):
         return context
 
 @login_required
-def new_year_form(request, location_name_slug):
+def budget_new_year_form(request, location_name_slug):
     if request.method == 'POST':
-        # context = {'year': request.POST.get('year'),}
         year = request.POST.get('year')
         return redirect('budget_form', location_name_slug=location_name_slug, year=request.POST.get('year'))
     else:
         return render(request, 'Ledger/new_year_form.html')
-
-### TO DO ###
-# breadcrumbs
- 
-### Questions ###
-# should finished budget form be cloned for sales? ***yes***
 
 @login_required
 def form_budget(request, location_name_slug, year):
@@ -2226,6 +2219,58 @@ def form_budget(request, location_name_slug, year):
     else:
         formset = BudgetFormSet(instance=location, queryset=Budget.objects.filter(year=year))
     return render(request, 'Ledger/budget_form.html', {'formset': formset, 'location': location, 'year': year})
+
+#####################################
+########## EDIT SALES FORM ##########
+#####################################
+
+class SaleFormChooseLocation(ChooseLocationView):
+    def get_context_data(self, **kwargs):
+        locations = {sale.location for sale in Sale.objects.all()}
+        context = super().get_context_data(**kwargs)
+        context['locations'] = locations
+        context['redirect'] = 'cy_sale_form'
+        return context
+
+class SaleFormChooseYear(ChooseYearFormView):
+    def get_context_data(self, **kwargs):
+        years = {sale.year for sale in Sale.objects.filter(
+            location__slug=self.kwargs['location_name_slug']).order_by('year')}
+        context = super().get_context_data(**kwargs)
+        context['years'] = years
+        context['location_name_slug'] = self.kwargs['location_name_slug']
+        context['redirect'] = 'sale_form'
+        return context
+
+@login_required
+def sale_new_year_form(request, location_name_slug):
+    if request.method == 'POST':
+        year = request.POST.get('year')
+        return redirect('sale_form', location_name_slug=location_name_slug, year=request.POST.get('year'))
+    else:
+        return render(request, 'Ledger/new_year_form.html')
+
+@login_required
+def form_sale(request, location_name_slug, year):
+    location = Location.objects.get(slug=location_name_slug)
+    SaleFormSet = inlineformset_factory(Location, Budget, fields=(
+        'customer', 'jan', 'feb',
+        'mar', 'apr', 'may', 'jun',
+        'jul', 'aug', 'sep', 'oct',
+        'nov', 'dec', 'year',
+    ), extra=0, min_num=1)
+    if request.method == 'POST':
+        formset = SaleFormSet(request.POST, instance=location, queryset=Sale.objects.filter(year=year))
+        if formset.is_valid():
+            formset.save()
+            messages.success(request, location.name + " " + str(year) + " sales updated successfully.")
+            return HttpResponseRedirect('')
+        else:
+            print("FORMSET NOT VALID!!! " * 3)
+            return render(request, 'Ledger/sale_form.html', {'formset': formset, 'location': location, 'year': year})
+    else:
+        formset = SaleFormSet(instance=location, queryset=Budget.objects.filter(year=year))
+    return render(request, 'Ledger/sale_form.html', {'formset': formset, 'location': location, 'year': year})
 
 ###########################################
 ########## A VS B CUSTOMER PLANT ##########
