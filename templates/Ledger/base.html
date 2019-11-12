@@ -121,7 +121,7 @@
     Ledger
     </a>
     {% if user.is_authenticated %}
-    <button id="accordionActuals" class="accordion" style="line-height: 40px;"><p class="fas fa-money-check-alt mr-1"></p> Sales Actuals</button>
+    <button id="accordionActuals" class="accordion" style="line-height: 40px;"><p class="fas fa-money-check-alt mr-1"></p> Actual Sales</button>
     <div class="panel">
         <a href="{% url 'cc_sale_customer_plant' %}">Customer by Plant</a>
         <a href="{% url 'cl_sale_plant_customer' %}">Plant by Customer</a>
@@ -134,7 +134,7 @@
         <a href="{% url 'cy_sale_global_sector' %}">Global by Sector</a>
         <a href="{% url 'cy_sale_global_region' %}">Global by Region</a>
     </div>
-    <button id="accordionBudgets" class="accordion" style="line-height: 40px;"><p class="fas fa-balance-scale mr-1"></p> Sales Budgets</button>
+    <button id="accordionBudgets" class="accordion" style="line-height: 40px;"><p class="fas fa-balance-scale mr-1"></p> Budgets</button>
     <div class="panel">
       <a href="{% url 'cc_budget_customer_plant' %}">Customer by Plant</a>
       <a href="{% url 'cl_budget_plant_customer' %}">Plant by Customer</a>
@@ -147,7 +147,7 @@
       <a href="{% url 'cy_budget_global_sector' %}">Global by Sector</a>
       <a href="{% url 'cy_budget_global_region' %}">Global by Region</a>
     </div>
-    <button id="accordionVs" class="accordion" style="line-height: 40px;"><p class="fas fa-check-double mr-1"></p> Sales Actuals vs Budgets</button>
+    <button id="accordionVs" class="accordion" style="line-height: 40px;"><p class="fas fa-check-double mr-1"></p> Actuals vs Budgets</button>
     <div class="panel">
       <a href="{% url 'cc_vs_customer_plant' %}">Customer by Plant</a>
       <a href="{% url 'cl_vs_plant_customer' %}">Plant by Customer</a>
@@ -184,9 +184,9 @@
   <ul class="navbar-nav ml-auto">
     {% if user.is_authenticated %}
       {% if user.first_name %}
-        <span class="navbar-text mr-2" style="color: #ccc7c7;">Welcome, {{ user.first_name }}</span>
+        <span class="navbar-text mr-2 d-none d-md-block d-lg-block" style="color: #ccc7c7;">Welcome, {{ user.first_name }}</span>
       {% else %}
-        <span class="navbar-text mr-2" style="color: #ccc7c7;">Welcome, {{ user.username }}</span>
+        <span class="navbar-text mr-2 d-none d-md-block d-lg-block" style="color: #ccc7c7;">Welcome, {{ user.username }}</span>
       {% endif %}
         <a href="{% url 'logout' %}" class="font-weight-bold btn btn-primary"><i class="fas fa-sign-out-alt"></i> Logout</a>
     {% else %}
