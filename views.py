@@ -2168,9 +2168,9 @@ class SaleGlobalRegion(SaleView):
         context['sale_total'] = sale_total
         return context
 
-######################################
-########## EDIT BUDGET FORM ##########
-######################################
+#############################################
+########## UPLOAD/EDIT BUDGET FORM ##########
+#############################################
 
 class BudgetFormChooseLocation(ChooseLocationView):
     def get_context_data(self, **kwargs):
@@ -2220,9 +2220,9 @@ def form_budget(request, location_name_slug, year):
         formset = BudgetFormSet(instance=location, queryset=Budget.objects.filter(year=year))
     return render(request, 'Ledger/budget_form.html', {'formset': formset, 'location': location, 'year': year})
 
-#####################################
-########## EDIT SALES FORM ##########
-#####################################
+############################################
+########## UPLOAD/EDIT SALES FORM ##########
+############################################
 
 class SaleFormChooseLocation(ChooseLocationView):
     def get_context_data(self, **kwargs):

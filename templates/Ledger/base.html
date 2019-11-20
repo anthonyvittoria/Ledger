@@ -163,11 +163,10 @@
     {% if user.is_staff %}
     <button id="accordionAdmin" class="accordion" style="line-height: 40px;"><p class="fas fa-user-shield mr-1"></p> Administration</button>
     <div class="panel">
-      <a href="{% url 'admin:index' %}">Admin Portal</a>
       <a href="{% url 'cl_budget_form' %}">Upload Budget</a>
       <a href="{% url 'cl_sale_form' %}">Upload Sales</a>
+      <a href="{% url 'admin:index' %}">Admin Portal</a>
       {% if user.is_superuser %}
-      <a href="{% url 'register' %}">Register a user</a>
       {% endif %}
     </div>
     {% endif %}
