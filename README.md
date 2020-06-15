@@ -5,7 +5,7 @@
 Ledger is a web application designed for enterprise budget management and analysis. You are welcome modify and redistribute the software so long as the license is preserved.
 
 ## Installation
-Clone this repository into your Django project directory and add 'Ledger' to `INSTALLED_APPS` in settings.py. Ensure the following dependencies are installed in your virtual environment:
+Clone this repository into your Django project directory and add 'Ledger' to `INSTALLED_APPS`. Ensure the following dependencies are installed in your environment:
 
 `pip install django==2.2.2`
 
