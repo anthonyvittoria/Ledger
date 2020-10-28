@@ -1,7 +1,5 @@
 <p align="center"><img src="static/Ledger/img/LedgerHeader.png" height="150px"/></p>
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/34380b3e56bb4d419fd056e3810838f8)](https://www.codacy.com/app/anthonyvittoria/Ledger?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=anthonyvittoria/Ledger&amp;utm_campaign=Badge_Grade)
-
 Ledger is a web application designed for enterprise budget management and analysis. You are welcome modify and redistribute the software so long as the license is preserved.
 
 ## Installation
